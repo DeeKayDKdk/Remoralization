@@ -20,6 +20,7 @@ return (
 <div className="p-6">
 {/* Actions */}
 <div className="flex flex-col items-center mt-8 gap-3">
+{/* Submit button */}
 <button
 onClick={handleSubmit}
 className="bg-yellow-500 text-black px-6 py-3 rounded-2xl font-semibold hover:bg-yellow-400 disabled:opacity-60"
@@ -29,6 +30,7 @@ disabled={isSubmitting}
 {isSubmitting ? "Submitting..." : "Submit Report"}
 </button>
 
+{/* Add point button */}
 <button
 onClick={() => setTotalScore((s) => Math.min(24, s + 1))}
 className="bg-white text-gray-900 border border-gray-300 px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100"
@@ -40,13 +42,12 @@ aria-label="Add one point"
 
 {/* Score */}
 <div className="text-gray-600 mt-6">
-Total Score:{" "}
-<span className="font-semibold">{totalScore}</span> / 24
+Total Score: <span className="font-semibold">{totalScore}</span> / 24
 </div>
 
 {totalScore >= 18 ? (
 <p className="text-green-700 text-sm font-semibold">
-Eligible for reward this period
+Eligible for reward this period 🎉
 </p>
 ) : (
 <p className="text-gray-500 text-sm">
@@ -68,7 +69,9 @@ Need {18 - totalScore} more points for eligibility
 <p>People don’t need more consumption.</p>
 <p>People don’t need long self-help books.</p>
 <p className="font-bold text-lg mt-4">People need a PURPOSE.</p>
-<p className="font-bold text-lg">People need simple standards and human accountability.</p>
+<p className="font-bold text-lg">
+People need simple standards and human accountability.
+</p>
 </div>
 </div>
 );
