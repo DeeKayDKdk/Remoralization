@@ -1,31 +1,50 @@
-import { useMemo, useState, useEffect } from "react";
+"use client";
+import { useState } from "react";
 
-})}
-</div>
+export default function Home() {
+const [submitting, setSubmitting] = useState(false);
+const [toast, setToast] = useState("");
+const [totalScore, setTotalScore] = useState(0);
 
+function handleSubmit() {
+setSubmitting(true);
+setToast("Report submitted!");
+setTimeout(() => {
+setSubmitting(false);
+setToast("");
+}, 1000);
+}
+
+return (
+<div className="p-6">
+{/* Actions */}
 <div className="flex flex-col items-center mt-8 gap-3">
 <div className="flex gap-3">
-<Button
+<button
 onClick={handleSubmit}
 className="bg-yellow-500 text-black px-6 py-3 rounded-2xl font-semibold hover:bg-yellow-400 disabled:opacity-60"
 aria-label="Submit Report"
 disabled={submitting}
 >
 {submitting ? "Submitting…" : "Submit Report"}
-</Button>
-<Button
-onClick={() => setView("home")}
+</button>
+
+<button
+onClick={() => setTotalScore((s) => Math.min(24, s + 1))}
 className="bg-white text-gray-900 border border-gray-300 px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100"
-aria-label="Back to Home"
+aria-label="Add one point"
 >
-Back to Home
-</Button>
++1 point
+</button>
+</div>
 </div>
 
-<p className="text-sm text-gray-600">
+{/* Score */}
+<p className="text-sm text-gray-600 mt-6">
 Total score: <span className="font-semibold">{totalScore}</span> / 24
 </p>
-{eligible ? (
+
+{totalScore >= 18 ? (
 <p className="text-green-700 text-sm font-semibold">
 Eligible for reward this period
 </p>
@@ -34,23 +53,22 @@ Eligible for reward this period
 Need {18 - totalScore} more points for eligibility
 </p>
 )}
-</div>
 
+{/* Toast */}
 {toast && (
 <div className="fixed bottom-6 right-6 bg-black text-white px-4 py-2 rounded-lg shadow-lg">
 {toast}
 </div>
 )}
 
+{/* Copy */}
 <div className="mt-16 text-center max-w-2xl mx-auto text-gray-700 space-y-2">
 <p>People don’t need more AI slop.</p>
 <p>People don’t need an algorithm to reaffirm themselves.</p>
 <p>People don’t need more consumption.</p>
 <p>People don’t need long self-help books.</p>
 <p className="font-bold text-lg mt-4">People need a purpose.</p>
-<p className="font-bold text-lg">
-People need simple standards and human accountability.
-</p>
+<p className="font-bold text-lg">People need simple standards and human accountability.</p>
 </div>
 </div>
 );
