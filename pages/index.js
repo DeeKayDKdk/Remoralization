@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 
 export default function Home() {
@@ -29,7 +30,7 @@ disabled={isSubmitting}
 </button>
 
 <button
-onClick={() => setTotalScore(s => Math.min(24, s + 1))}
+onClick={() => setTotalScore((s) => Math.min(24, s + 1))}
 className="bg-white text-gray-900 border border-gray-300 px-6 py-3 rounded-2xl font-semibold hover:bg-gray-100"
 aria-label="Add one point"
 >
@@ -39,7 +40,8 @@ aria-label="Add one point"
 
 {/* Score */}
 <div className="text-gray-600 mt-6">
-Total Score: <span className="font-semibold">{totalScore}</span> / 24
+Total Score:{" "}
+<span className="font-semibold">{totalScore}</span> / 24
 </div>
 
 {totalScore >= 18 ? (
@@ -66,9 +68,7 @@ Need {18 - totalScore} more points for eligibility
 <p>People don’t need more consumption.</p>
 <p>People don’t need long self-help books.</p>
 <p className="font-bold text-lg mt-4">People need a PURPOSE.</p>
-<p className="font-bold text-lg">
-People need simple standards and human accountability.
-</p>
+<p className="font-bold text-lg">People need simple standards and human accountability.</p>
 </div>
 </div>
 );
