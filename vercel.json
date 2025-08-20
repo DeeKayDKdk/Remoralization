@@ -1,5 +1,10 @@
 {
-"rewrites": [
-{ "source": "/(.*)", "destination": "/index.html" }
+"builds": [
+{ "src": "api/**/*.js", "use": "@vercel/node" },
+{ "src": "public/**/*", "use": "@vercel/static" }
+],
+"routes": [
+{ "src": "/success", "dest": "/public/success.html" },
+{ "src": "/cancel", "dest": "/public/cancel.html" }
 ]
 }
