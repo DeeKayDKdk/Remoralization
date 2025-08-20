@@ -1,36 +1,25 @@
-/ /api/create-checkout-session.js
-import Stripe from "stripe";
+// /api/create-checkout-session.js
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-export default async function handler(req, res) {
-if (req.method === "POST") {
+module.exports = async (req, res) => {
+if (req.method !== 'POST') {
+res.setHeader('Allow', 'POST');
+return res.status(405).end('Method Not Allowed');
+}
 try {
+// Create a subscription checkout session for your $10/mo price
 const session = await stripe.checkout.sessions.create({
-payment_method_types: ["card"],
-line_items: [
-{
-price_data: {
-currency: "usd",
-product_data: {
-name: "Operation Remoralization Membership",
-},
-unit_amount: 1000, // $10.00
-},
-quantity: 1,
-},
-],
-mode: "payment",
-success_url: "https://remoralization.com/success",
-cancel_url: "https://remoralization.com/cancel",
+mode: 'subscription',
+line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }], // e.g. price_1RyGvE...
+success_url: `${process.env.SITE_URL}/success.html`,
+cancel_url: `${process.env.SITE_URL}/cancel.html`,
+allow_promotion_codes: true,
 });
 
-res.status(200).json({ clientSecret: session.id });
+return res.status(200).json({ url: session.url });
 } catch (err) {
-res.status(500).json({ error: err.message });
+console.error(err);
+return res.status(400).json({ error: err.message });
 }
-} else {
-res.setHeader("Allow", "POST");
-res.status(405).end("Method Not Allowed");
-}
-}
+};
