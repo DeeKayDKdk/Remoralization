@@ -1,31 +1,37 @@
-// pages/checkout.js
-export default function Checkout() {
-return (
-<>
-<main style={{maxWidth: 720, margin: '40px auto', padding: 24}}>
-<h1>Join Operation Remoralization ($10/month)</h1>
-<div id="checkout" style={{minHeight: 500}}></div>
-</main>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Checkout – Operation Remoralization</title>
+</head>
+<body style="text-align:center; padding:40px;">
+<h1>Checkout</h1>
+<p>Join Operation Remoralization for $10/month.</p>
 
-{/* Stripe JS */}
-<script src="https://js.stripe.com/v3/"></script>
-<script
-dangerouslySetInnerHTML={{
-__html: `
-(async function () {
-// Fetch the client_secret for this session
-const resp = await fetch('/api/create-checkout-session', { method: 'POST' });
-const data = await resp.json();
-if (!data.clientSecret) { alert('Checkout init error'); return; }
+<button id="joinBtn"
+style="padding:12px 20px; background:#635BFF; color:#fff; border:none; border-radius:6px; font-size:16px; cursor:pointer;">
+Proceed to Payment
+</button>
 
-// Init Stripe and mount Embedded Checkout
-const stripe = Stripe('${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}');
-const checkout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret });
-checkout.mount('#checkout');
-})();
-`
-}}
-/>
-</>
-);
+<p id="msg" style="color:#888; margin-top:12px;"></p>
+
+<script>
+const btn = document.getElementById('joinBtn');
+const msg = document.getElementById('msg');
+
+btn.onclick = async () => {
+btn.disabled = true; msg.textContent = 'Opening checkout…';
+try {
+const r = await fetch('/api/create-checkout-session', { method: 'POST' });
+const data = await r.json();
+if (!data.url) throw new Error(data.error || 'No checkout URL returned');
+window.location.href = data.url; // redirect to Stripe Checkout
+} catch (e) {
+msg.textContent = 'Error: ' + e.message;
+btn.disabled = false;
 }
+};
+</script>
+</body>
+</html>
