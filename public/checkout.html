@@ -5,20 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Join Operation Remoralization</title>
 
-<!-- site styles -->
+<!-- your site styles -->
 <link rel="stylesheet" href="/style.css?v=3" />
 
+<!-- Stripe Buy Button loader (renders an on-page iframe) -->
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+
 <style>
-body { text-align: center; }
-main { max-width: 720px; margin: 48px auto; padding: 24px; }
-.btn-primary {
-display: inline-block; padding: 12px 18px; border-radius: 10px;
-background: linear-gradient(180deg, #ffc107, #e7a602);
-color: #111; font-weight: 700; text-decoration: none;
-box-shadow: 0 10px 22px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.3);
-}
-.btn { display:inline-block; padding:10px 14px; border:1px solid rgba(255,255,255,.2);
-border-radius:10px; text-decoration:none; color:#e7ecf5; }
+main { max-width: 720px; margin: 48px auto; padding: 24px; text-align:center; }
+.brand-title { margin-bottom: 8px; }
+.back { display:inline-block; margin-top:24px; }
 </style>
 </head>
 <body>
@@ -26,16 +22,13 @@ border-radius:10px; text-decoration:none; color:#e7ecf5; }
 <h1 class="brand-title">Join Operation Remoralization ($10/month)</h1>
 <p>Your subscription is processed securely by Stripe.</p>
 
-<!-- Direct link to your Stripe Checkout (Payment Link) -->
-<p style="margin-top:16px">
-<a class="btn-primary" href="https://buy.stripe.com/28EaEXtEYcY3hk58fmb0400">
-Join for $10/month
-</a>
-</p>
+<!-- Stripe Buy Button renders HERE and keeps users on your site -->
+<stripe-buy-button
+buy-button-id="buy_btn_1RyWE9EAIfxpksnp10zQdiy6"
+publishable-key="pk_live_51KQiEQEAIfxpksnpRrLuZnv59jHo2nGBILCc9ojzCrODM5QsPdznCtsiTWdwOpeo1MhVpZSdPjfe2ce5vyeXPLZ000UXBLFb9o">
+</stripe-buy-button>
 
-<p style="margin-top:24px;">
-<a class="btn" href="/">Back</a>
-</p>
+<p class="back"><a class="btn" href="/">Back</a></p>
 </main>
 </body>
 </html>
