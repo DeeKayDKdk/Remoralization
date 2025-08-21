@@ -1,18 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Operation Remoralization</title>
 <link rel="stylesheet" href="/style.css" />
+<style>
+body { margin: 0; font-family: sans-serif; background: #fafafa; }
+#app { max-width: 960px; margin: 40px auto; padding: 24px; }
+</style>
 </head>
-<body style="text-align:center; padding:40px;">
-<h1>Operation Remoralization</h1>
-<p>Bi-weekly accountability with six pillars and a real human reply.</p>
+<body>
+<!-- App root -->
+<div id="app"></div>
 
-<a href="/checkout.html"
-style="display:inline-block; margin-top:20px; padding:12px 20px; background:#635BFF; color:white; border-radius:6px; text-decoration:none; font-size:16px;">
-Join for $10/month
-</a>
+<!-- Load your SPA logic -->
+<script defer src="/app.js"></script>
 </body>
 </html>
