@@ -4,25 +4,32 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Join Operation Remoralization</title>
-<link rel="stylesheet" href="/style.css" />
+
+<!-- your site styles (cache-busted) -->
+<link rel="stylesheet" href="/style.css?v=3" />
+
+<!-- Stripe Buy Button script -->
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+
+<!-- minor page-specific layout -->
 <style>
-main { max-width: 720px; margin: 40px auto; padding: 24px; text-align:center; }
+body { text-align: center; }
+main { max-width: 720px; margin: 48px auto; padding: 24px; }
 </style>
 </head>
 <body>
 <main>
-<h1>Join Operation Remoralization ($10/month)</h1>
+<h1 class="brand-title">Join Operation Remoralization ($10/month)</h1>
 <p>Your subscription is processed securely by Stripe.</p>
 
 <!-- Stripe Buy Button -->
-<script async src="https://js.stripe.com/v3/buy-button.js"></script>
 <stripe-buy-button
 buy-button-id="buy_btn_1RyWE9EAIfxpsnp10zQdiy6"
-publishable-key="pk_live_51KQiEQEAlfxpksnpRrLuZnv59jHo2nGBILCc9ojzCrODM5QsPdznCtsiTWdQOpeo1MhVpZSdPjfe2ce5vyeXPLZ000UXBLFb9o">
+publishable-key="pk_live_51KQiEQEAlfxpksnpRrLuZnv59jHo2nGBILCc9ojzCrODM5QsPdznCtsiTWdwOpeo1MhVpZSdPjfe2ce5vyeXPLZ000UXBLFb9o">
 </stripe-buy-button>
 <!-- End Stripe Buy Button -->
 
-<p style="margin-top:24px;"><a href="/">Back</a></p>
+<p style="margin-top:24px;"><a class="btn" href="/">Back</a></p>
 </main>
 </body>
 </html>
