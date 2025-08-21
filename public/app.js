@@ -272,25 +272,49 @@ ${bullets.map(b => `<li>${b}</li>`).join("")}
 `;
 }
 
-function renderCheckout(){
+function renderCheckout() {
 app.innerHTML = `
 <section class="main-hero">
-<h1 class="h1">Checkout (Placeholder)</h1>
-<p class="subtitle">Hook your payment provider here later. For now this is just a static page.</p>
-<div class="actions">
-<a class="btn" href="#">Back</a>
-</div>
-</section>
+<h1>Join Operation Remoralization ($10/month)</h1>
+<p>Your subscription is processed securely by Stripe.</p>
 
-<section class="container card">
-<h3>What you get</h3>
-<ul class="hint" style="margin-left:18px">
-<li>Bi-weekly accountability across six pillars</li>
-<li>Human feedback within 48 hours</li>
-<li>Simple progress tracking & streaks (local on this demo)</li>
-</ul>
+<!-- Stripe Buy Button mounts here -->
+<div id="checkout-embed" style="min-height:520px; margin-top:12px;"></div>
+
+<p style="margin-top:24px;"><a class="btn" href="#/">Back</a></p>
 </section>
 `;
+
+ensureStripeBuyButton({
+mountId: 'checkout-embed',
+buyButtonId: 'buy_btn_1RyWE9EAlfxpksnp10zQdiy6',
+publishableKey: 'pk_live_51KQiEQEAlfxpksnpRrLuZnv59jHo2nGBILCc9jzCrODM5QsPdznCtsiTwdwOpeo1MhVpZSdPjfe2ce5vyeXPLZ000UXBLFb9o'
+});
+}
+
+function ensureStripeBuyButton({ mountId, buyButtonId, publishableKey }) {
+const mount = document.getElementById(mountId);
+if (!mount) return;
+
+function insertButton() {
+if (mount.querySelector('stripe-buy-button')) return;
+const el = document.createElement('stripe-buy-button');
+el.setAttribute('buy-button-id', buyButtonId);
+el.setAttribute('publishable-key', publishableKey);
+mount.appendChild(el);
+}
+
+if (document.getElementById('stripe-buybutton-js')) {
+insertButton();
+return;
+}
+
+const s = document.createElement('script');
+s.id = 'stripe-buybutton-js';
+s.src = 'https://js.stripe.com/v3/buy-button.js';
+s.async = true;
+s.onload = insertButton;
+document.body.appendChild(s);
 }
 
 /* ===== wire up inputs and submission ===== */
