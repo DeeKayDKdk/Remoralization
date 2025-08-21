@@ -166,3 +166,16 @@ border: none;
 .btn-brand:hover {
 filter: brightness(1.05);
 }
+/* --- Force dark background + subtle yellow glow --- */
+body{
+background-color: #0A0F1D !important;
+background-image:
+radial-gradient(1000px 480px at 50% -10%, rgba(255,193,7,0.08), transparent 60%),
+linear-gradient(180deg, #121A2E, #0A0F1D) !important;
+color: #E7ECF5;
+}
+
+/* If any wrappers were painting a light background, make them transparent */
+.main, .container, .page, .content, .wrapper{
+background: transparent !important;
+}
