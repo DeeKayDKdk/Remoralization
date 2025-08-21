@@ -14,8 +14,24 @@ render();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-$("#year").textContent = new Date().getFullYear();
+try {
+// Only update if #year exists
+const yearEl = document.getElementById("year");
+if (yearEl) {
+yearEl.textContent = new Date().getFullYear();
+}
+
+// Run your app
 render();
+} catch (err) {
+console.error("Startup error:", err);
+document.body.innerHTML = `
+<main style="max-width:720px;margin:40px auto;padding:24px;color:#b00020;">
+<h1>App failed to load</h1>
+<pre>${String(err)}</pre>
+</main>
+`;
+}
 });
 
 /* ===== utilities ===== */
