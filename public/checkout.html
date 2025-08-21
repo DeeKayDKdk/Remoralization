@@ -3,35 +3,25 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Checkout – Operation Remoralization</title>
+<title>Join Operation Remoralization</title>
+<link rel="stylesheet" href="/style.css" />
+<style>
+main { max-width: 720px; margin: 40px auto; padding: 24px; text-align:center; }
+</style>
 </head>
-<body style="text-align:center; padding:40px;">
-<h1>Checkout</h1>
-<p>Join Operation Remoralization for $10/month.</p>
+<body>
+<main>
+<h1>Join Operation Remoralization ($10/month)</h1>
+<p>Your subscription is processed securely by Stripe.</p>
 
-<button id="joinBtn"
-style="padding:12px 20px; background:#635BFF; color:#fff; border:none; border-radius:6px; font-size:16px; cursor:pointer;">
-Proceed to Payment
-</button>
+<!-- Stripe Buy Button -->
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+<stripe-buy-button
+buy-button-id="BUY_BUTTON_ID_HERE"
+publishable-key="pk_live_51KQiEQEAIfxpsnpt...yourfullkey...">
+</stripe-buy-button>
 
-<p id="msg" style="color:#888; margin-top:12px;"></p>
-
-<script>
-const btn = document.getElementById('joinBtn');
-const msg = document.getElementById('msg');
-
-btn.onclick = async () => {
-btn.disabled = true; msg.textContent = 'Opening checkout…';
-try {
-const r = await fetch('/api/create-checkout-session', { method: 'POST' });
-const data = await r.json();
-if (!data.url) throw new Error(data.error || 'No checkout URL returned');
-window.location.href = data.url; // redirect to Stripe Checkout
-} catch (e) {
-msg.textContent = 'Error: ' + e.message;
-btn.disabled = false;
-}
-};
-</script>
+<p style="margin-top:24px;"><a href="/">Back</a></p>
+</main>
 </body>
 </html>
