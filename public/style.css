@@ -114,3 +114,55 @@ width:100%; border-collapse:separate; border-spacing:0; margin-top:6px;
 text-align:left; padding:8px 10px; border-bottom:1px solid #25314a; font-size:14px;
 }
 .table th{color:var(--muted); font-weight:600}
+/* === Remoralization Dark Theme Update === */
+
+/* Dark navy gradient background */
+body {
+background:
+radial-gradient(1200px 600px at 50% -10%, rgba(255,193,7,0.12), transparent 60%),
+linear-gradient(180deg, #121A2E, #0A0F1D);
+color: #E7ECF5;
+}
+
+/* Yellow glow headings */
+h1, h2, .brand-title {
+color: #FFC107;
+text-shadow: 0 0 18px rgba(255,193,7,0.45);
+letter-spacing: 0.2px;
+}
+
+/* Card style for panels */
+.card-like {
+background: linear-gradient(180deg, rgba(31,40,67,0.82), rgba(21,28,48,0.82));
+border: 1px solid #2C3552;
+border-radius: 14px;
+box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 24px rgba(0,0,0,0.45);
+backdrop-filter: blur(4px);
+padding: 16px;
+}
+
+/* Yellow label badge */
+.badge-yellow {
+display: inline-block;
+background: rgba(255,193,7,0.16);
+border: 1px solid rgba(255,193,7,0.4);
+color: #FFD84D;
+border-radius: 10px;
+padding: 6px 10px;
+font-weight: 600;
+}
+
+/* Main yellow button */
+.btn-brand {
+background: linear-gradient(180deg, #FFC72E, #E0A800);
+color: #0B0F1A;
+border-radius: 12px;
+padding: 10px 18px;
+font-weight: 700;
+box-shadow: 0 6px 24px rgba(255,193,7,0.35);
+cursor: pointer;
+border: none;
+}
+.btn-brand:hover {
+filter: brightness(1.05);
+}
