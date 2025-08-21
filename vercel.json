@@ -1,10 +1,7 @@
 {
-"builds": [
-{ "src": "api/**/*.js", "use": "@vercel/node" },
-{ "src": "public/**/*", "use": "@vercel/static" }
-],
-"routes": [
-{ "src": "/success", "dest": "/public/success.html" },
-{ "src": "/cancel", "dest": "/public/cancel.html" }
+"rewrites": [
+{ "source": "/checkout", "destination": "/checkout.html" },
+{ "source": "/success", "destination": "/success.html" },
+{ "source": "/cancel", "destination": "/cancel.html" }
 ]
 }
