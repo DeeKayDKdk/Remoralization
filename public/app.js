@@ -79,6 +79,7 @@ return `<span class="badge">Enter last + current to see Δ</span>`;
 function render(){
 const v = state.view;
 if(v === "how"){ renderHow(); return; }
+if(v === "why"){ renderWhy(); return; }
 if(v === "checkout"){ renderCheckout(); return; }
 renderForm();
 wireUpInputs();
@@ -257,6 +258,58 @@ ${howCard("Integrity & Consistency",[
 <div class="actions" style="margin-top:16px">
 <a class="btn" href="#">Start Your First Report</a>
 </div>
+</section>
+`;
+}
+/* ========= WHY PAGE ========= */
+
+const WHY_ITEMS = [
+{ p: "57% of Americans feel lonely",
+s: "🌍 <b>Responsibility to Others</b> — service, check-ins, and accountability rebuild connection." },
+{ p: "58% of young adults report little or no purpose",
+s: "📖 <b>Belief & Morality</b> — anchor life in chosen principles; align actions with values." },
+{ p: "Purpose improves mental health (less stress & depression)",
+s: "🎯 <b>Skill & Mastery</b> — pick one pursuit, commit to practice, track progress." },
+{ p: "Only 44% are “very satisfied” with life (Gallup)",
+s: "🕰️ <b>Integrity & Consistency</b> — track commitments & streaks; small wins compound." },
+{ p: "90% of Gen Z & millennials say purpose is essential",
+s: "📖 + 🎯 <b>Belief & Morality</b> + <b>Skill & Mastery</b> — define values; pursue mastery; align career & life." },
+{ p: "85% of Gen Z (AU) report burnout",
+s: "💪 <b>Physical Discipline</b> — train, eat clean, sleep; build energy & resilience." },
+{ p: "Strong relationships predict happiness & longevity (Harvard study)",
+s: "🌍 <b>Responsibility to Others</b> — accountability & service forge deep bonds." },
+{ p: "Life transitions often erase routine (retirees, young adults)",
+s: "🕰️ <b>Integrity & Consistency</b> — bi-weekly cadence + feedback restore rhythm." },
+{ p: "Existential depression rising (lack of direction)",
+s: "📖 + 🎯 <b>Belief & Morality</b> + <b>Skill & Mastery</b> — values + skill-building replace emptiness with growth." },
+{ p: "Americans read for fun 40% less than 20 years ago",
+s: "🔧 <b>Self-Reliance</b> — replace passive consumption with practical skills & independence." }
+];
+
+function renderWhy(){
+app.innerHTML = `
+<section class="main-hero">
+<h1 class="h3">See Why It Works</h1>
+<p class="subtitle">Modern life leaves people lonely, burnt out, and without purpose. The <b>6 Pillars</b> directly target the biggest problems.</p>
+<div class="actions">
+<a class="btn" href="#"><b>Back</b></a>
+<a class="btn btn-primary" href="#checkout"><b>Join for $10/month</b></a>
+</div>
+</section>
+
+<section class="container">
+<h2 class="section-title">Problems → Pillar Solutions</h2>
+<table class="table">
+<thead><tr><th>Problem (Data)</th><th>Pillar Solution</th></tr></thead>
+<tbody>
+${WHY_ITEMS.map(x => `
+<tr>
+<td><b>${x.p}</b></td>
+<td>${x.s}</td>
+</tr>
+`).join("")}
+</tbody>
+</table>
 </section>
 `;
 }
