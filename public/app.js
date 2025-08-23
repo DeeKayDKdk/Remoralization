@@ -95,7 +95,9 @@ Build discipline, uphold values, and report your progress every two weeks — wi
 <div class="actions">
 <a class="btn btn-primary" href="#checkout">Join for $10/month</a>
 <a class="btn btn-ghost" href="#how">See How It Works</a>
+<a class="btn btn-ghost" href="#why">See Why It Works</a> 
 </div>
+
 </section>`;
 }
 
