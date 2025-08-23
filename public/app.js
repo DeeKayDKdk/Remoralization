@@ -146,7 +146,7 @@ ${textareaBind("morality","Honesty, restraint, faith, keeping principles under p
 <article class="card">
 <h3>Skill & Mastery</h3>
 <p class="hint">
-Choose one skill. Stick with it. Try to become the best in the world at it. Choose wisely — ideally something others will pay for.
+Choose one skill. Stick with it. Try to become the best in the world at it. Choose wisely — ideally something others would pay for.
 </p>
 <ul class="hint" style="margin-top:-6px">
 <li>Pick 1 main pursuit; commit to a bi-weekly hour target</li>
