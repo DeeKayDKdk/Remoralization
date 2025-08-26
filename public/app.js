@@ -102,100 +102,51 @@ Build discipline, uphold values, and report your progress every two weeks — wi
 }
 
 function renderForm(){
+// Hero + “Six Pillars” info cards (no inputs)
 app.innerHTML = `
 ${renderHero()}
+
 <div class="section-title">
-<h2>Submit Your Bi-Weekly Report</h2>
-<div class="badge">Human review within 48 hours</div>
+<h2>The Six Pillars</h2>
+<div class="badge">Accountability-based growth</div>
 </div>
 
-<section class="container">
-<div class="row" style="margin-bottom:10px">
-<div style="flex:1; min-width:220px">${inputBind("name",{placeholder:"Your Name (optional)"})}</div>
-<div style="flex:1; min-width:220px">${inputBind("period",{placeholder:"Period covered (e.g., Aug 1–15)"})}</div>
-</div>
+<section class="container grid">
+${howCard("Physical Discipline", [
+"Discipline made visible through physical form.",
+"A strong, healthy body reflects order, resilience, and gratitude.",
+"Purpose: To extend vitality and serve with energy, courage, and presence."
+])}
 
-<div class="grid">
-<article class="card">
-<h3>Physical Discipline</h3>
-<p class="hint">What did you do to maintain or improve your body during this period?</p>
-<div class="row">
-<div style="flex:1; min-width:160px">${inputBind("lastBf",{placeholder:"Last Body Fat %", type:"number"})}</div>
-<div style="flex:1; min-width:160px">${inputBind("currentBf",{placeholder:"Current Body Fat %", type:"number"})}</div>
-<div style="flex:1; min-width:160px">${inputBind("avgSleep",{placeholder:"Average Sleep (hrs/night)", type:"number"})}</div>
-</div>
-<div class="notice" id="deltaSlot">${deltaBodyFat(state.form.lastBf, state.form.currentBf)}</div>
-${textareaBind("physical","Workouts, weight change, diet discipline...")}
-</article>
+${howCard("Responsibility to Others", [
+"Duty binds the individual to family, community, and nation.",
+"Responsibility creates trust, stability, and purpose beyond self.",
+"Purpose: To be a protector, provider, and contributor, not a burden."
+])}
 
-<article class="card">
-<h3>Responsibility to Others</h3>
-<p class="hint">How did you take care of, support, or serve others during this period?</p>
-${textareaBind("others","Helping family, mentoring, volunteering, acts of kindness...")}
-</article>
+${howCard("Belief & Morality", [
+"Morality gives direction, stability, and higher meaning.",
+"A shared belief system builds trust, law, and civilization.",
+"Purpose: To align daily action with timeless truth and the transcendent."
+])}
 
-<article class="card">
-<h3>Belief System & Morality</h3>
-<p class="hint">How did you act according to your values?</p>
-<ul class="hint" style="margin-top:-6px">
-<li>Define a simple creed (3–5 lines) and review weekly</li>
-<li>Name one situation where you chose principle over comfort</li>
-<li>Practice a daily reflection (journal/prayer/meditation)</li>
-</ul>
-${textareaBind("morality","Honesty, restraint, faith, keeping principles under pressure...")}
-</article>
+${howCard("Skill & Mastery", [
+"Skill transforms potential into value; mastery creates legacy.",
+"Competence earns respect, independence, and authority.",
+"Purpose: To refine talent into contribution that uplifts others."
+])}
 
-<article class="card">
-<h3>Skill & Mastery</h3>
-<p class="hint">
-Choose one skill. Stick with it. Try to become the best in the world at it. Choose wisely — ideally something others would pay for.
-</p>
-<ul class="hint" style="margin-top:-6px">
-<li>Pick 1 main pursuit; commit to a bi-weekly hour target</li>
-<li>Ship 1 measurable output (demo, draft, PR, set, piece)</li>
-<li>Seek deliberate practice: feedback + iteration</li>
-</ul>
-${textareaBind("mastery","Hours studied, practice sessions, key achievements...")}
-</article>
+${howCard("Self-Reliance", [
+"Independence guards freedom and preserves dignity.",
+"Reliance on oneself builds resilience in hardship and strength in crisis.",
+"Purpose: To ensure each person is a pillar, not a liability, in civilization."
+])}
 
-<article class="card">
-<h3>Self-Reliance</h3>
-<p class="hint">How did you increase your independence?</p>
-<ul class="hint" style="margin-top:-6px">
-<li>Positive cash flow; save/invest each period</li>
-<li>Replace one outsourced habit with self-sufficiency</li>
-<li>Learn a practical skill (repairs, budgeting, cooking)</li>
-</ul>
-${textareaBind("selfReliance","Savings, cooking instead of takeout, new skills...")}
-</article>
-
-<article class="card">
-<h3>Integrity & Consistency</h3>
-<p class="hint">Did you keep your promises and follow through?</p>
-<ul class="hint" style="margin-top:-6px">
-<li>Make fewer promises; track every commitment</li>
-<li>Maintain a streak log (no-zero days)</li>
-<li>Own misses; write a one-line corrective next step</li>
-</ul>
-${textareaBind("integrity","Yes/No with short reflection...")}
-</article>
-</div>
-
-<div class="card" style="margin-top:16px">
-<h3>Bi-Weekly Reflection</h3>
-${textareaBind("reflection","Your biggest win this period? Main goal for the next one?")}
-</div>
-
-<div class="card" style="margin-top:16px">
-<h3>General Reflection (Open Space)</h3>
-${textareaBind("general","Anything else you want to share...")}
-</div>
-
-<div class="flex-end" style="margin-top:16px">
-<button id="submitBtn" class="btn btn-primary">Submit Report</button>
-</div>
-
-<p class="notice">Tip: your inputs auto-save to this device. Clearing browser storage will erase drafts.</p>
+${howCard("Integrity & Consistency", [
+"Integrity unites word and deed; consistency compounds virtue into legacy.",
+"Trust, leadership, and stability flow from steady, honest action.",
+"Purpose: To live by principle daily, protecting against corruption and collapse."
+])}
 </section>
 `;
 }
