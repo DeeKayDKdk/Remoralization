@@ -93,7 +93,7 @@ return `
 Build discipline, uphold values, and report your progress every two weeks — with a real human holding you accountable.
 </p>
 <div class="actions">
-<a class="btn btn-primary" href="#checkout">Join for $10/month</a>
+<a class="btn btn-primary" href="#checkout">Join Now</a>
 <a class="btn btn-ghost" href="#how">See How It Works</a>
 <a class="btn btn-ghost" href="#why">See Why It Works</a> 
 </div>
@@ -158,7 +158,7 @@ app.innerHTML = `
 <p class="subtitle">Every two weeks you report against six pillars. A real human reads, replies, and holds you to your own standards.</p>
 <div class="actions">
 <a class="btn" href="#">Back to Form</a>
-<a class="btn btn-primary" href="#checkout">Join for $10/month</a>
+<a class="btn btn-primary" href="#checkout">Join Now</a>
 </div>
 </section>
 
@@ -246,7 +246,7 @@ app.innerHTML = `
 <p class="subtitle">Modern life leaves people lonely, burnt out, and without purpose. The <b>6 Pillars</b> directly target the biggest problems.</p>
 <div class="actions">
 <a class="btn" href="#"><b>Back</b></a>
-<a class="btn btn-primary" href="#checkout"><b>Join for $10/month</b></a>
+<a class="btn btn-primary" href="#checkout"><b>Join Now</b></a>
 </div>
 </section>
 
@@ -280,12 +280,12 @@ ${bullets.map(b => `<li>${b}</li>`).join("")}
 function renderCheckout(){
 app.innerHTML = `
 <section class="main-hero">
-<h1 class="brand-title">Join Operation Remoralization ($10/month)</h1>
+<h1 class="brand-title">Join Operation Remoralization</h1>
 <p>Your subscription is processed securely by Stripe.</p>
 
 <p style="margin-top:16px;">
 <a class="btn btn-primary" href="https://buy.stripe.com/28EaEXtEYcY3hk58fmb0400">
-Join for $10/month
+Join Now
 </a>
 </p>
 
