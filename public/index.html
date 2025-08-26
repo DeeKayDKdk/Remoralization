@@ -6,72 +6,114 @@
 <title>Operation Remoralization</title>
 <link rel="stylesheet" href="/style.css" />
 <style>
-body { margin: 0; background: #fafafa; }
-<link rel="stylesheet" href="/style.css" />
+body { margin: 0; background: #0f1220; }
 </style>
 </head>
 <body>
 <!-- App root (app.js renders into here) -->
 <div id="app"></div>
+
 <!-- Mission Statement -->
 <div style="background:#222; color:#FFD700; padding:15px; border-radius:8px; text-align:center; font-size:20px; font-weight:600; margin:20px 0;">
 The mission = Restoring discipline, virtue, and purpose to individuals so they can rebuild their families, communities, and nations.
+</div>
 
 <!-- Section Title -->
 <h2 class="brand-title" style="text-align:center; margin-bottom:20px;">
 Submit Your Bi-Weekly Report
 </h2>
 
+<!-- Cards grid -->
 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px;">
 
 <!-- Physical Discipline -->
 <div class="card-like">
 <span class="badge-yellow">Physical Discipline</span>
-<p>What did you do to maintain or improve your body during this period?</p>
-<label>Last Body Fat %</label>
-<input type="text" />
-<label>Current Body Fat %</label>
-<input type="text" />
-<label>Average Sleep (hrs/night)</label>
-<input type="text" />
-<textarea placeholder="Write your physical discipline report..."></textarea>
+<p>
+Build strength, health, and self-control through consistent action. This pillar covers
+training, nutrition, sleep, and recovery—the fundamentals that make you resilient.
+</p>
+<ul>
+<li>Train with intention (progressive overload, conditioning, mobility)</li>
+<li>Eat for performance and clarity; track what matters</li>
+<li>Prioritize sleep and simple recovery habits</li>
+</ul>
 </div>
 
 <!-- Responsibility to Others -->
 <div class="card-like">
 <span class="badge-yellow">Responsibility to Others</span>
-<p>How did you take care of, support, or serve others during this period?</p>
-<textarea placeholder="Write your responsibility to others report..."></textarea>
+<p>
+Discipline includes service. Measure how you support, protect, and elevate the people
+around you—family, friends, teammates, neighbors.
+</p>
+<ul>
+<li>Keep promises; be reliable</li>
+<li>Give time, attention, and practical help</li>
+<li>Resolve conflicts quickly and fairly</li>
+</ul>
 </div>
 
 <!-- Belief System & Morality -->
 <div class="card-like">
 <span class="badge-yellow">Belief System & Morality</span>
-<p>How did you act according to your values?</p>
+<p>
+Anchor your life in a creed and live by it daily. Choose principle over comfort; cultivate
+humility, gratitude, and courage.
+</p>
 <ul>
-<li>Define a simple creed (3–5 lines) and review weekly</li>
-<li>Name one situation where you chose principle over comfort</li>
-<li>Practice a daily reflection (journal / prayer / meditation)</li>
+<li>Write a short creed (3–5 lines) and review it weekly</li>
+<li>Journal, pray, or meditate every day</li>
+<li>Take the hard, right action when it counts</li>
 </ul>
-<textarea placeholder="Write your belief system & morality report..."></textarea>
 </div>
 
 <!-- Skill & Mastery -->
 <div class="card-like">
 <span class="badge-yellow">Skill & Mastery</span>
-<p>Choose one skill. Stick with it. Try to become the best in the world at it.</p>
+<p>
+Pick one valuable skill. Stick with it until you become exceptional. Track deliberate
+practice and ship visible work.
+</p>
 <ul>
-<li>Pick 1 main pursuit; commit to a bi-weekly hour target</li>
-<li>Ship 1 measurable output (demo, draft, PR, set, piece)</li>
-<li>Seek deliberate practice: feedback + iteration</li>
+<li>Choose 1 main pursuit; set a bi-weekly hour target</li>
+<li>Ship one measurable output (demo, draft, PR, set, piece)</li>
+<li>Seek feedback → iterate</li>
 </ul>
-<textarea placeholder="Write your skill & mastery report..."></textarea>
 </div>
 
+<!-- Self-Reliance -->
+<div class="card-like">
+<span class="badge-yellow">Self-Reliance</span>
+<p>
+Increase independence and capability. Learn to solve problems, manage time and money,
+and make sound decisions under pressure.
+</p>
+<ul>
+<li>Own your schedule and finances</li>
+<li>Build basic technical, trade, and survival skills</li>
+<li>Document systems so you can teach others</li>
+</ul>
 </div>
-</section>
- Load your SPA/router code from /public -->
+
+<!-- Integrity & Consistency -->
+<div class="card-like">
+<span class="badge-yellow">Integrity &amp; Consistency</span>
+<p>
+Do what you said you would do—especially when it’s inconvenient. Small, repeatable
+actions compound into character.
+</p>
+<ul>
+<li>Track promises and completions</li>
+<li>Use simple checklists and habit chains</li>
+<li>When you miss, reset fast and continue</li>
+</ul>
+</div>
+
+</div> <!-- end grid -->
+
+<!-- Load your SPA/router code from /public -->
 <script defer src="/app.js"></script>
- <script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
