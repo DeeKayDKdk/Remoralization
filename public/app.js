@@ -96,6 +96,7 @@ Build discipline, uphold values, and report your progress every two weeks — wi
 <a class="btn btn-primary" href="#checkout">Join Now</a>
 <a class="btn btn-ghost" href="#how">See How It Works</a>
 <a class="btn btn-ghost" href="#why">See Why It Works</a> 
+<a class="btn" href="demoralization.html"><b>Demoralization Index</b></a>
 </div>
 
 </section>`;
