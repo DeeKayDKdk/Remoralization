@@ -247,6 +247,7 @@ app.innerHTML = `
 <div class="actions">
 <a class="btn" href="#"><b>Back</b></a>
 <a class="btn btn-primary" href="#checkout"><b>Join Now</b></a>
+ <a class="btn" href="demoralization.html"><b>Demoralization Index</b></a>
 </div>
 </section>
 
