@@ -8,38 +8,137 @@ const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 </script>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Join Remoralization (Free)</title>
+
+<!-- Theme styles (drop-in, no external CSS required) -->
+<style>
+:root{
+--bg:#0f1220; /* page background */
+--panel:#1b2034; /* card background */
+--text:#e9eefb; /* body text */
+--muted:#a9b1c7; /* secondary text */
+--accent:#ffd233; /* yellow brand */
+--accent-ink:#111; /* black ink on yellow */
+--ring: rgba(255,210,51,.45);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+margin:0;
+background: radial-gradient(1200px 600px at 20% -10%, #222a48 0%, transparent 60%) ,
+radial-gradient(1000px 600px at 90% -20%, #1b2034 0%, transparent 60%) ,
+var(--bg);
+color:var(--text);
+font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+display:grid; place-items:center; padding:28px;
+}
+.wrap{width:min(720px, 96%);}
+.card{
+background:linear-gradient(180deg, #1b2034, #151a2b);
+border:1px solid #242b44;
+border-radius:14px;
+padding:28px;
+box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+h1{
+margin:0 0 8px; font-size:32px; letter-spacing:.2px;
+}
+p.lead{color:var(--muted); margin:0 0 22px}
+label{display:block; font-weight:600; margin:16px 0 6px}
+input{
+width:100%; padding:12px 14px; border-radius:10px;
+border:1px solid #2e3654; background:#0f1426; color:var(--text);
+outline:none; transition:border-color .15s, box-shadow .15s;
+}
+input:focus{border-color:var(--accent); box-shadow:0 0 0 4px var(--ring)}
+.row{display:flex; gap:14px; flex-wrap:wrap}
+.row > div{flex:1 1 260px}
+.actions{display:flex; gap:12px; align-items:center; margin-top:18px}
+.btn{
+display:inline-block; border-radius:10px; padding:12px 18px; font-weight:800;
+text-decoration:none; cursor:pointer; user-select:none;
+border:1px solid transparent; transition:transform .04s ease, filter .12s;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent); color:var(--accent-ink)}
+.btn-primary:hover{filter:saturate(1.05) brightness(1.03)}
+.btn-ghost{background:transparent; color:var(--text); border-color:#2e3654}
+small.note{color:var(--muted); display:block; margin-top:10px}
+.msg{margin-top:16px; font-weight:700}
+.msg.ok{color:#22cc88} .msg.err{color:#ff5577}
+.toplinks{display:flex; gap:10px; margin-top:18px}
+.toplinks a{color:var(--muted)}
+</style>
+
+<!-- Supabase JS (keep) -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
+<div class="wrap">
+<div class="card">
 <h1>Join Remoralization</h1>
-<form id="join-form">
-<label>Name</label><br>
-<input id="name" required><br>
-<label>Email</label><br>
-<input id="email" type="email" required><br>
-<button type="submit">Send Magic Link</button>
-</form>
+<p class="lead">Create a free account with a magic-link. No password, no friction.</p>
 
+<div class="row">
+<div>
+<label for="full_name">Name</label>
+<input id="full_name" type="text" placeholder="Your full name" />
+</div>
+<div>
+<label for="email">Email</label>
+<input id="email" type="email" placeholder="you@example.com" />
+</div>
+</div>
+
+<div class="actions">
+<button id="sendBtn" class="btn btn-primary">Send Magic Link</button>
+<a class="btn btn-ghost" href="/">Back to Home</a>
+</div>
+
+<small class="note">We’ll email you a sign-in link. By continuing you agree to our terms.</small>
+<div id="msg" class="msg"></div>
+
+<div class="toplinks">
+<a href="/checkout.html">Prefer Platinum?</a>
+</div>
+</div>
+</div>
+
+<!-- Keep your existing JS or use this minimal handler -->
 <script>
-const form = document.getElementById('join-form');
-form.addEventListener('submit', async (e) => {
-e.preventDefault();
-const full_name = document.getElementById('name').value.trim();
-const email = document.getElementById('email').value.trim();
-localStorage.setItem('pending_full_name', full_name);
+// If you already defined SUPABASE_URL / SUPABASE_ANON above, keep that.
+const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co";
+const SUPABASE_ANON = "YOUR_PUBLIC_ANON_KEY";
+const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-const { error } = await supabase.auth.signInWithOtp({
+const $ = s => document.querySelector(s);
+const msg = (text, ok=false) => {
+const m = $("#msg"); m.textContent = text; m.className = "msg " + (ok ? "ok" : "err");
+};
+
+$("#sendBtn").addEventListener("click", async () => {
+const full_name = $("#full_name").value.trim();
+const email = $("#email").value.trim();
+if (!email){ msg("Please enter an email."); return; }
+
+try {
+// request magic link
+const { error } = await supa.auth.signInWithOtp({
 email,
 options: {
-emailRedirectTo: window.location.origin + '/finish-signup.html'
+emailRedirectTo: location.origin + "/finish-signup.html?name=" + encodeURIComponent(full_name || "")
 }
 });
+if (error) throw error;
+msg("Magic link sent. Check your email.", true);
+} catch (e) {
+msg(e.message || "Something went wrong.");
+}
+});
+</
 
-if (error) {
-alert(error.message);
-} else {
-alert('Check your email for a login link!');
-}
-});
-</script>
-</body>
-</html>
