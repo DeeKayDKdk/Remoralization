@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Finish Signup</title>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
+const SUPABASE_ANON = 'YOUR_PUBLIC_ANON_KEY';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+async function main() {
+const { data: { session } } = await supabase.auth.getSession();
+if (!session?.user) {
+alert("Not logged in. Try the magic link again.");
+return;
+}
+const user = session.user;
+const full_name = localStorage.getItem('pending_full_name') || '';
+
+// 1. Upsert profile
+await supabase.from('profiles').upsert({
+id: user.id,
+full_name
+});
+
+// 2. Create draft report
+const today = new Date();
+const start = new Date(today); start.setDate(today.getDate() - 13);
+
+const { data: report, error } = await supabase
+.from('reports')
+.insert({
+user_id: user.id,
+period_start: start.toISOString().slice(0,10),
+period_end: today.toISOString().slice(0,10),
+pillar_scores: {}
+})
+.select('id')
+.single();
+
+if (error) {
+alert("Could not create report: " + error.message);
+return;
+}
+
+// 3. Redirect to Start Report page
+window.location.href = '/start-report.html?rid=' + report.id;
+}
+
+main();
+</script>
+</head>
+<body>
+<p>Finishing signup…</p>
+</body>
+</html>
