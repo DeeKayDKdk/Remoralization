@@ -1,1 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Start Your Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; max-width: 800px; margin: 28px auto; padding: 0 16px; }
+h1 { margin-bottom: 4px; }
+.pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 18px 0; }
+.card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; }
+label { display: block; font-weight: 600; margin-bottom: 8px; }
+input[type=number] { width: 100%; padding: 8px; border: 1px solid #bbb; border-radius: 6px; }
+textarea { width: 100%; min-height: 140px; padding: 10px; border: 1px solid #bbb; border-radius: 6px; }
+.row { display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
+button { padding: 10px 16px; border: 0; border-radius: 6px; cursor: pointer; }
+.primary { background:#ffcc33; color:#111; font-weight:700; }
+.ghost { background:#f2f2f2; }
+.muted { color:#666; font-size:14px; }
+.ok { color:#0b8f4d; }
+.err { color:#b00020; }
+</style>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+// TODO: replace with your actual values
+const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
+const SUPABASE_ANON = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ;
+const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
+// Utilities
+function q(k){ return document.querySelector(k); }
+function qi(id){ return document.getElementById(id); }
+function getParam(name){ return new URLSearchParams(location.search).get(name); }
+
+async function ensureSession() {
+// Wait briefly in case the magic-link just set the session
+let { data: { session } } = await supa.auth.getSession();
+if (!session) { await new Promise(r=>setTimeout(r,300)); ({ data: { session } } = await supa.auth.getSession()); }
+return session;
+}
+
+async function loadReport(rid) {
+const { data, error } = await supa.from('reports').select('*').eq('id', rid).single();
+if (error) throw error;
+// Prefill if existing
+const s = data.pillar_scores || {};
+qi('physical').value = s.physical ?? '';
+qi('responsibility').value = s.responsibility ?? '';
+qi('morality').value = s.morality ?? '';
+qi('skill').value = s.skill ?? '';
+qi('self_reliance').value = s.self_reliance ?? '';
+qi('integrity').value = s.integrity ?? '';
+qi('narrative').value = data.narrative ?? '';
+q('#period').textContent = (data.period_start || '—') + ' → ' + (data.period_end || '—');
+}
+
+function readScores() {
+// Constrain to 0–10 (or empty)
+const clamp = v => (v === '' || isNaN(v)) ? null : Math.max(0, Math.min(10, Number(v)));
+return {
+physical: clamp(qi('physical').value),
+responsibility: clamp(qi('responsibility').value),
+morality: clamp(qi('morality').value),
+skill: clamp(qi('skill').value),
+self_reliance: clamp(qi('self_reliance').value),
+integrity: clamp(qi('integrity').value),
+};
+}
+
+async function saveReport(rid) {
+q('#msg').textContent = '';
+const pillar_scores = readScores();
+const narrative = qi('narrative').value.trim();
+
+const { error } = await supa.from('reports')
+.update({ pillar_scores, narrative })
+.eq('id', rid);
+
+if (error) { q('#msg').textContent = 'Save failed: ' + error.message; q('#msg').className='err'; return; }
+q('#msg').textContent = 'Saved ✓'; q('#msg').className='ok';
+}
+
+async function logout() {
+await supa.auth.signOut();
+location.href = '/index.html';
+}
+
+window.addEventListener('DOMContentLoaded', async () => {
+const rid = getParam('rid');
+if (!rid) { alert('No report ID found in URL.'); location.href = '/index.html'; return; }
+
+const session = await ensureSession();
+if (!session?.user) { alert('You must be signed in to view this.'); location.href = '/join.html'; return; }
+
+qi('userEmail').textContent = session.user.email;
+await loadReport(rid);
+
+qi('saveBtn').addEventListener('click', () => saveReport(rid));
+qi('logoutBtn').addEventListener('click', logout);
+});
+</script>
+</head>
+<body>
+<h1>Start Your Report</h1>
+<div class="muted">Signed in as <span id="userEmail">…</span> • Period: <span id="period">…</span></div>
+
+<div class="pillars" style="margin-top:16px;">
+<div class="card">
+<label for="physical">Physical Discipline (0–10)</label>
+<input id="physical" type="number" min="0" max="10" inputmode="numeric" />
+</div>
+<div class="card">
+<label for="responsibility">Responsibility to Others (0–10)</label>
+<input id="responsibility" type="number" min="0" max="10" inputmode="numeric" />
+</div>
+<div class="card">
+<label for="morality">Belief & Morality (0–10)</label>
+<input id="morality" type="number" min="0" max="10" inputmode="numeric" />
+</div>
+<div class="card">
+<label for="skill">Skill & Mastery (0–10)</label>
+<input id="skill" type="number" min="0" max="10" inputmode="numeric" />
+</div>
+<div class="card">
+<label for="self_reliance">Self-Reliance (0–10)</label>
+<input id="self_reliance" type="number" min="0" max="10" inputmode="numeric" />
+</div>
+<div class="card">
+<label for="integrity">Integrity & Consistency (0–10)</label>
+<input id="integrity" type="number" min="0" max="10" inputmode="numeric" />
+</div>
+</div>
+
+<div style="margin:14px 0;">
+<label for="narrative">Narrative / Reflection</label>
+<textarea id="narrative" placeholder="What went well? What needs work? What is your one explicit commitment for the next two weeks?"></textarea>
+</div>
+
+<div class="row" style="margin-top:14px;">
+<button id="saveBtn" class="primary">Save Report</button>
+<button id="logoutBtn" class="ghost">Log out</button>
+<span id="msg" class="muted"></span>
+</div>
+</body>
+</html>
