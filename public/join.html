@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Join Remoralization</title>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
+const SUPABASE_ANON = 'YOUR_PUBLIC_ANON_KEY';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+</script>
+</head>
+<body>
+<h1>Join Remoralization</h1>
+<form id="join-form">
+<label>Name</label><br>
+<input id="name" required><br>
+<label>Email</label><br>
+<input id="email" type="email" required><br>
+<button type="submit">Send Magic Link</button>
+</form>
+
+<script>
+const form = document.getElementById('join-form');
+form.addEventListener('submit', async (e) => {
+e.preventDefault();
+const full_name = document.getElementById('name').value.trim();
+const email = document.getElementById('email').value.trim();
+localStorage.setItem('pending_full_name', full_name);
+
+const { error } = await supabase.auth.signInWithOtp({
+email,
+options: {
+emailRedirectTo: window.location.origin + '/finish-signup.html'
+}
+});
+
+if (error) {
+alert(error.message);
+} else {
+alert('Check your email for a login link!');
+}
+});
+</script>
+</body>
+</html>
