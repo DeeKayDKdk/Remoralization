@@ -2,87 +2,65 @@
 <html>
 <head>
 <title>Join Remoralization</title>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL = "https://qsvelfkcaaqxgaewnwog.supabase.co";
-const SUPABASE_KEY = "sb-publishable_UsS0xIcLcsFdpJsKRPwN5Q_Sk66z89O"; // your full publishable key
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-</script>
-<!doctype html>
-<html lang="en">
-<head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Join Remoralization (Free)</title>
-
-<!-- Theme styles (drop-in, no external CSS required) -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <style>
-:root{
---bg:#0f1220; /* page background */
---panel:#1b2034; /* card background */
---text:#e9eefb; /* body text */
---muted:#a9b1c7; /* secondary text */
---accent:#ffd233; /* yellow brand */
---accent-ink:#111; /* black ink on yellow */
+:root {
+--bg:#0f1220;
+--panel:#1b2034;
+--text:#9eebfb;
+--muted:#9b9lc7;
+--accent:#ffdf33;
+--accent-ink:#111;
 --ring: rgba(255,210,51,.45);
 }
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
+* { box-sizing:border-box; }
+html,body { height:100% }
+body {
 margin:0;
-background: radial-gradient(1200px 600px at 20% -10%, #222a48 0%, transparent 60%) ,
-radial-gradient(1000px 600px at 90% -20%, #1b2034 0%, transparent 60%) ,
-var(--bg);
+background: radial-gradient(1200px 600px at 20% -10%, #222a48 0%, transparent 60%),
+radial-gradient(1000px 600px at 90% -20%, #1b2034 0%, transparent 60%);
 color:var(--text);
 font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 display:grid; place-items:center; padding:28px;
 }
-.wrap{width:min(720px, 96%);}
-.card{
+.wrap { width:min(720px, 96%) }
+.card {
 background:linear-gradient(180deg, #1b2034, #151a2b);
-border:1px solid #242b44;
-border-radius:14px;
-padding:28px;
+border:1px solid #242b44; border-radius:14px; padding:28px;
 box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
-h1{
-margin:0 0 8px; font-size:32px; letter-spacing:.2px;
-}
-p.lead{color:var(--muted); margin:0 0 22px}
-label{display:block; font-weight:600; margin:16px 0 6px}
-input{
+h1 { margin:0 0 8px; font-size:32px; letter-spacing:.2px }
+label { display:block; font-weight:600; margin:16px 0 6px }
+input {
 width:100%; padding:12px 14px; border-radius:10px;
 border:1px solid #2e3654; background:#0f1426; color:var(--text);
 outline:none; transition:border-color .15s, box-shadow .15s;
 }
-input:focus{border-color:var(--accent); box-shadow:0 0 0 4px var(--ring)}
-.row{display:flex; gap:14px; flex-wrap:wrap}
-.row > div{flex:1 1 260px}
-.actions{display:flex; gap:12px; align-items:center; margin-top:18px}
-.btn{
-display:inline-block; border-radius:10px; padding:12px 18px; font-weight:800;
-text-decoration:none; cursor:pointer; user-select:none;
-border:1px solid transparent; transition:transform .04s ease, filter .12s;
+input:focus { border-color:var(--accent); box-shadow:0 0 0 4px var(--ring); }
+.row { display:flex; gap:14px; flex-wrap:wrap }
+.actions { display:flex; gap:12px; align-items:center; margin-top:18px }
+.btn {
+display:inline-block; border-radius:10px; padding:12px 18px;
+font-weight:800; text-decoration:none; cursor:pointer; user-select:none;
+border:1px solid transparent; transition:transform .045s ease, filter .12s;
 }
-.btn:active{transform:translateY(1px)}
-.btn-primary{background:var(--accent); color:var(--accent-ink)}
-.btn-primary:hover{filter:saturate(1.05) brightness(1.03)}
-.btn-ghost{background:transparent; color:var(--text); border-color:#2e3654}
-small.note{color:var(--muted); display:block; margin-top:10px}
-.msg{margin-top:16px; font-weight:700}
-.msg.ok{color:#22cc88} .msg.err{color:#ff5577}
-.toplinks{display:flex; gap:10px; margin-top:18px}
-.toplinks a{color:var(--muted)}
+.btn:active { transform:translateY(1px) }
+.btn-primary { background:var(--accent); color:var(--accent-ink) }
+.btn-primary:hover { filter:saturate(1.05) brightness(1.03) }
+.btn-ghost { background:transparent; color:var(--text); border-color:#2e3654 }
+small.note { color:var(--muted); display:block; margin-top:10px }
+.msg { margin-top:16px; font-weight:700 }
+.msg.ok { color:#22cc88 }
+.msg.err { color:#ff5577 }
 </style>
-
-<!-- Supabase JS (keep) -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div class="wrap">
 <div class="card">
 <h1>Join Remoralization</h1>
-<p class="lead">Create a free account with a magic-link. No password, no friction.</p>
+<p class="lead">Create a free account with a magic link. No password, no friction.</p>
 
 <div class="row">
 <div>
@@ -102,49 +80,41 @@ small.note{color:var(--muted); display:block; margin-top:10px}
 
 <small class="note">We’ll email you a sign-in link. By continuing you agree to our terms.</small>
 <div id="msg" class="msg"></div>
-
-<div class="toplinks">
-<a href="/checkout.html">Prefer Platinum?</a>
-</div>
 </div>
 </div>
 
-<!-- Keep your existing JS or use this minimal handler -->
-<!-- Keep your existing JS or use this minimal handler -->
 <script>
-// 1) Use your project URL + PUBLISHABLE key
-const SUPABASE_URL = "https://qsvelfkcaaxgqaewwwog.supabase.co";
-const SUPABASE_KEY = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O"; // paste your Publishable key here
-const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = "https://qsvelfkcaaxqgaewnwog.supabase.co";
+const SUPABASE_KEY = "YOUR_ANON_KEY_HERE"; // use anon/public key from Supabase dashboard
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// helpers
-const $ = (sel, ctx = document) => ctx.querySelector(sel);
-const msg = (text, ok = false) => {
+const $ = (sel, ctx=document) => ctx.querySelector(sel);
+const msg = (text, ok=false) => {
 const m = $("#msg");
 m.textContent = text;
 m.className = "msg " + (ok ? "ok" : "err");
 };
 
-// 2) Send Magic Link
 $("#sendBtn").addEventListener("click", async () => {
 const full_name = $("#full_name").value.trim();
 const email = $("#email").value.trim();
-if (!email) { msg("▲ Please enter an email."); return; }
+if (!email) return msg("⚠ Please enter an email.");
 
 try {
-const { error } = await supa.auth.signInWithOtp({
+const { error } = await supabase.auth.signInWithOtp({
 email,
 options: {
-// This must match your Supabase Auth → URL Configuration allow-list
-emailRedirectTo: location.origin + "/finish-signup.html?name=" + encodeURIComponent(full_name || "")
+data: { full_name },
+emailRedirectTo: "https://remoralization.com/finish-signup.html"
 }
 });
-
 if (error) throw error;
 msg("✅ Magic link sent! Check your email (and spam).", true);
 } catch (e) {
 console.error("Supabase auth error:", e);
-msg("❌ " + (e.message || "Something went wrong."), false);
+msg("❌ " + (e.message || "Something went wrong."));
 }
 });
 </script>
+</body>
+</html>
