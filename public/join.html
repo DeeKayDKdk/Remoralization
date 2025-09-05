@@ -111,20 +111,21 @@ small.note{color:var(--muted); display:block; margin-top:10px}
 
 <!-- Keep your existing JS or use this minimal handler -->
 <script>
-// If you already defined SUPABASE_URL / SUPABASE_ANON above, keep that.
-const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
+const SUPABASE_URL = "https://qsvelfkceaxqqgaevnwog.supabase.co";
+const SUPABASE_ANON = "YOUR_REAL_PUBLIC_ANON_KEY"; // keep your actual key
 const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-const $ = s => document.querySelector(s);
+const $ = sel => document.querySelector(sel);
 const msg = (text, ok=false) => {
-const m = $("#msg"); m.textContent = text; m.className = "msg " + (ok ? "ok" : "err");
+const m = $("#msg");
+m.textContent = text;
+m.className = "msg " + (ok ? "ok" : "err");
 };
 
 $("#sendBtn").addEventListener("click", async () => {
 const full_name = $("#full_name").value.trim();
 const email = $("#email").value.trim();
-if (!email){ msg("Please enter an email."); return; }
+if (!email) { msg("⚠️ Please enter an email."); return; }
 
 try {
 // request magic link
@@ -136,14 +137,16 @@ emailRedirectTo: location.origin + "/finish-signup.html?name=" + encodeURICompon
 });
 
 if (error) {
-console.error(error);
+console.error("Supabase error:", error);
 msg("❌ " + (error.message || "Could not send magic link."));
 return;
 }
+
 msg("✅ Magic link sent! Check your email (and spam).", true);
 } catch (e) {
-msg(e.message || "Something went wrong.");
+console.error("JS error:", e);
+msg("❌ Something went wrong.");
 }
 });
-</
+</script>
 
