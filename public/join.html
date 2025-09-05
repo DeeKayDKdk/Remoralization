@@ -110,37 +110,41 @@ small.note{color:var(--muted); display:block; margin-top:10px}
 </div>
 
 <!-- Keep your existing JS or use this minimal handler -->
+<!-- Keep your existing JS or use this minimal handler -->
 <script>
-const SUPABASE_URL = "https://qsvelfkceaxqqgaevnwog.supabase.co";
-const SUPABASE_ANON = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O"; // keep your actual key
-const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+// 1) Use your project URL + PUBLISHABLE key
+const SUPABASE_URL = "https://qsvelfkcaaxgqaewwwog.supabase.co";
+const SUPABASE_KEY = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O"; // paste your Publishable key here
+const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const $ = sel => document.querySelector(sel);
-const msg = (text, ok=false) => {
+// helpers
+const $ = (sel, ctx = document) => ctx.querySelector(sel);
+const msg = (text, ok = false) => {
 const m = $("#msg");
 m.textContent = text;
 m.className = "msg " + (ok ? "ok" : "err");
 };
 
+// 2) Send Magic Link
 $("#sendBtn").addEventListener("click", async () => {
 const full_name = $("#full_name").value.trim();
 const email = $("#email").value.trim();
-if (!email) { msg("⚠️ Please enter an email."); return; }
+if (!email) { msg("▲ Please enter an email."); return; }
 
 try {
-// request magic link
 const { error } = await supa.auth.signInWithOtp({
 email,
 options: {
+// This must match your Supabase Auth → URL Configuration allow-list
 emailRedirectTo: location.origin + "/finish-signup.html?name=" + encodeURIComponent(full_name || "")
 }
 });
 
 if (error) throw error;
 msg("✅ Magic link sent! Check your email (and spam).", true);
-
 } catch (e) {
 console.error("Supabase auth error:", e);
 msg("❌ " + (e.message || "Something went wrong."), false);
 }
-
+});
+</script>
