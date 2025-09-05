@@ -112,7 +112,7 @@ small.note{color:var(--muted); display:block; margin-top:10px}
 <!-- Keep your existing JS or use this minimal handler -->
 <script>
 const SUPABASE_URL = "https://qsvelfkceaxqqgaevnwog.supabase.co";
-const SUPABASE_ANON = "YOUR_REAL_PUBLIC_ANON_KEY"; // keep your actual key
+const SUPABASE_ANON = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O"; // keep your actual key
 const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 const $ = sel => document.querySelector(sel);
@@ -136,17 +136,11 @@ emailRedirectTo: location.origin + "/finish-signup.html?name=" + encodeURICompon
 }
 });
 
-if (error) {
-console.error("Supabase error:", error);
-msg("❌ " + (error.message || "Could not send magic link."));
-return;
-}
-
+if (error) throw error;
 msg("✅ Magic link sent! Check your email (and spam).", true);
+
 } catch (e) {
-console.error("JS error:", e);
-msg("❌ Something went wrong.");
+console.error("Supabase auth error:", e);
+msg("❌ " + (e.message || "Something went wrong."), false);
 }
-});
-</script>
 
