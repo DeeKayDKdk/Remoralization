@@ -134,8 +134,13 @@ options: {
 emailRedirectTo: location.origin + "/finish-signup.html?name=" + encodeURIComponent(full_name || "")
 }
 });
-if (error) throw error;
-msg("Magic link sent. Check your email.", true);
+
+if (error) {
+console.error(error);
+msg("❌ " + (error.message || "Could not send magic link."));
+return;
+}
+msg("✅ Magic link sent! Check your email (and spam).", true);
 } catch (e) {
 msg(e.message || "Something went wrong.");
 }
