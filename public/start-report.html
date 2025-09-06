@@ -1,145 +1,235 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Start Your Report</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Theme (matches your main page) -->
 <style>
-body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; max-width: 800px; margin: 28px auto; padding: 0 16px; }
-h1 { margin-bottom: 4px; }
-.pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 18px 0; }
-.card { border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; }
-label { display: block; font-weight: 600; margin-bottom: 8px; }
-input[type=number] { width: 100%; padding: 8px; border: 1px solid #bbb; border-radius: 6px; }
-textarea { width: 100%; min-height: 140px; padding: 10px; border: 1px solid #bbb; border-radius: 6px; }
-.row { display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
-button { padding: 10px 16px; border: 0; border-radius: 6px; cursor: pointer; }
-.primary { background:#ffcc33; color:#111; font-weight:700; }
-.ghost { background:#f2f2f2; }
-.muted { color:#666; font-size:14px; }
-.ok { color:#0b8f4d; }
-.err { color:#b00020; }
+:root{
+--bg:#0f1220; /* page background */
+--panel:#1b2034; /* card background */
+--text:#e9eefb; /* body text */
+--muted:#9bb1c7; /* secondary text */
+--accent:#ffd233; /* yellow brand */
+--ink:#111; /* black on yellow */
+--ring: rgba(255,210,51,.45);
+--border:#242b44;
+--glass: rgba(255,255,255,.06);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+margin:0;
+color:var(--text);
+background:
+radial-gradient(1200px 600px at 20% -10%, #222a48 0%, transparent 60%),
+radial-gradient(1000px 600px at 90% -20%, #1b2034 0%, transparent 60%),
+var(--bg);
+font:16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.wrap{
+min-height:100%;
+display:grid;
+place-items:start center;
+padding:32px 18px 64px;
+}
+.card{
+width:min(900px, 94vw);
+background: linear-gradient(180deg, #1b2034, #151a2b);
+border:1px solid var(--border);
+border-radius:16px;
+padding:28px;
+box-shadow: 0 12px 40px rgba(0,0,0,.35), inset 0 1px 0 var(--glass);
+}
+
+h1{
+margin:0 0 8px;
+font-size:clamp(26px, 3.2vw, 40px);
+letter-spacing:.2px;
+}
+.meta{
+color:var(--muted);
+font-size:.95rem;
+margin-bottom:22px;
+}
+
+.grid{
+display:grid;
+gap:16px;
+grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 880px){
+.grid{ grid-template-columns:1fr 1fr; }
+}
+@media (max-width: 560px){
+.grid{ grid-template-columns:1fr; }
+}
+
+.field{
+background: rgba(255,255,255,.03);
+border:1px solid #2e3654;
+border-radius:12px;
+padding:14px 14px 10px;
+transition:border-color .15s, box-shadow .15s;
+}
+.label{
+display:block;
+color:var(--muted);
+font-weight:700;
+font-size:.92rem;
+margin:0 0 8px;
+}
+input[type="number"], input[type="text"], textarea{
+width:100%;
+color:var(--text);
+background:#0f1426;
+border:1px solid #2e3654;
+border-radius:10px;
+padding:12px 14px;
+outline:none;
+transition:border-color .15s, box-shadow .15s;
+}
+input:focus, textarea:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 4px var(--ring);
+}
+
+textarea{
+min-height:160px;
+resize:vertical;
+}
+
+.note{
+color:var(--muted);
+margin-top:6px;
+font-size:.9rem;
+}
+
+.actions{
+display:flex;
+gap:12px;
+align-items:center;
+margin-top:18px;
+flex-wrap:wrap;
+}
+.btn{
+display:inline-block;
+border-radius:12px;
+padding:12px 18px;
+font-weight:800;
+border:1px solid transparent;
+text-decoration:none;
+cursor:pointer;
+user-select:none;
+transition:transform .045s ease, filter .12s, box-shadow .12s, background .12s;
+}
+.btn:active{ transform:translateY(1px) }
+
+.btn-primary{
+background:var(--accent);
+color:var(--ink);
+box-shadow: 0 10px 24px rgba(255,210,51,.25);
+}
+.btn-primary:hover{ filter:saturate(1.05) brightness(1.02) }
+.btn-ghost{
+background:transparent;
+color:var(--text);
+border-color:#2e3654;
+}
+
+.msg{ margin-top:14px; font-weight:700 }
+.msg.ok{ color:#22cc88 }
+.msg.err{ color:#ff5577 }
+
+/* little divider card for the narrative */
+.section{
+margin-top:18px;
+padding-top:6px;
+border-top:1px solid #232842;
+}
 </style>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script>
-// TODO: replace with your actual values
-const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
-const supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-// Utilities
-function q(k){ return document.querySelector(k); }
-function qi(id){ return document.getElementById(id); }
-function getParam(name){ return new URLSearchParams(location.search).get(name); }
-
-async function ensureSession() {
-// Wait briefly in case the magic-link just set the session
-let { data: { session } } = await supa.auth.getSession();
-if (!session) { await new Promise(r=>setTimeout(r,300)); ({ data: { session } } = await supa.auth.getSession()); }
-return session;
-}
-
-async function loadReport(rid) {
-const { data, error } = await supa.from('reports').select('*').eq('id', rid).single();
-if (error) throw error;
-// Prefill if existing
-const s = data.pillar_scores || {};
-qi('physical').value = s.physical ?? '';
-qi('responsibility').value = s.responsibility ?? '';
-qi('morality').value = s.morality ?? '';
-qi('skill').value = s.skill ?? '';
-qi('self_reliance').value = s.self_reliance ?? '';
-qi('integrity').value = s.integrity ?? '';
-qi('narrative').value = data.narrative ?? '';
-q('#period').textContent = (data.period_start || '—') + ' → ' + (data.period_end || '—');
-}
-
-function readScores() {
-// Constrain to 0–10 (or empty)
-const clamp = v => (v === '' || isNaN(v)) ? null : Math.max(0, Math.min(10, Number(v)));
-return {
-physical: clamp(qi('physical').value),
-responsibility: clamp(qi('responsibility').value),
-morality: clamp(qi('morality').value),
-skill: clamp(qi('skill').value),
-self_reliance: clamp(qi('self_reliance').value),
-integrity: clamp(qi('integrity').value),
-};
-}
-
-async function saveReport(rid) {
-q('#msg').textContent = '';
-const pillar_scores = readScores();
-const narrative = qi('narrative').value.trim();
-
-const { error } = await supa.from('reports')
-.update({ pillar_scores, narrative })
-.eq('id', rid);
-
-if (error) { q('#msg').textContent = 'Save failed: ' + error.message; q('#msg').className='err'; return; }
-q('#msg').textContent = 'Saved ✓'; q('#msg').className='ok';
-}
-
-async function logout() {
-await supa.auth.signOut();
-location.href = '/index.html';
-}
-
-window.addEventListener('DOMContentLoaded', async () => {
-const rid = getParam('rid');
-if (!rid) { alert('No report ID found in URL.'); location.href = '/index.html'; return; }
-
-const session = await ensureSession();
-if (!session?.user) { alert('You must be signed in to view this.'); location.href = '/join.html'; return; }
-
-qi('userEmail').textContent = session.user.email;
-await loadReport(rid);
-
-qi('saveBtn').addEventListener('click', () => saveReport(rid));
-qi('logoutBtn').addEventListener('click', logout);
-});
-</script>
 </head>
 <body>
+<div class="wrap">
+<div class="card">
 <h1>Start Your Report</h1>
-<div class="muted">Signed in as <span id="userEmail">…</span> • Period: <span id="period">…</span></div>
+<div class="meta" id="periodMeta">Signed in as • Period: </div>
 
-<div class="pillars" style="margin-top:16px;">
-<div class="card">
-<label for="physical">Physical Discipline (0–10)</label>
-<input id="physical" type="number" min="0" max="10" inputmode="numeric" />
-</div>
-<div class="card">
-<label for="responsibility">Responsibility to Others (0–10)</label>
-<input id="responsibility" type="number" min="0" max="10" inputmode="numeric" />
-</div>
-<div class="card">
-<label for="morality">Belief & Morality (0–10)</label>
-<input id="morality" type="number" min="0" max="10" inputmode="numeric" />
-</div>
-<div class="card">
-<label for="skill">Skill & Mastery (0–10)</label>
-<input id="skill" type="number" min="0" max="10" inputmode="numeric" />
-</div>
-<div class="card">
-<label for="self_reliance">Self-Reliance (0–10)</label>
-<input id="self_reliance" type="number" min="0" max="10" inputmode="numeric" />
-</div>
-<div class="card">
-<label for="integrity">Integrity & Consistency (0–10)</label>
-<input id="integrity" type="number" min="0" max="10" inputmode="numeric" />
-</div>
+<!-- Scores grid -->
+<div class="grid">
+<div class="field">
+<label class="label" for="pd">Physical Discipline (0–10)</label>
+<input id="pd" type="number" min="0" max="10" inputmode="numeric" />
 </div>
 
-<div style="margin:14px 0;">
-<label for="narrative">Narrative / Reflection</label>
-<textarea id="narrative" placeholder="What went well? What needs work? What is your one explicit commitment for the next two weeks?"></textarea>
+<div class="field">
+<label class="label" for="ro">Responsibility to Others (0–10)</label>
+<input id="ro" type="number" min="0" max="10" inputmode="numeric" />
 </div>
 
-<div class="row" style="margin-top:14px;">
-<button id="saveBtn" class="primary">Save Report</button>
-<button id="logoutBtn" class="ghost">Log out</button>
-<span id="msg" class="muted"></span>
+<div class="field">
+<label class="label" for="bm">Belief & Morality (0–10)</label>
+<input id="bm" type="number" min="0" max="10" inputmode="numeric" />
 </div>
+
+<div class="field">
+<label class="label" for="sm">Skill & Mastery (0–10)</label>
+<input id="sm" type="number" min="0" max="10" inputmode="numeric" />
+</div>
+
+<div class="field">
+<label class="label" for="sr">Self-Reliance (0–10)</label>
+<input id="sr" type="number" min="0" max="10" inputmode="numeric" />
+</div>
+
+<div class="field">
+<label class="label" for="ic">Integrity & Consistency (0–10)</label>
+<input id="ic" type="number" min="0" max="10" inputmode="numeric" />
+</div>
+</div>
+
+<!-- Narrative -->
+<div class="section field" style="margin-top:22px;">
+<label class="label" for="notes">Narrative / Reflection</label>
+<textarea id="notes" placeholder="What went well? What needs work? What’s one explicit commitment for the next two weeks?"></textarea>
+<small class="note" id="cooldownNote"></small>
+</div>
+
+<!-- Actions -->
+<div class="actions">
+<button id="saveBtn" class="btn btn-primary">Save Report</button>
+<a class="btn btn-ghost" href="/">Back to Home</a>
+<div id="msg" class="msg"></div>
+</div>
+</div>
+</div>
+
+<!-- (Optional) Hook up period text + cooldown display if you already compute these in JS -->
+<script>
+// Example: set the period line dynamically if you have start/end dates available
+// document.getElementById('periodMeta').textContent =
+// `Signed in as ${email} • Period: ${periodStart} → ${periodEnd}`;
+
+// Example: show a cooldown note if you’re enforcing 14-day spacing server-side
+// const msLeft = /* compute ms until next allowed report */ 0;
+// const cd = document.getElementById('cooldownNote');
+// if (msLeft > 0) {
+// const days = Math.floor(msLeft / 86400000);
+// const hours = Math.floor((msLeft % 86400000) / 3600000);
+// cd.textContent = `Next report available in ${days}d ${hours}h.`;
+// }
+
+// Wire your existing save logic to #saveBtn and the field IDs above.
+// On success: msg('Saved ✔', true) ; on error: msg('Error …', false)
+function msg(text, ok){
+const m = document.getElementById('msg');
+m.textContent = text;
+m.className = 'msg ' + (ok ? 'ok' : 'err');
+}
+</script>
 </body>
 </html>
