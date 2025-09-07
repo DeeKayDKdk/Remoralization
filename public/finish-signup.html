@@ -1,57 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Finishing signup…</title>
+<style>
+body { font: 16px system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 20px; color: #111; }
+#stage { font-weight: 700; margin: 0 0 8px; }
+#url, #err { white-space: pre-wrap; word-break: break-word; background:#f7f7f7; padding:10px; border-radius:8px; }
+#url { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<div id="stage">Page loaded.</div>
+<div id="url"></div>
+<div id="err"></div>
+
+<!-- Show any JS error instead of a blank page -->
+<script>
+const stage = (t)=>document.getElementById('stage').textContent = t;
+const showErr = (t)=>document.getElementById('err').textContent = String(t || '');
+document.getElementById('url').textContent = 'URL: ' + location.href;
+window.onerror = (msg, src, line, col, err) => {
+showErr('JS error: ' + msg + '\n' + (src||'') + ':' + (line||'') + ':' + (col||'') + '\n' + (err && err.stack ? err.stack : ''));
+};
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ✅ your real values from Supabase → Project Settings → API
+// 🔧 REPLACE these with your real values (Supabase → Project Settings → API)
 const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
 
-const s = (t)=>document.getElementById('s').textContent = t;
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-const withTimeout = (promise, ms, label) =>
+// Promise timeout helper so we surface hangs
+const withTimeout = (p, ms, label) =>
 Promise.race([
-promise,
-new Promise((_, reject) => setTimeout(() => reject(new Error(`${label} timeout after ${ms}ms`)), ms))
+p,
+new Promise((_, rej) => setTimeout(()=>rej(new Error(label + ' timeout after ' + ms + 'ms')), ms))
 ]);
 
 (async function main(){
 try {
-s("Finishing signup…");
+stage('Finishing signup…');
 
-const url = new URL(location.href);
-const code = url.searchParams.get("code");
+// Show tokens we see (redact for safety)
+const u = new URL(location.href);
+const code = u.searchParams.get('code');
 const h = new URLSearchParams(location.hash.slice(1));
-const access_token = h.get("access_token");
-const refresh_token = h.get("refresh_token");
+const at = h.get('access_token');
+const rt = h.get('refresh_token');
 
-if (access_token && refresh_token) {
-s("Setting session from tokens…");
-// ⏳ fail fast if it hangs
-await withTimeout(
-supabase.auth.setSession({ access_token, refresh_token }),
-8000,
-"setSession"
-);
+// Minimal redaction in the URL panel
+const redact = (x)=> x ? (x.slice(0,6) + '…' + x.slice(-4)) : '(none)';
+document.getElementById('url').textContent =
+'URL: ' + location.href +
+'\ncode=' + redact(code) +
+'\naccess_token=' + redact(at) +
+'\nrefresh_token=' + redact(rt);
+
+if (at && rt) {
+stage('Setting session from tokens…');
+await withTimeout(supabase.auth.setSession({ access_token: at, refresh_token: rt }), 8000, 'setSession');
 } else if (code) {
-s("Exchanging code for session…");
-await withTimeout(
-supabase.auth.exchangeCodeForSession({ code }),
-8000,
-"exchangeCodeForSession"
-);
+stage('Exchanging code for session…');
+await withTimeout(supabase.auth.exchangeCodeForSession({ code }), 8000, 'exchangeCodeForSession');
 } else {
-return s("Login link missing credentials. Please open a new magic link.");
+stage('No credentials found in URL. Open a fresh magic link.');
+return;
 }
 
-s("Verifying session…");
-const { data: { user }, error } = await withTimeout(supabase.auth.getUser(), 6000, "getUser");
-if (error) return s("Login check failed: " + error.message);
-if (!user) return s("Not logged in. Please try the magic link again.");
+stage('Verifying session…');
+const { data: { user }, error } = await withTimeout(supabase.auth.getUser(), 6000, 'getUser');
+if (error) { showErr(error.message); stage('Login check failed.'); return; }
+if (!user) { stage('Not logged in. Try the magic link again.'); return; }
 
-s("Success! Redirecting…");
-location.replace("/start-report.html");
+stage('Success! Redirecting…');
+location.replace('/start-report.html');
 } catch (e) {
-// Show the actual error instead of a blank page
-s("Error: " + (e?.message || String(e)));
+stage('Error.');
+showErr(e && e.message ? e.message : String(e));
 }
 })();
 </script>
+</body>
+</html>
