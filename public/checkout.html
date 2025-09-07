@@ -5,31 +5,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Join Operation Remoralization</title>
 
-<!-- your site styles -->
-<link rel="stylesheet" href="/style.css?v=3" />
-
-<!-- Stripe Buy Button loader (renders an on-page iframe) -->
-<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+<link rel="stylesheet" href="/style.css" />
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="https://js.stripe.com/v3/"></script>
 
 <style>
-main { max-width: 720px; margin: 48px auto; padding: 24px; text-align:center; }
-.brand-title { margin-bottom: 8px; }
-.back { display:inline-block; margin-top:24px; }
+main { width:min(720px, 96%); margin:48px auto; padding:24px; text-align:center; }
+#payment-form { margin-top:16px; display:inline-block; width:min(520px, 100%); text-align:left; }
+#payment-message { display:none; margin-top:12px; }
 </style>
 </head>
 <body>
 <main>
 <h1 class="brand-title">Join Operation Remoralization ($10/month)</h1>
-<p>Your subscription is processed securely by Stripe.</p>
+<p>Your subscription is processed securely on this page.</p>
 
-<!-- Stripe Buy Button renders HERE and keeps users on your site -->
-<stripe-buy-button
-buy-button-id="buy_btn_1RyWE9EAIfxpksnp10zQdiy6"
-publishable-key="pk_live_51KQiEQEAIfxpksnpRrLuZnv59jHo2nGBILCc9ojzCrODM5QsPdznCtsiTWdwOpeo1MhVpZSdPjfe2ce5vyeXPLZ000UXBLFb9o">
-</stripe-buy-button>
+<form id="payment-form">
+<div id="payment-element"></div>
+<button id="submit" class="btn btn-primary" style="margin-top:16px;" type="submit">Join Platinum</button>
+<div id="payment-message" class="msg err"></div>
+</form>
 
-<p class="back"><a class="btn" href="/">Back</a></p>
+<p class="back" style="margin-top:16px;"><a class="btn btn-ghost" href="/join.html">Back</a></p>
 </main>
-  <script defer src="/_vercel/insights/script.js"></script>
+
+<script>
+// Supabase (only used to grab logged-in email if available)
+const supabase = window.supabase.createClient(
+process.env.NEXT_PUBLIC_SUPABASE_URL,
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
+// Stripe public key from Vercel env
+const stripe = Stripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+
+const paymentForm = document.getElementById('payment-form');
+const paymentMsg = document.getElementById('payment-message');
+let elements;
+
+function showMsg(t){ paymentMsg.style.display='block'; paymentMsg.textContent=t; }
+function clearMsg(){ paymentMsg.style.display='none'; paymentMsg.textContent=''; }
+
+async function getEmail() {
+try {
+const { data } = await supabase.auth.getUser();
+return data?.user?.email || '';
+} catch { return ''; }
+}
+
+async function initPaymentElement() {
+const email = await getEmail();
+
+// Create subscription on our server (no redirect)
+const r = await fetch('/api/create-subscription', {
+method: 'POST',
+headers: { 'Content-Type':'application/json' },
+body: JSON.stringify({ email })
+});
+const data = await r.json();
+if (!data.clientSecret) throw new Error(data.error || 'No client secret');
+
+elements = stripe.elements({ clientSecret: data.clientSecret });
+const paymentElement = elements.create('payment');
+paymentElement.mount('#payment-element');
+}
+
+initPaymentElement().catch(e => showMsg(e.message || 'Failed to load payment form'));
+
+paymentForm.addEventListener('submit', async (e) => {
+e.preventDefault(); // <— prevents navigation
+clearMsg();
+
+const { error } = await stripe.confirmPayment({
+elements,
+redirect: 'if_required' // stay on this page
+});
+
+if (error) return showMsg(error.message || 'Payment failed');
+window.location.href = '/success.html';
+});
+</script>
 </body>
 </html>
