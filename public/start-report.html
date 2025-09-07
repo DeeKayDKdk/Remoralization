@@ -308,10 +308,27 @@ const { data:{ user }, error:authErr } = await supabase.auth.getUser();
 if(authErr || !user){ msg('Please sign in first.', false); btn?.removeAttribute('disabled'); return; }
 
 // send to DB (expects a JSONB column "form_data" in public.reports)
-const payload = { user_id: user.id, pillar_scores: gatherForm() };
-const { error } = await supabase.from('reports').insert(payload);
+const payload = {
+user_id: user.id,
+pillar_scores: gatherForm(), // goes into JSONB
+narrative: document.getElementById('notes')?.value.trim() || '', // goes into text
+period_start: new Date().toISOString().slice(0, 10),
+period_end: new Date(Date.now() + 13 * 86400000).toISOString().slice(0, 10)
+};
 
-if(error){ msg('Error saving: ' + error.message, false); btn?.removeAttribute('disabled'); return; }
+const { data, error } = await supabase
+.from('reports')
+.insert(payload)
+.select('id')
+.single();
+
+if (error) {
+msg('Error saving: ' + error.message, false);
+btn?.removeAttribute('disabled');
+return;
+} else {
+console.log("Report inserted with id:", data.id);
+}
 
 // success + start cooldown
 msg('✅ Report saved! You’ll receive a human response within 48 hours.', true);
