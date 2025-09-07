@@ -36,7 +36,7 @@ const SUPABASE_ANON_KEY= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 const STRIPE_PUBLISHABLE_KEY = 'YOUR_NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY';
 
 // Init clients
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
 const paymentForm = document.getElementById('payment-form');
