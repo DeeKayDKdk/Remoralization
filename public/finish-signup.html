@@ -4,53 +4,73 @@
 <title>Finish Signup</title>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// 🔧 Use your real values from Supabase → Project Settings → API
 const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
+
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-async function main() {
-const { data: { session } } = await supabase.auth.getSession();
-if (!session?.user) {
-alert("Not logged in. Try the magic link again.");
-return;
+async function main(){
+const status = (t) => document.body.innerHTML = `<p>${t}</p>`;
+status("Finishing signup...");
+
+// Handle BOTH magic-link formats
+const url = new URL(window.location.href);
+
+// New PKCE style: ?code=...
+const code = url.searchParams.get("code");
+
+// Old-style hash tokens: #access_token=...&refresh_token=...
+const hash = new URLSearchParams(location.hash.slice(1));
+const access_token = hash.get("access_token");
+const refresh_token = hash.get("refresh_token");
+
+try {
+if (access_token && refresh_token) {
+const { error } = await supabase.auth.setSession({ access_token, refresh_token });
+if (error) return status("Login failed: " + error.message);
+} else if (code) {
+const { error } = await supabase.auth.exchangeCodeForSession({ code });
+if (error) return status("Login failed: " + error.message);
+} else {
+return status("Login link is missing credentials. Please open a fresh magic link.");
 }
-const user = session.user;
-const full_name = localStorage.getItem('pending_full_name') || '';
 
-// 1. Upsert profile
-await supabase.from('profiles').upsert({
-id: user.id,
-full_name
-});
+// Confirm we are logged in
+const { data: { user }, error: userErr } = await supabase.auth.getUser();
+if (userErr) return status("Login check failed: " + userErr.message);
+if (!user) return status("Not logged in. Try the magic link again.");
 
-// 2. Create draft report
+// (Optional) Upsert profile
+await supabase.from("profiles").upsert({ id: user.id, full_name: localStorage.getItem("pending_full_name") || "" });
+
+// (Optional) Create an empty draft report so the app has something to show
+// Uses a JSONB column "form_data" (NOT pillar_scores)
 const today = new Date();
 const start = new Date(today); start.setDate(today.getDate() - 13);
 
-const { data: report, error } = await supabase
-.from('reports')
+const { error: reportErr } = await supabase
+.from("reports")
 .insert({
 user_id: user.id,
 period_start: start.toISOString().slice(0,10),
 period_end: today.toISOString().slice(0,10),
-pillar_scores: {}
-})
-.select('id')
-.single();
+form_data: {} // <-- make sure your table has this column
+});
 
-if (error) {
-alert("Could not create report: " + error.message);
-return;
+if (reportErr) {
+// Not fatal, still let them into the app
+console.warn("Draft report creation failed:", reportErr.message);
 }
 
-// 3. Redirect to Start Report page
-window.location.href = '/start-report.html?rid=' + report.id;
+// ✅ Go to your app
+window.location.replace("/start-report.html");
+} catch (e) {
+status("Unexpected error: " + String(e));
+}
 }
 
 main();
 </script>
-</head>
-<body>
-<p>Finishing signup…</p>
-</body>
-</html>
