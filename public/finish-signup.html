@@ -28,61 +28,65 @@ showErr('JS error: ' + msg + '\n' + (src||'') + ':' + (line||'') + ':' + (col||'
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// 🔧 REPLACE these with your real values (Supabase → Project Settings → API)
+// 🔧 put your real values here (Project Settings → API)
 const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const stage = (t)=>document.getElementById('stage')?.textContent = t;
+const show = (id, t)=>{
+const el = document.getElementById(id);
+if (el) el.textContent = t;
+};
 
-// Promise timeout helper so we surface hangs
-const withTimeout = (p, ms, label) =>
-Promise.race([
-p,
-new Promise((_, rej) => setTimeout(()=>rej(new Error(label + ' timeout after ' + ms + 'ms')), ms))
-]);
+document.getElementById('url').textContent = 'URL: ' + location.href;
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 (async function main(){
 try {
-stage('Finishing signup…');
-
-// Show tokens we see (redact for safety)
-const u = new URL(location.href);
-const code = u.searchParams.get('code');
-const h = new URLSearchParams(location.hash.slice(1));
-const at = h.get('access_token');
-const rt = h.get('refresh_token');
-
-// Minimal redaction in the URL panel
-const redact = (x)=> x ? (x.slice(0,6) + '…' + x.slice(-4)) : '(none)';
-document.getElementById('url').textContent =
-'URL: ' + location.href +
-'\ncode=' + redact(code) +
-'\naccess_token=' + redact(at) +
-'\nrefresh_token=' + redact(rt);
+const hash = new URLSearchParams(location.hash.slice(1));
+const at = hash.get('access_token');
+const rt = hash.get('refresh_token');
 
 if (at && rt) {
 stage('Setting session from tokens…');
-await withTimeout(supabase.auth.setSession({ access_token: at, refresh_token: rt }), 8000, 'setSession');
-} else if (code) {
-stage('Exchanging code for session…');
-await withTimeout(supabase.auth.exchangeCodeForSession({ code }), 8000, 'exchangeCodeForSession');
-} else {
-stage('No credentials found in URL. Open a fresh magic link.');
+
+const { data, error } = await supabase.auth.setSession({
+access_token: at,
+refresh_token: rt
+});
+
+if (error) {
+stage('setSession failed');
+show('err', 'setSession error: ' + error.message);
 return;
+} else {
+show('err', 'setSession ok');
+}
+
+} else {
+const code = new URL(location.href).searchParams.get('code');
+if (code) {
+stage('Exchanging code…');
+const { error } = await supabase.auth.exchangeCodeForSession({ code });
+if (error) { stage('exchange failed'); show('err','exchange error: ' + error.message); return; }
+show('err','exchange ok');
+} else {
+stage('No credentials found in URL.');
+return;
+}
 }
 
 stage('Verifying session…');
-const { data: { user }, error } = await withTimeout(supabase.auth.getUser(), 6000, 'getUser');
-if (error) { showErr(error.message); stage('Login check failed.'); return; }
-if (!user) { stage('Not logged in. Try the magic link again.'); return; }
+const { data: { user }, error } = await supabase.auth.getUser();
+if (error) { stage('Login check failed'); show('err', error.message); return; }
+if (!user) { stage('Not logged in. Try again.'); return; }
 
 stage('Success! Redirecting…');
 location.replace('/start-report.html');
 } catch (e) {
-stage('Error.');
-showErr(e && e.message ? e.message : String(e));
+stage('Error');
+show('err', String(e?.message || e));
 }
 })();
 </script>
-</body>
-</html>
