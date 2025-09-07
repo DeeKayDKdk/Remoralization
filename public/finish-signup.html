@@ -1,76 +1,63 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<title>Finish Signup</title>
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Finishing signup…</title>
+<style>
+body{font:16px system-ui, -apple-system, Segoe UI, Roboto, Arial; padding:24px}
+#s{white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div id="s">Finishing signup…</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// 🔧 Use your real values from Supabase → Project Settings → API
+// 🔧 FILL THESE WITH YOUR REAL VALUES (Project Settings → API)
 const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
 
+const s = (t)=>document.getElementById('s').textContent = t;
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-async function main(){
-const status = (t) => document.body.innerHTML = `<p>${t}</p>`;
-status("Finishing signup...");
-
-// Handle BOTH magic-link formats
-const url = new URL(window.location.href);
-
-// New PKCE style: ?code=...
-const code = url.searchParams.get("code");
-
-// Old-style hash tokens: #access_token=...&refresh_token=...
-const hash = new URLSearchParams(location.hash.slice(1));
-const access_token = hash.get("access_token");
-const refresh_token = hash.get("refresh_token");
-
+(async function main(){
 try {
+s("Finishing signup…");
+
+// Handle BOTH magic-link styles
+const url = new URL(location.href);
+const code = url.searchParams.get("code"); // PKCE style
+const h = new URLSearchParams(location.hash.slice(1)); // hash style
+const access_token = h.get("access_token");
+const refresh_token = h.get("refresh_token");
+
 if (access_token && refresh_token) {
+s("Setting session from tokens…");
 const { error } = await supabase.auth.setSession({ access_token, refresh_token });
-if (error) return status("Login failed: " + error.message);
+if (error) return s("Login failed: " + error.message);
 } else if (code) {
+s("Exchanging code for session…");
 const { error } = await supabase.auth.exchangeCodeForSession({ code });
-if (error) return status("Login failed: " + error.message);
+if (error) return s("Login failed: " + error.message);
 } else {
-return status("Login link is missing credentials. Please open a fresh magic link.");
+return s("Login link missing credentials. Please open a new magic link.");
 }
 
-// Confirm we are logged in
-const { data: { user }, error: userErr } = await supabase.auth.getUser();
-if (userErr) return status("Login check failed: " + userErr.message);
-if (!user) return status("Not logged in. Try the magic link again.");
+s("Verifying session…");
+const { data: { user }, error } = await supabase.auth.getUser();
+if (error) return s("Login check failed: " + error.message);
+if (!user) return s("Not logged in. Please try the magic link again.");
 
-// (Optional) Upsert profile
-await supabase.from("profiles").upsert({ id: user.id, full_name: localStorage.getItem("pending_full_name") || "" });
+// Optional: create/ensure profile (safe no-op if table/column missing will just error and continue)
+try { await supabase.from("profiles").upsert({ id: user.id }); } catch {}
 
-// (Optional) Create an empty draft report so the app has something to show
-// Uses a JSONB column "form_data" (NOT pillar_scores)
-const today = new Date();
-const start = new Date(today); start.setDate(today.getDate() - 13);
-
-const { error: reportErr } = await supabase
-.from("reports")
-.insert({
-user_id: user.id,
-period_start: start.toISOString().slice(0,10),
-period_end: today.toISOString().slice(0,10),
-form_data: {} // <-- make sure your table has this column
-});
-
-if (reportErr) {
-// Not fatal, still let them into the app
-console.warn("Draft report creation failed:", reportErr.message);
-}
-
-// ✅ Go to your app
-window.location.replace("/start-report.html");
+s("Success! Redirecting…");
+location.replace("/start-report.html");
 } catch (e) {
-status("Unexpected error: " + String(e));
+s("Unexpected error: " + String(e));
 }
-}
-
-main();
+})();
 </script>
+</body>
+</html>
