@@ -2,94 +2,78 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Finishing signup...</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Finishing signup…</title>
 <style>
-body {
-font: 16px system-ui, -apple-system, Segoe UI, Roboto, Arial;
-padding: 20px;
-color: #111;
-}
-#stage {
-font-weight: 700;
-margin-bottom: 12px;
-}
-#url {
-white-space: pre-wrap;
-word-break: break-word;
-background: #f7f7f7;
-padding: 10px;
-border-radius: 8px;
-margin-top: 8px;
-}
-#err {
-color: red;
-margin-top: 8px;
-}
+body { font: 16px system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 20px; color:#111; }
+#stage { font-weight:700; margin:0 0 8px; }
+#url, #err { white-space:pre-wrap; word-break:break-word; background:#f7f7f7; padding:10px; border-radius:8px; }
+#url { margin-top:8px; }
+#err { color:#d00; }
 </style>
 </head>
 <body>
-<div id="stage">Loading...</div>
+<div id="stage">Loading…</div>
 <div id="err"></div>
 <div id="url"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- ✅ use the UMD build so window.supabase exists on all mobile browsers -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.6/dist/umd/supabase.js" defer></script>
+
 <script>
-// --- CONFIG: replace with your actual Supabase project values ---
+// ---------- EDIT THESE TWO LINES ONLY ----------
 const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
+// ---------------------------------------------
+
+const $ = (id) => document.getElementById(id);
+const stage = (t) => { $('stage').textContent = t; };
+const show = (id, t) => { const el = $(id); if (el) el.textContent = String(t || ''); };
+
+window.addEventListener('load', async () => {
+$('url').textContent = 'URL:\n' + location.href;
+
+// Make sure the library is present
+if (!window.supabase || !window.supabase.createClient) {
+stage('Error');
+show('err', 'Supabase client failed to load.');
+return;
+}
+
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-const stage = (msg) => document.getElementById('stage').textContent = msg;
-const show = (id, msg) => {
-const el = document.getElementById(id);
-if (el) el.textContent = msg;
-};
-
-(async function main() {
 try {
-document.getElementById('url').textContent = "URL: " + location.href;
+// Health check to catch webview/CORS issues early
+stage('Pinging Supabase…');
+const ping = await fetch(`${SUPABASE_URL}/auth/v1/health`, { mode: 'cors' });
+show('err', `auth health: ${ping.status}`); // expect 200
 
-// --- CASE 1: hash tokens (magic link with #access_token) ---
 const hash = new URLSearchParams(location.hash.slice(1));
 const at = hash.get('access_token');
 const rt = hash.get('refresh_token');
+const code = new URL(location.href).searchParams.get('code'); // OAuth fallback
 
 if (at && rt) {
-stage("Setting session from tokens...");
-const { error } = await supabase.auth.setSession({
-access_token: at,
-refresh_token: rt
-});
-if (error) {
-show("err", "setSession error: " + error.message);
-return;
-}
-stage("Session ok. Redirecting...");
-location.replace("/start-report.html");
-return;
-}
+stage('Setting session from tokens…');
+const { error } = await supabase.auth.setSession({ access_token: at, refresh_token: rt });
+if (error) throw new Error('setSession: ' + error.message);
 
-// --- CASE 2: ?code= from redirect ---
-const code = new URL(location.href).searchParams.get("code");
-if (code) {
-stage("Exchanging code...");
+} else if (code) {
+stage('Exchanging code…');
 const { error } = await supabase.auth.exchangeCodeForSession(code);
-if (error) {
-show("err", "exchange error: " + error.message);
-return;
-}
-stage("Code exchange ok. Redirecting...");
-location.replace("/start-report.html");
-return;
+if (error) throw new Error('exchange: ' + error.message);
+
+} else {
+throw new Error('No credentials found in URL.');
 }
 
-stage("No credentials found in URL.");
+stage('Success! Redirecting…');
+location.replace('/start-report.html');
 } catch (e) {
-stage("Error");
-show("err", e.message || String(e));
+stage('Error');
+show('err', e && e.message ? e.message : String(e));
 }
-})();
+});
 </script>
 </body>
 </html>
