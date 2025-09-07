@@ -40,7 +40,7 @@ show('err', 'Supabase client failed to load.');
 return;
 }
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 try {
 // Health check to catch webview/CORS issues early
