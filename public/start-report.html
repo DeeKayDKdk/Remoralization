@@ -6,6 +6,7 @@
 <title>Start Your Report</title>
 
 <!-- Theme (matches your main page) -->
+
 <style>
 :root{
 --bg:#0f1220; /* page background */
@@ -151,6 +152,17 @@ margin-top:18px;
 padding-top:6px;
 border-top:1px solid #232842;
 }
+  .note {
+margin-top: 6px;
+color: var(--muted, #c9c9c9);
+font-size: .92rem;
+}
+
+button[disabled] {
+opacity: .6;
+cursor: not-allowed;
+filter: saturate(.5);
+}
 </style>
 </head>
 <body>
@@ -231,6 +243,87 @@ const m = document.getElementById('msg');
 m.textContent = text;
 m.className = 'msg ' + (ok ? 'ok' : 'err');
 }
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// 🔧 Replace these with your Supabase project values
+const SUPABASE_URL = 'https://YOUR-PROJECT-REF.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_PUBLIC_ANON_KEY';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const $ = (s)=>document.querySelector(s);
+
+function msg(text, ok=true){
+const el = $('#msg'); if(!el) return;
+el.textContent = text;
+el.className = 'msg ' + (ok ? 'ok':'err');
+}
+
+function gatherForm(){
+return {
+physical: $('#pd_note')?.value?.trim() || '',
+others: $('#ro_note')?.value?.trim() || '',
+morality: $('#bm_note')?.value?.trim() || '',
+mastery: $('#sm_note')?.value?.trim() || '',
+selfreliance: $('#sr_note')?.value?.trim() || '',
+integrity: $('#ic_note')?.value?.trim() || '',
+notes: $('#notes')?.value?.trim() || ''
+};
+}
+
+// ⏳ countdown helpers
+const DAY = 86400000;
+const COOLDOWN_MS = 13 * DAY; // 13 days
+function startCountdown(){
+const cdEl = $('#cooldownNote'), btn = $('#saveBtn');
+const target = parseInt(localStorage.getItem('nextReportAt'),10);
+if(!cdEl || !target) return;
+
+function update(){
+const left = target - Date.now();
+if (left <= 0){
+cdEl.textContent = "🎉 You can submit a new report now.";
+btn?.removeAttribute('disabled');
+clearInterval(t);
+return;
+}
+const d = Math.floor(left / DAY);
+const h = Math.floor((left % DAY) / 3600000);
+const m = Math.floor((left % 3600000) / 60000);
+cdEl.textContent = `⏳ Next report in ${d}d ${h}h ${m}m`;
+btn?.setAttribute('disabled','true'); // block during cooldown
+}
+
+update();
+const t = setInterval(update, 60000); // update every minute
+}
+
+async function saveReport(){
+const btn = $('#saveBtn');
+btn?.setAttribute('disabled','true');
+msg('Saving…');
+
+// must be logged in
+const { data:{ user }, error:authErr } = await supabase.auth.getUser();
+if(authErr || !user){ msg('Please sign in first.', false); btn?.removeAttribute('disabled'); return; }
+
+// send to DB (expects a JSONB column "form_data" in public.reports)
+const payload = { user_id: user.id, form_data: gatherForm() };
+const { error } = await supabase.from('reports').insert(payload);
+
+if(error){ msg('Error saving: ' + error.message, false); btn?.removeAttribute('disabled'); return; }
+
+// success + start cooldown
+msg('✅ Report saved! You’ll receive a human response within 48 hours.', true);
+const next = Date.now() + COOLDOWN_MS;
+localStorage.setItem('nextReportAt', String(next));
+startCountdown();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+$('#saveBtn')?.addEventListener('click', saveReport);
+if(localStorage.getItem('nextReportAt')) startCountdown();
+});
 </script>
 </body>
 </html>
