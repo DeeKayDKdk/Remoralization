@@ -308,7 +308,7 @@ const { data:{ user }, error:authErr } = await supabase.auth.getUser();
 if(authErr || !user){ msg('Please sign in first.', false); btn?.removeAttribute('disabled'); return; }
 
 // send to DB (expects a JSONB column "form_data" in public.reports)
-const payload = { user_id: user.id, form_data: gatherForm() };
+const payload = { user_id: user.id, pillar_scores: gatherForm() };
 const { error } = await supabase.from('reports').insert(payload);
 
 if(error){ msg('Error saving: ' + error.message, false); btn?.removeAttribute('disabled'); return; }
