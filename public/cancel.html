@@ -16,7 +16,7 @@ Proceed to Payment
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-const stripe = Stripe("YOUR_PUBLISHABLE_KEY"); // replace with your Stripe publishable key
+const stripe = Stripe("pk_live_51KQiEQEAIfxpksnpRrLuZnv59jHo2nGBILCc9ojzCrODM5QsPdznCtsiTWdwOpeo1MhVpZSdPjfe2ce5vyeXPLZ000UXBLFb9o"); // replace with your Stripe publishable key
 
 document.getElementById("checkoutButton").addEventListener("click", () => {
 fetch("/api/checkout", { method: "POST" })
