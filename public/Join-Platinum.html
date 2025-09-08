@@ -5,44 +5,112 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Join Platinum – Operation Remoralization</title>
 <link rel="stylesheet" href="style.css" />
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+.wrap{max-width:960px;margin:40px auto;padding:24px}
+.card{background:#121418;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:24px;color:#fff}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:16px}
+.box{background:#181b21;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:16px}
+.muted{color:#cfcfcf}
+.cta{margin-top:16px;padding:12px 22px;border:0;border-radius:8px;background:#FFD200;color:#121212;font-weight:700;cursor:pointer}
+#payment-box{margin-top:20px}
+</style>
 </head>
-<body style="background:#0f1115;color:white;font-family:sans-serif;">
+<body style="background:#0f1115;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif">
+<div class="wrap">
+<div class="card">
+<h1 style="color:#FFD200;margin:0 0 6px">Join Operation Remoralization – Platinum</h1>
+<p class="muted">The accountability tier for people who want real change and visible progress every two weeks.</p>
 
-<section style="max-width:960px;margin:40px auto;padding:28px;">
-<h1 style="color:#FFD200;">Join Platinum</h1>
-<p style="font-size:18px;color:#ccc;">
-The Platinum tier gives you direct accountability and advanced tools
-to accelerate your growth across the Six Pillars.
-</p>
-
-<h2 style="margin-top:24px;color:#FFD200;">Benefits of Platinum</h2>
-<ul style="line-height:1.6;">
-<li>Bi-weekly 1:1 accountability check-ins</li>
-<li>Priority responses to your reports</li>
-<li>Exclusive challenges and scoreboards</li>
-<li>Premium resources and templates</li>
-<li>Access to a private community of disciplined peers</li>
-</ul>
-
-<div style="margin-top:30px;padding:20px;border:1px solid #444;border-radius:8px;">
-<strong style="font-size:20px;color:#FFD200;">$10/month</strong><br/>
-Cancel anytime · 30-day money-back guarantee
+<div class="row">
+<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Bi-Weekly 1:1 Review</h3><p class="muted">Personal feedback + 2-week action plan.</p></div>
+<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Daily Micro-Check-ins</h3><p class="muted">Keep streaks alive without spam.</p></div>
+<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Priority Help</h3><p class="muted">Fast answers on workouts, systems, roadblocks.</p></div>
+<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Quarterly Challenges</h3><p class="muted">Scoreboards + prizes.</p></div>
+<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Member Resources</h3><p class="muted">Templates and trackers.</p></div>
+<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Community Access</h3><p class="muted">Value-aligned accountability.</p></div>
 </div>
 
-<!-- Stripe button (replace with Payment Link or your own Elements flow) -->
-<div style="margin-top:30px;">
-<a href="https://buy.stripe.com/your_payment_link"
-style="padding:14px 24px;border-radius:6px;background:#FFD200;
-color:#121212;font-size:18px;font-weight:bold;
-text-decoration:none;display:inline-block;">
-Join Platinum Now
-</a>
+<div style="margin-top:18px;font-size:18px">
+<strong style="color:#FFD200">$10/month</strong> · cancel anytime · 30-day money-back guarantee
 </div>
 
-<div style="margin-top:20px;">
-<a href="index.html" style="color:#ccc;">Back to Home</a>
+<!-- Optional email capture to tag the Stripe Customer -->
+<div style="margin-top:14px">
+<label for="email" class="muted">Email for receipt/account (optional):</label><br/>
+<input id="email" type="email" placeholder="you@example.com"
+style="margin-top:6px;padding:10px;border-radius:8px;border:1px solid #333;background:#0f1115;color:#fff;width:280px">
 </div>
-</section>
 
+<div id="payment-box" class="card" style="background:#0f1115">
+<div id="payment-element"></div>
+<button id="submit" class="cta">Join Platinum Now</button>
+<div id="error" class="muted" style="margin-top:10px;color:#ff8c8c"></div>
+</div>
+
+<div style="margin-top:16px"><a href="index.html" class="muted">Back to Home</a></div>
+</div>
+</div>
+
+<script>
+// IMPORTANT: use your TEST publishable key while testing
+const stripe = Stripe("pk_test_xxx_REPLACE_ME"); // NEVER put the secret key here
+
+let elements, customerId;
+
+async function init() {
+// Create SetupIntent + Customer
+const email = document.getElementById("email").value || undefined;
+const res = await fetch("/api/create-setup-intent", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ email })
+});
+const data = await res.json();
+if (!data.clientSecret) { showErr("Failed to initialize payment."); return; }
+
+customerId = data.customerId;
+elements = stripe.elements({ clientSecret: data.clientSecret });
+const paymentElement = elements.create("payment");
+paymentElement.mount("#payment-element");
+}
+
+function showErr(msg){ document.getElementById("error").textContent = msg || ""; }
+
+document.getElementById("submit").addEventListener("click", async (e) => {
+e.preventDefault(); showErr("");
+
+// Confirm Setup to get a reusable payment_method
+const { setupIntent, error } = await stripe.confirmSetup({
+elements,
+confirmParams: { return_url: window.location.href },
+redirect: "if_required"
+});
+if (error) { showErr(error.message); return; }
+
+const paymentMethodId = setupIntent.payment_method;
+
+// Create the subscription on our server
+const subRes = await fetch("/api/create-subscription", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ customerId, paymentMethodId })
+});
+const subData = await subRes.json();
+if (subData.error) { showErr(subData.error); return; }
+
+// If 3DS is required, finish it:
+if (subData.clientSecret) {
+const { error: piErr } = await stripe.confirmCardPayment(subData.clientSecret);
+if (piErr) { showErr(piErr.message); return; }
+}
+
+// Success
+window.location.href = "success.html";
+});
+
+// Initialize on load (no email captured yet is fine)
+init();
+</script>
 </body>
 </html>
