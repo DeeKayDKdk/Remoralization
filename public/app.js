@@ -93,7 +93,7 @@ return `
 Build discipline, uphold values, and report your progress every two weeks — with a real human holding you accountable.
 </p>
 <div class="actions">
-<a class="btn btn-primary" href="#checkout">Join Platinum</a>
+<a class="btn btn-primary" href="Join-Platinum.html">Join Platinum</a>
 <a class="btn btn-ghost" href="/join.html">Join Free</a>
 <a class="btn btn-ghost" href="#how">See How It Works</a>
 <a class="btn btn-ghost" href="#why">See Why It Works</a>
