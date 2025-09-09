@@ -8,43 +8,42 @@
 <script src="https://js.stripe.com/v3/"></script>
 <style>
 .wrap{max-width:960px;margin:40px auto;padding:24px}
-.card{background:#121418;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:24px;color:#fff}
+.card{background:#1a1a28;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:24px;color:#fff}
 .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:16px}
 .box{background:#181b21;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:16px}
+.cta{margin-top:16px;padding:12px 22px;border:0;border-radius:8px;background:#FFB300;color:#121212;font-weight:700;cursor:pointer}
 .muted{color:#cfcfcf}
-.cta{margin-top:16px;padding:12px 22px;border:0;border-radius:8px;background:#FFD200;color:#121212;font-weight:700;cursor:pointer}
-#payment-box{margin-top:20px}
 </style>
 </head>
-<body style="background:#0f1115;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif">
+<body style="background:#0f1115;color:#fff;font-family:ui-system,-apple-system,Segoe UI,Roboto,Arial,sans-serif">
 <div class="wrap">
 <div class="card">
-<h1 style="color:#FFD200;margin:0 0 6px">Join Operation Remoralization – Platinum</h1>
+<h1 style="color:#FFB300;margin:0 0 6px">Join Operation Remoralization – Platinum</h1>
 <p class="muted">The accountability tier for people who want real change and visible progress every two weeks.</p>
 
-<div class="row">
-<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Bi-Weekly 1:1 Review</h3><p class="muted">Personal feedback + 2-week action plan.</p></div>
-<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Daily Micro-Check-ins</h3><p class="muted">Keep streaks alive without spam.</p></div>
-<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Priority Help</h3><p class="muted">Fast answers on workouts, systems, roadblocks.</p></div>
-<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Quarterly Challenges</h3><p class="muted">Scoreboards + prizes.</p></div>
-<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Member Resources</h3><p class="muted">Templates and trackers.</p></div>
-<div class="box"><h3 style="color:#FFD200;margin:0 0 8px">Community Access</h3><p class="muted">Value-aligned accountability.</p></div>
+<div class="row" style="margin-top:12px">
+<div class="box"><h3 style="color:#FFB300;margin:0 0 8px">Bi-Weekly 1:1 Review</h3><p class="muted">Personal feedback + 2-week action plan.</p></div>
+<div class="box"><h3 style="color:#FFB300;margin:0 0 8px">Daily Micro-Check-ins</h3><p class="muted">Keep streaks alive without spam.</p></div>
+<div class="box"><h3 style="color:#FFB300;margin:0 0 8px">Priority Help</h3><p class="muted">Fast answers on workouts, systems, roadblocks.</p></div>
+<div class="box"><h3 style="color:#FFB300;margin:0 0 8px">Quarterly Challenges</h3><p class="muted">Scoreboards + prizes.</p></div>
+<div class="box"><h3 style="color:#FFB300;margin:0 0 8px">Member Resources</h3><p class="muted">Templates and trackers.</p></div>
+<div class="box"><h3 style="color:#FFB300;margin:0 0 8px">Community Access</h3><p class="muted">Value-aligned accountability.</p></div>
 </div>
 
 <div style="margin-top:18px;font-size:18px">
-<strong style="color:#FFD200">$10/month</strong> · cancel anytime · 30-day money-back guarantee
+<strong style="color:#FFB300">$10/month</strong> · cancel anytime · 30-day money-back guarantee
 </div>
 
 <!-- Optional email capture to tag the Stripe Customer -->
 <div style="margin-top:14px">
-<label for="email" class="muted">Email for receipt/account (optional):</label><br/>
+<label for="email" class="muted">Email for receipt/account (optional):</label><br />
 <input id="email" type="email" placeholder="you@example.com"
-style="margin-top:6px;padding:10px;border-radius:8px;border:1px solid #333;background:#0f1115;color:#fff;width:280px">
+style="margin-top:6px;padding:10px;border-radius:8px;border:1px solid #333;background:#0f1115;color:#fff;width:280px" />
 </div>
 
-<div id="payment-box" class="card" style="background:#0f1115">
+<div id="payment-box" class="card" style="background:#0f1115;margin-top:12px">
 <div id="payment-element"></div>
-<button id="submit" class="cta">Join Platinum Now</button>
+<button id="submit" type="button" class="cta">Join Platinum Now</button>
 <div id="error" class="muted" style="margin-top:10px;color:#ff8c8c"></div>
 </div>
 
@@ -53,63 +52,69 @@ style="margin-top:6px;padding:10px;border-radius:8px;border:1px solid #333;backg
 </div>
 
 <script>
-// IMPORTANT: use your TEST publishable key while testing
-const stripe = Stripe("pk_live_51KQiEQEAIfxpksnpRrLuZnv59jHo2nGBILCc9ojzCrODM5QsPdznCtsiTWdwOpeo1MhVpZSdPjfe2ce5vyeXPLZ000UXBLFb9o"); // NEVER put the secret key here
+// Use TEST keys while testing; switch both server+client to LIVE together
+const stripe = Stripe("YOUR_PUBLISHABLE_KEY_HERE"); // pk_test_... or pk_live_...
 
 let elements, customerId;
 
 async function init() {
-// Create SetupIntent + Customer
+// 1) Create SetupIntent & (optionally) Customer by email
 const email = document.getElementById("email").value || undefined;
 const res = await fetch("/api/create-setup-intent", {
 method: "POST",
 headers: { "Content-Type": "application/json" },
 body: JSON.stringify({ email })
 });
+
 const data = await res.json();
-if (!data.clientSecret) { showErr("Failed to initialize payment."); return; }
+if (!res.ok || !data.clientSecret) return showErr(data.error || "Failed to initialize payment.");
 
 customerId = data.customerId;
-elements = stripe.elements({ clientSecret: data.clientSecret });
+
+// 2) Mount Payment Element
+elements = stripe.elements({ clientSecret: data.clientSecret, appearance: { theme: "night" } });
 const paymentElement = elements.create("payment");
 paymentElement.mount("#payment-element");
 }
 
-function showErr(msg){ document.getElementById("error").textContent = msg || ""; }
+function showErr(msg) {
+document.getElementById("error").textContent = msg || "";
+}
 
+// Click handler
 document.getElementById("submit").addEventListener("click", async (e) => {
 e.preventDefault(); showErr("");
 
-// Confirm Setup to get a reusable payment_method
+// 3) Confirm Setup to get a reusable payment method
 const { setupIntent, error } = await stripe.confirmSetup({
 elements,
-confirmParams: { return_url: window.location.href },
+confirmParams: { return_url: window.location.href }, // not used with redirect:"if_required", but okay
 redirect: "if_required"
 });
-if (error) { showErr(error.message); return; }
+if (error) return showErr(error.message);
 
 const paymentMethodId = setupIntent.payment_method;
 
-// Create the subscription on our server
+// 4) Create the subscription on our server
 const subRes = await fetch("/api/create-subscription", {
 method: "POST",
 headers: { "Content-Type": "application/json" },
 body: JSON.stringify({ customerId, paymentMethodId })
 });
 const subData = await subRes.json();
-if (subData.error) { showErr(subData.error); return; }
+if (!subRes.ok || subData.error) return showErr(subData.error || "Subscription creation failed.");
 
-// If 3DS is required, finish it:
+// 5) If 3DS is required for the first invoice, finish it
 if (subData.clientSecret) {
-const { error: piErr } = await stripe.confirmCardPayment(subData.clientSecret);
-if (piErr) { showErr(piErr.message); return; }
+const pi = await stripe.confirmCardPayment(subData.clientSecret);
+if (pi.error) return showErr(pi.error.message);
 }
 
-// Success
+// 6) Success
 window.location.href = "success.html";
 });
 
-// Initialize on load (no email captured yet is fine)
+// Initialize on load
 init();
 </script>
 </body>
