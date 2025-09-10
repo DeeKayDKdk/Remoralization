@@ -418,5 +418,132 @@ $('#saveBtn')?.addEventListener('click', saveReport);
 if(localStorage.getItem('nextReportAt')) startCountdown();
 });
 </script>
+  <script>
+(function () {
+// ---- 1) Prompt banks (10 pairs = 20 prompts per pillar) ----
+const PROMPTS = {
+pd_note: [
+{ past: "What training, sleep, or nutrition win defined the last 2 weeks?", future: "What one physical habit will you improve in the next 2 weeks?" },
+{ past: "Where did your discipline slip in the last 2 weeks?", future: "What safeguard will you add to hold discipline in the next 2 weeks?" },
+{ past: "What recovery practices helped most?", future: "What recovery change will make the biggest difference in the next 2 weeks?" },
+{ past: "When did you push past comfort in the last 2 weeks?", future: "Where will you seek discomfort next to grow stronger?" },
+{ past: "What consistent small win did you rack up physically?", future: "What single habit will you double down on for the next 2 weeks?" },
+{ past: "What derailed your nutrition or training?", future: "What pre-plan will stop that derailment next time?" },
+{ past: "What was your toughest physical test?", future: "What deliberate test will you set for yourself in the next 2 weeks?" },
+{ past: "How well did you sleep and recover overall?", future: "What’s one practical step to lock in better rest?" },
+{ past: "What energy trends did you notice over the last 2 weeks?", future: "What shift will you make to sustain higher energy?" },
+{ past: "What moment made you feel strongest?", future: "What moment do you want to create in the next 2 weeks?" }
+],
+ro_note: [
+{ past: "Who benefited most from your presence in the last 2 weeks?", future: "Who will you invest extra energy in over the next 2 weeks?" },
+{ past: "When did you fail to show up for someone?", future: "What concrete step will you take to repair or show up better?" },
+{ past: "What team or family moment stands out?", future: "What moment will you intentionally create in the next 2 weeks?" },
+{ past: "Who needed encouragement and got it?", future: "Who will you encourage directly in the next 2 weeks?" },
+{ past: "What promise did you keep?", future: "What promise will you make and keep in the next 2 weeks?" },
+{ past: "When did you put self over others?", future: "What one sacrifice will you make for others in the next 2 weeks?" },
+{ past: "What service act defined your last 2 weeks?", future: "What service act will define the next 2 weeks?" },
+{ past: "Where did you avoid responsibility?", future: "Where will you lean in next time?" },
+{ past: "Who did you mentor or guide?", future: "Who will you intentionally guide in the next 2 weeks?" },
+{ past: "How did you support your community?", future: "What specific community action will you take soon?" }
+],
+bm_note: [
+{ past: "What principle guided your hardest choice?", future: "What principle will you commit to living more visibly?" },
+{ past: "Where did you compromise values?", future: "Where will you refuse compromise in the next 2 weeks?" },
+{ past: "What virtue was strongest in your last 2 weeks?", future: "What virtue will you strengthen going forward?" },
+{ past: "Where were words and actions misaligned?", future: "What action will you align to your words?" },
+{ past: "When did you stand firm under pressure?", future: "Where will you prepare to stand firm next?" },
+{ past: "What temptation did you resist?", future: "What temptation will you guard against next?" },
+{ past: "What moral example did you set?", future: "What moral example do you want others to see?" },
+{ past: "What situation tested your values most?", future: "What upcoming situation will test them again?" },
+{ past: "When did you inspire belief in others?", future: "How will you inspire belief next?" },
+{ past: "What lesson about morality did you learn?", future: "What lesson will you live out in the next 2 weeks?" }
+],
+sm_note: [
+{ past: "What skill progressed most in the last 2 weeks?", future: "What single drill will accelerate mastery in the next 2 weeks?" },
+{ past: "Where did you get stuck?", future: "What exact drill or experiment will break the block?" },
+{ past: "What milestone did you achieve?", future: "What milestone is next on the path?" },
+{ past: "What new knowledge was most useful?", future: "What knowledge will you seek out in the next 2 weeks?" },
+{ past: "What feedback helped you improve?", future: "Who will you request feedback from next?" },
+{ past: "Where did you waste effort?", future: "What system will you use to cut wasted effort?" },
+{ past: "What output are you proud of?", future: "What output will you produce in the next 2 weeks?" },
+{ past: "Where did you shrink from challenge?", future: "What challenge will you face head-on?" },
+{ past: "What tool or method helped?", future: "What tool or method will you adopt?" },
+{ past: "What tiny improvement compounded?", future: "What small improvement will you compound next?" }
+],
+sr_note: [
+{ past: "What problem did you solve independently?", future: "What problem will you take full ownership of next?" },
+{ past: "Where did dependency creep in?", future: "What system will you add to reduce dependency?" },
+{ past: "When did you take initiative?", future: "Where will you take initiative next?" },
+{ past: "What resourcefulness did you show?", future: "What resource will you create or secure next?" },
+{ past: "When did you adapt to solve a challenge?", future: "What adaptation will you practice in the next 2 weeks?" },
+{ past: "Where did you lean too much on others?", future: "Where will you strengthen independence?" },
+{ past: "What survival or practical skill did you use?", future: "What survival or practical skill will you develop?" },
+{ past: "When did you take responsibility for your own prep?", future: "What prep will you add next?" },
+{ past: "What self-sufficient habit grew?", future: "What habit will you establish next?" },
+{ past: "What was your strongest independent action?", future: "What independent action will you take in the next 2 weeks?" }
+],
+ic_note: [
+{ past: "Did your actions match your words?", future: "What one small action will reinforce your word next?" },
+{ past: "Where did you drift from consistency?", future: "What habit will lock integrity in place?" },
+{ past: "What routine held firm?", future: "What routine will you establish or strengthen?" },
+{ past: "Where did you break a commitment?", future: "What new system will help you keep it next time?" },
+{ past: "When did you persist despite low motivation?", future: "Where will you persist again?" },
+{ past: "What truth was hardest to admit?", future: "What truth will you commit to live out?" },
+{ past: "What habit gave the biggest payoff?", future: "What habit will you reinforce daily?" },
+{ past: "When did you act with integrity unseen?", future: "What unseen integrity act will you repeat?" },
+{ past: "What consistency gave you strength?", future: "What consistency will you double down on?" },
+{ past: "Where were you two-faced?", future: "Where will you unify inner and outer self?" }
+],
+narrative_note: [
+{ past: "What story defined your last 2 weeks?", future: "What story do you want to write in the next 2 weeks?" },
+{ past: "What went well?", future: "What one explicit commitment will you make for the next 2 weeks?" },
+{ past: "What needs work?", future: "What concrete step will you take to address it?" },
+{ past: "What lesson did you learn?", future: "What lesson will you apply forward?" },
+{ past: "What surprised you?", future: "What surprise will you prepare for next?" },
+{ past: "What felt heavy?", future: "What will you lighten in the next 2 weeks?" },
+{ past: "What connection mattered most?", future: "What connection will you invest in next?" },
+{ past: "What setback taught you most?", future: "What comeback will you plan next?" },
+{ past: "What theme tied your last 2 weeks?", future: "What theme will define your next 2 weeks?" },
+{ past: "What memory stands out most?", future: "What memory do you want to create soon?" }
+]
+};
+
+// ---- 2) Determine today's index (0–9) ----
+function dayIndex() {
+const d = new Date();
+const start = new Date(d.getFullYear(), 0, 0);
+const diff = d - start + (start.getTimezoneOffset() - d.getTimezoneOffset()) * 60000;
+const day = Math.floor(diff / 86400000);
+return (day % 10); // 0–9 for 10-day cycle
+}
+const todayIndex = dayIndex();
+
+// ---- 3) Render prompts into placeholders + helper text ----
+Object.entries(PROMPTS).forEach(([id, pairs]) => {
+const ta = document.getElementById(id);
+if (!ta) return;
+
+const { past, future } = pairs[todayIndex];
+ta.setAttribute("placeholder", past + "\n\n" + future);
+
+const label = document.querySelector(`label[for="${id}"]`);
+if (label && !label.nextElementSibling?.classList?.contains("today-note")) {
+const note = document.createElement("div");
+note.className = "today-note";
+note.innerHTML = `<strong>Past:</strong> ${past}<br><strong>Future:</strong> ${future}`;
+label.insertAdjacentElement("afterend", note);
+}
+});
+})();
+</script>
+
+<style>
+.today-note{
+color: var(--muted, #9c9c9c);
+font-size: .9rem;
+margin: 6px 0 8px;
+}
+</style>
+
 </body>
 </html>
