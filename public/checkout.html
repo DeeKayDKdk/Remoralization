@@ -1,90 +1,90 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Join Operation Remoralization</title>
-
-<link rel="stylesheet" href="/style.css" />
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="https://js.stripe.com/v3/"></script>
-
-<style>
-main { width:min(720px, 96%); margin:48px auto; padding:24px; text-align:center; }
-#payment-form { margin-top:16px; display:inline-block; width:min(520px, 100%); text-align:left; }
-#payment-message { display:none; margin-top:12px; }
-</style>
-</head>
-<body>
-<main>
-<h1 class="brand-title">Join Operation Remoralization ($10/month)</h1>
-<p>Your subscription is processed securely on this page.</p>
-
-<form id="payment-form">
-<div id="payment-element"></div>
-<button id="submit" class="btn btn-primary" style="margin-top:16px;" type="submit">Join Platinum</button>
-<div id="payment-message" class="msg err"></div>
-</form>
-
-<p class="back" style="margin-top:16px;"><a class="btn btn-ghost" href="/join.html">Back</a></p>
-</main>
-
 <script>
-// ---- PUBLIC KEYS (safe for the browser) ----
-const SUPABASE_URL = 'https://qsvelfkcaaqxgaewwwog.supabase.co';
-const SUPABASE_ANON_KEY= 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ';
-const STRIPE_PUBLISHABLE_KEY = 'pk_live_51KQiEQEAIfxpksnpRrLuZnv59jHo2nGBILCc9ojzCrODM5QsPdznCtsiTWdwOpeo1MhVpZSdPjfe2ce5vyeXPLZ000UXBLFb9o';
+// ====== CONFIG (safe for browser) ======
+const SUPABASE_URL = 'https://qsvelfkcaaqxgaewwwog.supabase.co'; // yours
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ'; // yours
+const STRIPE_PUBLISHABLE_KEY = 'pk_live_51KQiEQEAIfxpksnpRrLuZnv59jHo2nGBILCc9ojzCrODM5QsPdznCtsiTWdwOpeo1MhVpZSdPjfe2ce5vyeXPLZ000UXBLFb9o'; // your pk_
 
-// Init clients
+// ====== INIT CLIENTS ======
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
 const paymentForm = document.getElementById('payment-form');
 const paymentMsg = document.getElementById('payment-message');
-let elements;
 
-function showMsg(t){ paymentMsg.style.display='block'; paymentMsg.textContent=t; }
-function clearMsg(){ paymentMsg.style.display='none'; paymentMsg.textContent=''; }
+let elements; // Stripe Elements instance
+let customerId; // from /api/create-setup-intent
+
+const showMsg = (t='') => { paymentMsg.style.display='block'; paymentMsg.textContent=t; };
+const clearMsg = () => { paymentMsg.style.display='none'; paymentMsg.textContent=''; };
 
 async function getEmail() {
 try {
 const { data } = await supabase.auth.getUser();
-return data?.user?.email || '';
+return (data?.user?.email) || '';
 } catch { return ''; }
 }
 
-async function initPaymentElement() {
-const email = await getEmail();
+// ---- Step 1: create SetupIntent + mount Payment Element ----
+async function init() {
+clearMsg();
 
-// 1) Ask our server to create a subscription and return a PaymentIntent client_secret
-const r = await fetch('/api/create-subscription', {
+const email = await getEmail(); // optional
+const res = await fetch('/api/create-setup-intent', {
 method: 'POST',
-headers: { 'Content-Type':'application/json' },
+headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify({ email })
 });
-const data = await r.json();
-if (!data.clientSecret) throw new Error(data.error || 'No client secret');
 
-// 2) Mount the Payment Element
-elements = stripe.elements({ clientSecret: data.clientSecret });
+const data = await res.json();
+if (!res.ok || !data.clientSecret) {
+return showMsg(data.error || 'Failed to initialize payment.');
+}
+
+customerId = data.customerId;
+
+elements = stripe.elements({
+clientSecret: data.clientSecret,
+appearance: { theme: 'night' }
+});
+
 const paymentElement = elements.create('payment');
 paymentElement.mount('#payment-element');
 }
 
-initPaymentElement().catch(e => showMsg(e.message || 'Failed to load payment form'));
-
+// ---- Step 2: confirm SetupIntent → create subscription → (maybe) confirm 3DS ----
 paymentForm.addEventListener('submit', async (e) => {
-e.preventDefault(); // stay on page
+e.preventDefault();
 clearMsg();
 
-const { error } = await stripe.confirmPayment({
+// 2a) Confirm Setup to get a reusable payment method
+const { setupIntent, error } = await stripe.confirmSetup({
 elements,
-redirect: 'if_required' // <-- must be singular "redirect"
+confirmParams: { return_url: window.location.href },
+redirect: 'if_required'
 });
+if (error) return showMsg(error.message || 'Could not confirm card.');
 
-if (error) return showMsg(error.message || 'Payment failed');
+const paymentMethodId = setupIntent.payment_method;
+
+// 2b) Create the subscription server-side
+const subRes = await fetch('/api/create-subscription', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ customerId, paymentMethodId })
+});
+const subData = await subRes.json();
+if (!subRes.ok) return showMsg(subData.error || 'Subscription creation failed.');
+
+// 2c) If Stripe requires 3DS for the first invoice, finish it now
+if (subData.clientSecret) {
+const pi = await stripe.confirmCardPayment(subData.clientSecret);
+if (pi.error) return showMsg(pi.error.message || '3D Secure failed.');
+}
+
+// 2d) Success
 window.location.href = '/success.html';
 });
+
+// Kick things off
+document.addEventListener('DOMContentLoaded', init);
 </script>
-</body>
-</html>
