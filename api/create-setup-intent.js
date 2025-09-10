@@ -1,38 +1,28 @@
 // /api/create-setup-intent.js
-const Stripe = require("stripe");
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" });
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-module.exports = async function handler(req, res) {
-if (req.method !== "POST") {
-return res.status(405).json({ error: "Method not allowed" });
+module.exports = async (req, res) => {
+if (req.method !== 'POST') {
+res.status(405).json({ error: 'Method not allowed' }); return;
 }
 
 try {
 const { email } = req.body || {};
 
-// Get or create customer
-let customer;
-if (email) {
-const found = await stripe.customers.list({ email, limit: 1 });
-customer = found.data[0] || await stripe.customers.create({ email });
-} else {
-customer = await stripe.customers.create();
-}
+// Create a customer (idempotent-ish by email not guaranteed; good enough for simple flow)
+const customer = await stripe.customers.create({ email });
 
-// Create SetupIntent
+// Prepare a SetupIntent to collect & save a card on-site
 const setupIntent = await stripe.setupIntents.create({
 customer: customer.id,
-payment_method_types: ["card"],
-usage: "off_session", // optional, good for subscriptions
+automatic_payment_methods: { enabled: true }
 });
 
 res.status(200).json({
 clientSecret: setupIntent.client_secret,
-customerId: customer.id,
+customerId: customer.id
 });
-} catch (err) {
-console.error("create-setup-intent error:", err);
-res.status(500).json({ error: err.message });
+} catch (e) {
+res.status(400).json({ error: e.message || 'Failed to create setup intent' });
 }
 };
-``
