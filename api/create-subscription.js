@@ -19,7 +19,7 @@ await stripe.customers.update(customerId, { invoice_settings: { default_payment_
 // Create subscription in "incomplete" so we can handle 3DS if needed
 const sub = await stripe.subscriptions.create({
 customer: customerId,
-items: [{ price: process.env.STRIPE_PRICE_ID_PLATINUM }],
+items: [{ price: process.env.STRIPE_PRICE_ID }],
 payment_behavior: 'default_incomplete',
 expand: ['latest_invoice.payment_intent']
 });
