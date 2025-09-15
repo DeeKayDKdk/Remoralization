@@ -1,0 +1,75 @@
+<!doctype html><meta charset="utf-8"/>
+<title>Platinum Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div id="app" style="max-width:900px;margin:24px auto;font:16px/1.5 system-ui;">
+<h1>Platinum Dashboard</h1>
+<div id="gate" style="padding:12px;background:#fee;border:1px solid #f99;display:none">
+Platinum access required. <a href="/join/platinum.html">Join here</a>.
+</div>
+
+<section id="content" style="display:none">
+<p>Streak: <b id="streak">0</b> days</p>
+<button id="checkin">Check in for today</button>
+
+<hr/>
+<h2>Bi-Weekly 1:1</h2>
+<p><a id="book" target="_blank">Book your review</a></p>
+
+<hr/>
+<h2>Quarterly Challenge</h2>
+<p id="challenge">Q3 Challenge: 28 consecutive check-ins.</p>
+
+<hr/>
+<h2>Priority Help</h2>
+<form id="ticket">
+<input name="subject" placeholder="What do you need?" required style="width:60%"/>
+<button>Send</button>
+</form>
+<div id="msg"></div>
+</section>
+</div>
+
+<script>
+const supabase = window.supabase.createClient(
+// set these in your HTML via <script> from env if you prefer
+"{{YOUR_SUPABASE_URL}}", "{{YOUR_SUPABASE_ANON_KEY}}"
+);
+
+(async function boot(){
+// require login
+const { data: { user } } = await supabase.auth.getUser();
+if (!user) { window.location.href = "/login.html"; return; }
+
+// get tier
+const { data: prof } = await supabase.from('profiles').select('tier,email').eq('id', user.id).single();
+if (!prof || prof.tier !== 'platinum') {
+document.getElementById('gate').style.display = 'block'; return;
+}
+// show content
+document.getElementById('content').style.display = 'block';
+
+// booking link (drop your Calendly/Cal.com link)
+document.getElementById('book').href = "https://calendly.com/YOUR_HANDLE/biweekly-review";
+
+// fetch streak
+const { data: streak } = await supabase.rpc('get_streak', { p_user_id: user.id });
+document.getElementById('streak').textContent = streak || 0;
+
+// handle check-in
+document.getElementById('checkin').onclick = async () => {
+const { error } = await supabase.from('daily_checkins')
+.insert({ user_id: user.id, on_date: new Date().toISOString().slice(0,10) });
+if (!error) location.reload();
+};
+
+// priority help ticket
+document.getElementById('ticket').onsubmit = async (e) => {
+e.preventDefault();
+const subject = e.target.subject.value.trim();
+if (!subject) return;
+const { error } = await supabase.from('priority_tickets').insert({ user_id: user.id, subject });
+document.getElementById('msg').textContent = error ? error.message : "Sent. I’ll get back fast.";
+e.target.reset();
+};
+})();
+</script>
