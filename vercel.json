@@ -2,7 +2,8 @@
 "rewrites": [
 { "source": "/checkout", "destination": "/checkout.html" },
 { "source": "/success", "destination": "/success.html" },
-{ "source": "/cancel", "destination": "/cancel.html" }
+{ "source": "/cancel", "destination": "/cancel.html" },
+{ "source": "/login", "destination": "/login.html" }
 ],
 "redirects": [
 { "source": "/platinum", "destination": "https://platinum.remoralization.com", "permanent": true },
