@@ -3,5 +3,10 @@
 { "source": "/checkout", "destination": "/checkout.html" },
 { "source": "/success", "destination": "/success.html" },
 { "source": "/cancel", "destination": "/cancel.html" }
+],
+"redirects": [
+{ "source": "/platinum", "destination": "https://platinum.remoralization.com", "permanent": true },
+{ "source": "/platinum/(.*)", "destination": "https://platinum.remoralization.com/$1", "permanent": true },
+{ "source": "http://platinum.remoralization.com/(.*)", "destination": "https://platinum.remoralization.com/$1", "permanent": true }
 ]
 }
