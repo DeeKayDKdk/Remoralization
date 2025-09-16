@@ -100,11 +100,13 @@ with a real human holding you accountable.
 <a class="btn btn-ghost" href="/how.html">See How It Works</a>
 <a class="btn btn-ghost" href="/why.html">See Why It Works</a>
 <a class="btn btn-ghost" href="/demoralization.html"><b>Demoralization Index</b></a>
-<!-- Login button (will be swapped by Supabase to 'Open Platinum Dashboard' if tier=platinum) -->
+
+<!-- This is the login link that Supabase will swap to "Open Platinum Dashboard" -->
 <a id="loginOrDash" class="btn btn-secondary" href="/login.html">Log in</a>
 </div>
 </section>
-`; }
+`;
+}
 
 function renderForm(){
 // Hero + “Six Pillars” info cards (no inputs)
