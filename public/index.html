@@ -49,9 +49,11 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 const btn = document.getElementById('loginOrDash');
 if (!btn) return;
 
+// Get logged-in user
 const { data: { user } } = await sb.auth.getUser();
-if (!user) return; // keep "Log in"
+if (!user) return; // keep showing "Log in"
 
+// Look up user profile (check if Platinum)
 const { data: profile, error } = await sb
 .from('profiles')
 .select('tier')
