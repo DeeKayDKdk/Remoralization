@@ -93,18 +93,21 @@ return `
 Build discipline, uphold values, and report your progress every two weeks —
 with a real human holding you accountable.
 </p>
+
 <div class="actions">
 <a class="btn btn-primary" href="/join/platinum.html">Join Platinum</a>
 <a class="btn btn-ghost" href="/join.html">Join Free</a>
-<a class="btn btn-ghost" href="#why">See How It Works</a>
-<a class="btn btn-ghost" href="#why">See Why It Works</a>
-<a class="btn btn-ghost" href="demoralization.html"><b>Demoralization Index</b></a>
-<!-- Login button (will be replaced if logged in as platinum) -->
+<a class="btn btn-ghost" href="/how.html">See How It Works</a>
+<a class="btn btn-ghost" href="/why.html">See Why It Works</a>
+<a class="btn btn-ghost" href="/demoralization.html"><b>Demoralization Index</b></a>
+
+<!-- Login button (will be swapped to “Open Platinum Dashboard” by Supabase script) -->
 <a id="loginOrDash" class="btn btn-secondary" href="/login.html">Log in</a>
 </div>
 </section>
 `;
 }
+
 
 function renderForm(){
 // Hero + “Six Pillars” info cards (no inputs)
