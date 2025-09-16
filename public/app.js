@@ -90,17 +90,20 @@ return `
 <section class="main-hero">
 <h1 class="h1">A call to adventure.</h1>
 <p class="subtitle">
-Build discipline, uphold values, and report your progress every two weeks — with a real human holding you accountable.
+Build discipline, uphold values, and report your progress every two weeks —
+with a real human holding you accountable.
 </p>
 <div class="actions">
-<a class="btn btn-primary" href="Join-Platinum.html">Join Platinum</a>
+<a class="btn btn-primary" href="/join/platinum.html">Join Platinum</a>
 <a class="btn btn-ghost" href="/join.html">Join Free</a>
-<a class="btn btn-ghost" href="#how">See How It Works</a>
+<a class="btn btn-ghost" href="#why">See How It Works</a>
 <a class="btn btn-ghost" href="#why">See Why It Works</a>
-<a class="btn" href="demoralization.html"><b>Demoralization Index</b></a>
+<a class="btn btn-ghost" href="demoralization.html"><b>Demoralization Index</b></a>
+<!-- Add login button -->
+<a id="loginOrDash" class="btn btn-secondary" href="/login.html">Log in</a>
 </div>
-
-</section>`;
+</section>
+`;
 }
 
 function renderForm(){
