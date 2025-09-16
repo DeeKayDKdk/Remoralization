@@ -120,5 +120,57 @@ btn.style.borderColor = 'transparent';
 <!-- Your existing scripts -->
 <script defer src="/app.js?v=2"></script>
 <script defer src="/_vercel/insights/script.js"></script>
+  <!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Your existing scripts -->
+<script defer src="/app.js?v=3"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+<!-- Swap/Hide the Log in button based on session + tier -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const SUPABASE_URL = "https://qsvelfkcaaxgxgaewwwog.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTcw...";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+async function applyLoginSwap() {
+const btn = document.getElementById('loginOrDash');
+if (!btn) return; // app.js hasn't rendered the hero yet
+
+// 1) Session
+const { data: { user }, error: userErr } = await sb.auth.getUser();
+if (userErr) { console.error(userErr); return; }
+
+// Logged out → keep "Log in"
+if (!user) { btn.style.display = ''; return; }
+
+// 2) Tier
+const { data: profile, error: profErr } = await sb
+.from('profiles').select('tier').eq('id', user.id).single();
+if (profErr) { console.error(profErr); return; }
+
+if (profile?.tier === 'platinum') {
+// Logged in + platinum → turn into dashboard button
+btn.textContent = 'Open Platinum Dashboard';
+btn.href = '/platinum/index.html';
+btn.classList.remove('btn-secondary');
+btn.classList.add('btn-primary');
+btn.style.display = '';
+} else {
+// Logged in but not platinum → hide button
+btn.style.display = 'none';
+}
+}
+
+// Run once after DOM is ready…
+applyLoginSwap();
+
+// …and again if app.js re-renders the hero later.
+const target = document.getElementById('app') || document.body;
+new MutationObserver(() => applyLoginSwap())
+.observe(target, { childList: true, subtree: true });
+});
+</script>
 </body>
 </html>
