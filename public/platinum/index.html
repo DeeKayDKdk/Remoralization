@@ -1,75 +1,298 @@
-<!doctype html><meta charset="utf-8"/>
-<title>Platinum Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<div id="app" style="max-width:900px;margin:24px auto;font:16px/1.5 system-ui;">
-<h1>Platinum Dashboard</h1>
-<div id="gate" style="padding:12px;background:#fee;border:1px solid #f99;display:none">
-Platinum access required. <a href="/join/platinum.html">Join here</a>.
-</div>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Platinum Dashboard · Operation Remoralization</title>
 
-<section id="content" style="display:none">
-<p>Streak: <b id="streak">0</b> days</p>
-<button id="checkin">Check in for today</button>
+<!-- Fonts & base styles -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
-<hr/>
-<h2>Bi-Weekly 1:1</h2>
-<p><a id="book" target="_blank">Book your review</a></p>
-
-<hr/>
-<h2>Quarterly Challenge</h2>
-<p id="challenge">Q3 Challenge: 28 consecutive check-ins.</p>
-
-<hr/>
-<h2>Priority Help</h2>
-<form id="ticket">
-<input name="subject" placeholder="What do you need?" required style="width:60%"/>
-<button>Send</button>
-</form>
-<div id="msg"></div>
-</section>
-</div>
-
-<script>
-const supabase = window.supabase.createClient(
-// set these in your HTML via <script> from env if you prefer
-"{{YOUR_SUPABASE_URL}}", "{{YOUR_SUPABASE_ANON_KEY}}"
-);
-
-(async function boot(){
-// require login
-const { data: { user } } = await supabase.auth.getUser();
-if (!user) { window.location.href = "/login.html"; return; }
-
-// get tier
-const { data: prof } = await supabase.from('profiles').select('tier,email').eq('id', user.id).single();
-if (!prof || prof.tier !== 'platinum') {
-document.getElementById('gate').style.display = 'block'; return;
+<style>
+:root{
+--bg:#0f1220; --card:#1c2233; --muted:#9fb3c8; --text:#eaf2ff; --accent:#00e6b0; --danger:#ff6b6b;
+--ring:rgba(255,255,255,.08); --shadow:0 30px 80px rgba(0,0,0,.45);
+--radius:14px;
 }
-// show content
-document.getElementById('content').style.display = 'block';
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+margin:0; background:radial-gradient(1200px at 10% 20%, #182036, transparent 60%),
+radial-gradient(900px at 90% -10%, #241a45, transparent 55%),
+var(--bg);
+color:var(--text);
+font:16px/1.6 "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+.wrap{
+max-width:1024px; margin:48px auto; padding:0 20px;
+}
+.card{
+background:rgba(255,255,255,.04);
+border:1px solid var(--ring);
+border-radius:var(--radius);
+box-shadow:var(--shadow);
+padding:28px;
+}
+.title{margin:0 0 8px; font-weight:800; font-size:34px; line-height:1.15}
+.subtitle{margin:0 0 20px; color:var(--muted)}
+.grid{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:18px 0 6px}
+.pill{background:rgba(255,255,255,.06); border:1px solid var(--ring); border-radius:12px; padding:14px 16px}
+.pill h4{margin:0 0 4px; font-weight:800; letter-spacing:.2px}
+.row{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:18px}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:12px 16px; border-radius:10px; text-decoration:none; font-weight:700; border:1px solid transparent}
+.btn-primary{background:#00d084; color:#062019}
+.btn-ghost{background:transparent; border-color:var(--ring); color:#cfe1ff; backdrop-filter:saturate(120%) blur(6px)}
+.btn-danger{background:#2c1a1a; color:#ffdede; border-color:#3a2020}
+.btn-secondary{background:#3a435a; color:#fff}
+.right{margin-left:auto}
+.note{color:var(--muted); font-size:.95rem}
+.tiny{font-size:.85rem; color:var(--muted)}
+.ok{color:var(--accent)} .bad{color:var(--danger)}
 
-// booking link (drop your Calendly/Cal.com link)
-document.getElementById('book').href = "https://calendly.com/YOUR_HANDLE/biweekly-review";
+.split{display:grid; gap:16px; grid-template-columns:1.1fr .9fr; margin-top:20px}
+@media (max-width: 860px){ .split{grid-template-columns:1fr} }
 
-// fetch streak
-const { data: streak } = await supabase.rpc('get_streak', { p_user_id: user.id });
-document.getElementById('streak').textContent = streak || 0;
+.box{background:rgba(255,255,255,.05); border:1px solid var(--ring); border-radius:12px; padding:18px}
+.box h3{margin:0 0 8px; font-size:18px}
+.kpi{display:flex; gap:14px; align-items:baseline}
+.kpi b{font-size:32px; letter-spacing:.5px}
+.dim{color:var(--muted)}
 
-// handle check-in
-document.getElementById('checkin').onclick = async () => {
-const { error } = await supabase.from('daily_checkins')
-.insert({ user_id: user.id, on_date: new Date().toISOString().slice(0,10) });
-if (!error) location.reload();
-};
+/* Confetti canvas on check-in */
+#fx{position:fixed; inset:0; pointer-events:none}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
 
-// priority help ticket
-document.getElementById('ticket').onsubmit = async (e) => {
-e.preventDefault();
-const subject = e.target.subject.value.trim();
-if (!subject) return;
-const { error } = await supabase.from('priority_tickets').insert({ user_id: user.id, subject });
-document.getElementById('msg').textContent = error ? error.message : "Sent. I’ll get back fast.";
-e.target.reset();
-};
+<div class="wrap">
+<div class="card">
+<div class="note">PLATINUM DASHBOARD</div>
+<h1 class="title">Welcome back.</h1>
+<p class="subtitle">Track your streaks, check in daily, book your 1:1, and manage billing — all in one place.</p>
+
+<!-- Status / guards -->
+<div id="status" class="box" style="display:none"></div>
+
+<div class="split">
+<!-- LEFT: Daily check-ins -->
+<div class="box">
+<h3>Daily Micro Check-Ins</h3>
+<div class="kpi">
+<span class="dim">Current streak</span>
+<b id="streak">–</b>
+<span class="dim">days</span>
+</div>
+<div class="row">
+<button id="checkinBtn" class="btn btn-primary">Mark today’s check-in</button>
+<span id="checkinMsg" class="note"></span>
+</div>
+<p class="tiny">Tip: one tap a day keeps momentum alive. We only count 1 check-in per day.</p>
+</div>
+
+<!-- RIGHT: Quick actions -->
+<div class="box">
+<h3>Quick Actions</h3>
+<div class="grid">
+<div class="pill">
+<h4>Bi-Weekly 1:1 Review</h4>
+<div class="note">Personal feedback + 2-week action plan.</div>
+<a class="btn btn-secondary" id="bookBtn" href="https://calendly.com/YOUR_HANDLE/biweekly-review" target="_blank">Book 1:1 Review</a>
+</div>
+<div class="pill">
+<h4>Priority Help</h4>
+<div class="note">Fast answers on workouts, systems, roadblocks.</div>
+<a class="btn btn-ghost" href="mailto:support@yourdomain.com">Contact Support</a>
+</div>
+<div class="pill">
+<h4>Quarterly Challenges</h4>
+<div class="note">Scoreboards + prizes.</div>
+<a class="btn btn-ghost" href="/platinum/challenges.html">View Challenges</a>
+</div>
+<div class="pill">
+<h4>Member Resources</h4>
+<div class="note">Templates and trackers.</div>
+<a class="btn btn-ghost" href="/platinum/resources.html">Open Resources</a>
+</div>
+<div class="pill">
+<h4>Community Access</h4>
+<div class="note">Value-aligned accountability.</div>
+<a class="btn btn-ghost" href="/platinum/community.html">Enter Community</a>
+</div>
+</div>
+
+<div class="row" style="margin-top:12px">
+<button id="billingBtn" class="btn btn-ghost">Open Billing Portal</button>
+<a id="logoutBtn" class="btn btn-danger right" href="#">Log out</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// 🔧 Replace these with your real values
+const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// Elements
+const statusBox = document.getElementById('status');
+const streakEl = document.getElementById('streak');
+const checkBtn = document.getElementById('checkinBtn');
+const checkMsg = document.getElementById('checkinMsg');
+const logoutBtn = document.getElementById('logoutBtn');
+const billingBtn = document.getElementById('billingBtn');
+
+// --- Auth gate + tier gate ---
+(async function init(){
+// must be logged in
+const { data: { user } } = await sb.auth.getUser();
+if (!user) {
+location.href = "/login.html?redirect=%2Fplatinum%2Findex.html";
+return;
+}
+
+// must be platinum
+const { data: profile, error } = await sb
+.from('profiles')
+.select('tier')
+.eq('id', user.id)
+.single();
+
+if (error) {
+showStatus("Could not load your profile. Please try again.", "bad");
+return;
+}
+
+if (!profile || profile.tier !== 'platinum') {
+showStatus(`Your account is <b>${profile?.tier || 'free'}</b>.
+<a class="btn btn-primary" style="margin-left:10px" href="/join/platinum.html">Upgrade to Platinum</a>`, "bad", true);
+disableDashboard();
+return;
+}
+
+// load streak + wire controls
+await refreshStreak();
+wireControls();
+})();
+
+function showStatus(html, tone="ok", sticky=false){
+statusBox.style.display = "block";
+statusBox.innerHTML = `<span class="${tone==='ok'?'ok':'bad'}">●</span> <span class="note">${html}</span>`;
+if(!sticky){
+setTimeout(()=>{ statusBox.style.display="none"; }, 4000);
+}
+}
+
+function disableDashboard(){
+checkBtn.disabled = true;
+billingBtn.disabled = true;
+}
+
+// --- Streaks + check-ins ---
+async function refreshStreak(){
+const { data: { user } } = await sb.auth.getUser();
+const { data, error } = await sb.rpc('get_streak', { p_user_id: user.id });
+if (error){ streakEl.textContent = "–"; return; }
+streakEl.textContent = data ?? 0;
+}
+
+function todayISO(){
+const d = new Date();
+const m = String(d.getMonth()+1).padStart(2,'0');
+const day = String(d.getDate()).padStart(2,'0');
+return `${d.getFullYear()}-${m}-${day}`;
+}
+
+async function doCheckIn(){
+checkBtn.disabled = true;
+checkMsg.textContent = "Saving…";
+const { data: { user } } = await sb.auth.getUser();
+
+const { error } = await sb
+.from('daily_checkins')
+.upsert({ user_id: user.id, on_date: todayISO() }, { onConflict: 'user_id,on_date' });
+
+if (error){
+checkMsg.textContent = "Already checked in today (or error).";
+checkBtn.disabled = false;
+return;
+}
+checkMsg.textContent = "Nice! Logged for today.";
+confettiBurst();
+await refreshStreak();
+setTimeout(()=>{ checkMsg.textContent=""; checkBtn.disabled=false; }, 1200);
+}
+
+// --- Billing portal (server should return { url }) ---
+async function openBillingPortal(){
+try{
+const res = await fetch('YOUR_PORTAL_ENDPOINT', { method:'POST' });
+const j = await res.json();
+if (j?.url) { location.href = j.url; }
+else { showStatus("Could not open billing portal.", "bad"); }
+}catch(e){
+showStatus("Billing portal error.", "bad");
+}
+}
+
+// --- Logout ---
+async function doLogout(){
+await sb.auth.signOut();
+location.href = "/";
+}
+
+function wireControls(){
+checkBtn.addEventListener('click', doCheckIn);
+billingBtn.addEventListener('click', openBillingPortal);
+logoutBtn.addEventListener('click', (e)=>{ e.preventDefault(); doLogout(); });
+}
+
+// --- Lightweight confetti (no deps) ---
+(function(){
+const c = document.getElementById('fx');
+const ctx = c.getContext('2d');
+let w,h, pieces=[]; const N=120;
+const colors = ["#66e3ff","#a7f30d","#fbcf8e","#fde68a","#c7d2fe","#00e6b0","#ffb703","#ffd166"];
+const rand = (a,b)=>Math.random()*(b-a)+a;
+
+function resize(){ w=c.width=innerWidth; h=c.height=innerHeight; }
+addEventListener('resize', resize, {passive:true}); resize();
+
+function burst(){
+pieces = [];
+for(let i=0;i<N;i++){
+pieces.push({
+x: w/2, y: h/3,
+r: rand(2,5),
+vx: rand(-4,4), vy: rand(-8,-2),
+col: colors[(Math.random()*colors.length)|0],
+a: 1
+});
+}
+requestAnimationFrame(draw);
+}
+
+function draw(){
+ctx.clearRect(0,0,w,h);
+let alive=false;
+for(const p of pieces){
+p.x += p.vx; p.y += p.vy;
+p.vy += 0.15; p.a *= 0.98;
+if(p.a>0.02 && p.y < h+10) alive=true;
+ctx.globalAlpha = Math.max(p.a,0);
+ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.col; ctx.fill();
+}
+ctx.globalAlpha = 1;
+if(alive) requestAnimationFrame(draw);
+}
+window.confettiBurst = burst;
 })();
 </script>
+</body>
+</html>
