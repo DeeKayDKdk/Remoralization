@@ -337,3 +337,22 @@ toast("Report submitted! You’ll receive a human response within 48 hours.");
 });
 }
 }
+/ ---- boot the homepage ----
+// Make sure the hero (with the Log in button) actually renders on load.
+function boot() {
+try {
+const appRoot = document.getElementById('app');
+// If #app exists and the login button isn't in the DOM yet, render the hero
+if (appRoot && !document.getElementById('loginOrDash')) {
+renderHero();
+}
+} catch (e) {
+console.error('Boot error:', e);
+}
+}
+
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', boot);
+} else {
+boot();
+}
