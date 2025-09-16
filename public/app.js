@@ -99,7 +99,7 @@ with a real human holding you accountable.
 <a class="btn btn-ghost" href="#why">See How It Works</a>
 <a class="btn btn-ghost" href="#why">See Why It Works</a>
 <a class="btn btn-ghost" href="demoralization.html"><b>Demoralization Index</b></a>
-<!-- Add login button -->
+<!-- Login button (will be replaced if logged in as platinum) -->
 <a id="loginOrDash" class="btn btn-secondary" href="/login.html">Log in</a>
 </div>
 </section>
