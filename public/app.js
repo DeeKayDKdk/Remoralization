@@ -90,7 +90,7 @@ return `
 <section class="main-hero">
 <h1 class="h1">A call to adventure.</h1>
 <p class="subtitle">
-Build discipline, uphold values, and report your progress every two weeks —
+Build discipline, uphold values, and report your progress every two weeks –
 with a real human holding you accountable.
 </p>
 
@@ -99,9 +99,9 @@ with a real human holding you accountable.
 <a class="btn btn-ghost" href="/join.html">Join Free</a>
 <a class="btn btn-ghost" href="/how.html">See How It Works</a>
 <a class="btn btn-ghost" href="/why.html">See Why It Works</a>
-<a class="btn btn-ghost" href="/demoralization.html"><b>Demoralization Index</b></a>
+<a class="btn btn-ghost" href="/demoralization.html">Demoralization Index</a>
 
-<!-- This is the login link that Supabase will swap to "Open Platinum Dashboard" -->
+<!-- 👇 This is the login button Supabase will swap -->
 <a id="loginOrDash" class="btn btn-secondary" href="/login.html">Log in</a>
 </div>
 </section>
