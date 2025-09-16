@@ -149,8 +149,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 const billingBtn = document.getElementById('billingBtn');
 
 // --- Auth gate + tier gate ---
-// --- Auth gate + tier gate ---
-async function init(){
+async function init() {
 // must be logged in
 const { data: { user }, error: userError } = await sb.auth.getUser();
 if (userError || !user) {
@@ -160,9 +159,9 @@ return;
 
 // must be platinum
 const { data: profile, error: profError } = await sb
-.from('profiles')
-.select('tier')
-.eq('id', user.id)
+.from("profiles")
+.select("tier")
+.eq("id", user.id)
 .single();
 
 if (profError) {
@@ -171,8 +170,12 @@ showStatus("Could not load your profile. Please try again.", "bad");
 return;
 }
 
-if (!profile || profile.tier !== 'platinum') {
-showStatus("Your account is not Platinum. <a href='/join/platinum.html'>Upgrade to Platinum</a>", "bad", true);
+if (!profile || profile.tier !== "platinum") {
+showStatus(
+'Your account is not Platinum. <a href="/join/platinum.html">Upgrade to Platinum</a>.',
+"bad",
+true
+);
 disableDashboard();
 return;
 }
@@ -181,6 +184,17 @@ return;
 await refreshStreak();
 wireControls();
 }
+
+// Kick off init when the page loads
+window.addEventListener("DOMContentLoaded", () => {
+init().catch(err => {
+console.error("Init error:", err);
+const box = document.getElementById("status");
+if (box) {
+box.style.display = "block";
+box.innerHTML = `<span class="note">Init error</span> <span>${err.message || err}</span>`;
+}
+});
 
 // Kick off init when the page loads
 window.addEventListener('DOMContentLoaded', () => {
