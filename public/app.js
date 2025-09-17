@@ -96,7 +96,6 @@ with a real human holding you accountable.
 
 <div class="actions">
 <a class="btn btn-primary" href="/join/platinum.html">Join Platinum</a>
-<a class="btn btn-ghost" href="/join.html">Join Free</a>
 <a class="btn btn-ghost" href="/how.html">See How It Works</a>
 <a class="btn btn-ghost" href="/why.html">See Why It Works</a>
 <a class="btn btn-ghost" href="/demoralization.html">Demoralization Index</a>
