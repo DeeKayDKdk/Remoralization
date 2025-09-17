@@ -5,197 +5,225 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Platinum Dashboard · Operation Remoralization</title>
 
-<!-- (optional) fonts + your styles go here -->
+<!-- fonts / minimal styles (yours, trimmed for brevity) -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{ --bg:#0f1220; --card:#1c2233; --text:#eaf2ff; --muted:#9fb3c8; --accent:#00e6b0; }
-html,body{height:100%}
-body{margin:0; font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color:var(--text); background:#0f1220;}
-.wrap{max-width:1024px; margin:48px auto; padding:0 20px;}
-.card{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:24px; box-shadow:0 30px 80px rgba(0,0,0,.45)}
-h1{margin:0 0 18px; font-weight:800}
-.note{color:var(--muted)}
-.row{display:flex; gap:16px; align-items:center; flex-wrap:wrap}
-.btn{display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.15); text-decoration:none; font-weight:700}
-.btn-primary{background:var(--accent); color:#00241e; border-color:transparent}
-.btn-ghost{background:transparent; color:var(--text)}
-.btn-danger{background:#d62d20}
-.right{margin-left:auto}
-#status{display:none; margin-bottom:16px}
-pre.error{white-space:pre-wrap; color:#ffb4b4; background:#2a0f12; padding:12px; border-radius:8px; border:1px solid #702; }
+:root{--bg:#0f1220;--card:#1c2233;--ring:#e2e8f0;--shadow:0 30px 80px rgba(0,0,0,.45)}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;background:#0f1220;color:#eaf2ff;font:16px/1.5 "Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1024px;margin:48px auto;padding:0 20px}
+.card{background:rgba(255,255,255,.04);border:1px solid var(--ring);border-radius:14px;box-shadow:var(--shadow);padding:28px}
+.title{margin:0 0 8px;font-weight:800;font-size:34px}
+.subtitle{margin:8px 0 20px;opacity:.75}
+.grid{display:grid;gap:16px;grid-template-columns:1fr 1fr;margin-top:20px}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.kpi{display:flex;gap:14px;align-items:baseline}
+.kpi h3{margin:0;font-size:20px;letter-spacing:.5px}
+.btn{display:inline-block;padding:12px 16px;border-radius:10px;border:1px solid var(--ring);text-decoration:none;font-weight:700}
+.btn-primary{background:#2c41ea;color:#fff;border-color:#3a52e0}
+.btn-ghost{background:transparent;color:#fff}
+.btn-danger{background:#c21a1a;color:#fff;border-color:#8a2020}
+.row{display:flex;gap:12px;align-items:center;margin-top:12px}
+.note{font-size:.95rem;opacity:.8}
+.box{display:none;margin-top:12px;padding:12px;border-radius:10px;border:1px dashed #7a86a5;background:rgba(255,255,255,.06)}
+.ok{color:#9DFF90}.bad{color:#ff9c9c}
+canvas#fx{position:fixed;inset:0;pointer-events:none}
 </style>
-
-<!-- Supabase v2 -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+<canvas id="fx"></canvas>
+
 <div class="wrap">
 <div class="card">
-<h1>Platinum Dashboard</h1>
-<p class="note">Track your streaks, check in daily, book your 1:1, and manage billing.</p>
+<div class="title">PLATINUM DASHBOARD</div>
+<p class="subtitle">Track your streaks, check in daily, book your 1:1, and manage billing — all in one place.</p>
 
-<div id="status" class="note"></div>
+<!-- status / messages -->
+<div id="status" class="box"></div>
 
-<div class="row" style="margin:18px 0">
-<div><b>Daily Micro Check-Ins</b></div>
-<button id="checkinBtn" class="btn btn-primary">Mark today’s check-in</button>
-<span id="checkinMsg" class="note"></span>
-<div class="right">
-<a id="billingBtn" class="btn btn-ghost" href="#">Open Billing Portal</a>
-<a id="logoutBtn" class="btn btn-danger" href="#">Log out</a>
-</div>
+<div class="grid">
+<!-- LEFT -->
+<div>
+<div class="kpi">
+<h3>Current streak</h3>
+<span id="streak">–</span><span>days</span>
 </div>
 
 <div class="row">
-<div><b>Current streak:</b> <span id="streak">–</span> <span class="note">days</span></div>
+<button id="checkinBtn" class="btn btn-primary">Mark today’s check-in</button>
+<span id="checkinMsg" class="note"></span>
+</div>
+
+<p class="note">Tip: one tap a day keeps momentum alive. We only count 1 check-in per day.</p>
+</div>
+
+<!-- RIGHT -->
+<div>
+<h3>Quick Actions</h3>
+<div class="row"><a class="btn btn-ghost" id="book1to1" target="_blank">Book 1:1 Review</a></div>
+<div class="row"><a class="btn btn-ghost" href="mailto:support@yourdomain.com">Contact Support</a></div>
+<div class="row"><a class="btn btn-ghost" href="/platinum/challenges.html">View Challenges</a></div>
+<div class="row"><a class="btn btn-ghost" href="/platinum/resources.html">Open Resources</a></div>
+<div class="row"><a class="btn btn-ghost" href="/platinum/community.html"><em>Enter Community</em></a></div>
+
+<div class="row" style="margin-top:12px">
+<button id="billingBtn" class="btn btn-ghost">Open Billing Portal</button>
+<a id="logoutBtn" class="btn btn-danger right" href="#">Log out</a>
+</div>
+</div>
 </div>
 </div>
 </div>
 
+<!-- Supabase (browser) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ==== 1) CONFIG – replace with your real values (no extra spaces/newlines) ====
-const SUPABASE_URL = 'https://qsvelfkcaaxqgaewwwog.supabase.co'.trim(); // <-- your Project URL
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ'.trim(); // <-- your anon public key
+// 🔑 1) PUT YOUR REAL VALUES HERE (from Supabase → Settings → API)
+const SUPABASE_URL = "https://qsvelfkcaaxqgaewwwog.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
 
-// Guard against common copy/paste issues
-if (!/^https?:\/\//.test(SUPABASE_URL)) {
-throw new Error('Supabase URL is not a valid http(s) URL. Double-check copy/paste.');
-}
-if (!SUPABASE_ANON || SUPABASE_ANON.length < 20) {
-throw new Error('Supabase anon key looks empty/short. Paste the full key.');
+// safety check (prevents the “Invalid supabaseUrl” error)
+if (!/^https?:\/\//i.test(SUPABASE_URL)) {
+document.body.innerHTML = "<pre style='color:#ff7b7b'>Config error: SUPABASE_URL is not a valid http(s) URL.</pre>";
+throw new Error("SUPABASE_URL invalid");
 }
 
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Small helpers
-const $ = sel => document.querySelector(sel);
-const showStatus = (html, tone = 'ok', sticky = false) => {
-const box = $('#status');
-if (!box) return;
-box.style.display = 'block';
-box.innerHTML = html;
-if (!sticky) setTimeout(() => { box.style.display = 'none'; }, 4000);
-};
+// Element refs
+const statusBox = document.getElementById('status');
+const streakEl = document.getElementById('streak');
+const checkBtn = document.getElementById('checkinBtn');
+const checkMsg = document.getElementById('checkinMsg');
+const logoutBtn = document.getElementById('logoutBtn');
+const billingBtn = document.getElementById('billingBtn');
+const bookBtn = document.getElementById('book1to1');
 
-// ==== 2) PAGE GUARD – must be logged in & platinum ====
-async function requirePlatinum() {
-// session
-const { data: { user }, error: userErr } = await sb.auth.getUser();
-if (userErr || !user) {
-// bounce to login and return here after login
-location.href = '/login.html?redirect=%2Fplatinum%2Findex.html';
-return null;
+// Config (customize)
+bookBtn.href = "https://calendly.com/YOUR_HANDLE/biweekly-review";
+
+// Helpers
+function showStatus(html, tone="ok", sticky=false){
+statusBox.style.display = "block";
+statusBox.innerHTML = `<span class="${tone==='ok'?'ok':'bad'}">●</span> <span class="note">${html}</span>`;
+if (!sticky) setTimeout(()=>{ statusBox.style.display="none"; }, 4000);
+}
+function todayISO(){
+const d=new Date(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+return `${d.getFullYear()}-${m}-${day}`;
 }
 
-// profile.tier
-const { data: profile, error: profErr } = await sb
+// RPC + table expectations:
+// - RPC get_streak(p_user_id uuid) RETURNS int
+// - Table daily_checkins with unique (user_id, on_date)
+
+async function refreshStreak(){
+const { data: { user } } = await sb.auth.getUser();
+if (!user) return;
+const { data, error } = await sb.rpc('get_streak', { p_user_id: user.id });
+if (error){ streakEl.textContent = "–"; return; }
+streakEl.textContent = data ?? 0;
+}
+
+async function doCheckIn(){
+checkBtn.disabled = true;
+checkMsg.textContent = "Saving…";
+const { data: { user } } = await sb.auth.getUser();
+if (!user){ checkMsg.textContent="Not logged in."; return; }
+const { error } = await sb.from('daily_checkins')
+.upsert({ user_id: user.id, on_date: todayISO() }, { onConflict: 'user_id,on_date' });
+if (error){
+checkMsg.textContent = "Already checked in today (or error).";
+checkBtn.disabled = false;
+return;
+}
+checkMsg.textContent = "Nice! Logged for today.";
+confettiBurst();
+await refreshStreak();
+setTimeout(()=>{ checkMsg.textContent=""; checkBtn.disabled=false; }, 1200);
+}
+
+async function openBillingPortal(){
+// Replace with your serverless function that returns { url }
+try{
+const res = await fetch("/api/create-subscription", { method:"POST" });
+const j = await res.json();
+if (j?.url) location.href = j.url;
+else showStatus("Could not open billing portal.", "bad");
+}catch(e){ showStatus("Billing portal error.", "bad"); }
+}
+
+async function doLogout(){
+await sb.auth.signOut();
+location.href = "/login.html";
+}
+
+function wireControls(){
+checkBtn.addEventListener('click', doCheckIn);
+billingBtn.addEventListener('click', openBillingPortal);
+logoutBtn.addEventListener('click', (e)=>{ e.preventDefault(); doLogout(); });
+}
+
+// Auth + tier gate
+async function ensurePlatinum(){
+// must be logged in
+const { data: { user }, error: userError } = await sb.auth.getUser();
+if (userError || !user){
+location.href = "/login.html?redirect=/platinum/index.html";
+return false;
+}
+// must be platinum
+const { data: profile, error: profError } = await sb
 .from('profiles')
 .select('tier')
 .eq('id', user.id)
 .single();
 
-if (profErr) {
-showStatus(`<pre class="error">Could not load your profile.\n${profErr.message || profErr}</pre>`, 'bad', true);
-throw profErr;
+if (profError){
+showStatus("Could not load your profile. Please try again.", "bad", true);
+return false;
+}
+if (!profile || profile.tier !== "platinum"){
+document.body.innerHTML = `
+<main style="max-width:720px;margin:40px auto;padding:24px;color:#eaf2ff;">
+<h2>Your account is not Platinum.</h2>
+<p><a class="btn btn-primary" href="/join/platinum.html">Upgrade to Platinum</a> to access this dashboard.</p>
+</main>`;
+return false;
+}
+return true;
 }
 
-if (!profile || profile.tier !== 'platinum') {
-showStatus(
-`Your account is <b>${profile?.tier || 'free'}</b>. ` +
-`<a class="btn btn-ghost" href="/join/platinum.html" style="margin-left:10px">Upgrade to Platinum</a>`,
-'bad',
-true
-);
-throw new Error('Not platinum');
-}
-
-return user;
-}
-
-// ==== 3) FEATURE HOOKS (streak, check-in, billing, logout) ====
-async function refreshStreak() {
-const { data: { user } } = await sb.auth.getUser();
-if (!user) return;
-// your RPC or count query here; for now show 0 when unavailable
-try {
-const { data, error } = await sb.rpc('get_streak', { p_user_id: user.id });
-$('#streak').textContent = error ? '0' : (data ?? 0);
-} catch {
-$('#streak').textContent = '0';
-}
-}
-
-function todayISO() {
-const d = new Date();
-const m = String(d.getMonth()+1).padStart(2,'0');
-const day = String(d.getDate()).padStart(2,'0');
-return `${d.getFullYear()}-${m}-${day}`;
-}
-
-async function doCheckIn() {
-const btn = $('#checkinBtn'); const msg = $('#checkinMsg');
-btn.disabled = true; msg.textContent = 'Saving…';
-try {
-const { data: { user } } = await sb.auth.getUser();
-const { error } = await sb
-.from('daily_checkins')
-.upsert({ user_id: user.id, on_date: todayISO() }, { onConflict: 'user_id,on_date' });
-if (error) { msg.textContent = 'Already checked in today (or error).'; btn.disabled = false; return; }
-msg.textContent = 'Nice! Logged for today.'; await refreshStreak();
-setTimeout(() => { msg.textContent = ''; btn.disabled = false; }, 1200);
-} catch (e) {
-msg.textContent = 'Check-in failed.'; btn.disabled = false;
-console.error(e);
-}
-}
-
-async function openBillingPortal(e) {
-e?.preventDefault?.();
-showStatus('Opening billing portal…', 'ok');
-// TODO: replace with your backend endpoint that returns { url }
-try {
-const res = await fetch('/api/billing-portal', { method: 'POST' });
-const j = await res.json();
-if (j?.url) location.href = j.url;
-else showStatus(`<pre class="error">Billing portal not configured.</pre>`, 'bad', true);
-} catch (err) {
-showStatus(`<pre class="error">Billing portal error:\n${err.message || err}</pre>`, 'bad', true);
-}
-}
-
-async function doLogout(e) {
-e?.preventDefault?.();
-await sb.auth.signOut();
-location.href = '/';
-}
-
-// ==== 4) BOOT ====
+// Kickoff
 window.addEventListener('DOMContentLoaded', async () => {
-try {
-const user = await requirePlatinum(); // redirects if not logged in
-if (!user) return; // stop here after redirect
-
-// wire controls once allowed
-$('#checkinBtn')?.addEventListener('click', doCheckIn);
-$('#billingBtn')?.addEventListener('click', openBillingPortal);
-$('#logoutBtn')?.addEventListener('click', doLogout);
-
+try{
+const ok = await ensurePlatinum();
+if (!ok) return;
 await refreshStreak();
-console.log('Platinum user logged in, dashboard unlocked.');
-} catch (err) {
-// If guard throws (not platinum, profile error), keep the message visible
-console.error('Init error:', err);
+wireControls();
+console.log("Platinum user logged in, dashboard unlocked!");
+}catch(err){
+console.error("Init error:", err);
+showStatus(`Init error: ${err.message || err}`, "bad", true);
 }
 });
 
-// ==== 5) Visible crash catcher (handy during setup) ====
-window.addEventListener('error', (e) => {
-document.body.insertAdjacentHTML('beforeend',
-`<pre class="error">Error: ${e.message}</pre>`);
-});
-window.addEventListener('unhandledrejection', (e) => {
-document.body.insertAdjacentHTML('beforeend',
-`<pre class="error">Promise Error: ${e.reason?.message || e.reason}</pre>`);
-});
+// tiny confetti (no deps)
+(function(){
+const c=document.getElementById('fx'), ctx=c.getContext('2d');
+let w,h,pieces=[],N=120; const colors=["#66e3ff","#a7f30d","#bfcf8e","#fde68a","#c7d2fe","#0066bb","#ffb703","#ffd166"];
+function rand(a,b){return Math.random()*(b-a)+a}
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+addEventListener('resize',resize,{passive:true}); resize();
+function burst(){ pieces.length=0; for(let i=0;i<N;i++){pieces.push({x:w/2,y:h/3,r:rand(2,5),vx:rand(-4,4),vy:rand(-8,-2),col:colors[(Math.random()*colors.length)|0],a:1});} requestAnimationFrame(draw); }
+function draw(){ ctx.clearRect(0,0,w,h); let alive=false; for(const p of pieces){ p.x+=p.vx; p.y+=p.vy; p.vy+=0.15; p.a*=0.98; if(p.a>0.02 && p.y<h+10) alive=true; ctx.globalAlpha=Math.max(p.a,0.01); ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.col; ctx.fill(); } ctx.globalAlpha=1; if(alive) requestAnimationFrame(draw); }
+window.confettiBurst = burst;
+})();
+
+// Surface errors directly on page (handy while wiring)
+window.addEventListener("error", (e)=>{ showStatus(`Error: ${e.message}`, "bad", true); console.error(e.error||e.message||e); });
+window.addEventListener("unhandledrejection", (e)=>{ showStatus(`Promise Error: ${e.reason}`, "bad", true); console.error(e.reason); });
 </script>
 </body>
 </html>
