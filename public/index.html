@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -10,160 +10,55 @@ body {
 margin: 0;
 background: #0f1220;
 color: #eaf2ff;
-font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
 }
-
-.container {
-max-width: 980px;
-margin: 40px auto 16px;
-padding: 0 16px;
-}
-
-.hero {
-background: #222;
-color: #ff0f00;
-padding: 20px;
-border-radius: 8px;
-text-align: center;
-font-size: 18px;
-font-weight: 500;
-line-height: 1.6;
-}
-
-.cta-row {
-display: flex;
-gap: 12px;
-flex-wrap: wrap;
-justify-content: center;
-margin: 22px auto 40px;
-}
-
-.btn {
-text-decoration: none;
-display: inline-block;
-padding: 12px 18px;
-border-radius: 10px;
-font-weight: 800;
-}
-
-.btn-primary {
-background: #ff0000;
-color: #101418;
-box-shadow: 0 4px 18px rgba(255, 208, 0, 0.25);
-}
-
-.btn-ghost {
-border: 1px solid rgba(255, 255, 255, 0.18);
-color: #cfe1ff;
-backdrop-filter: saturate(120%) blur(6px);
-}
-
-/* 👇 This is your login button style */
-.btn-secondary {
-background: #444;
-color: #fff;
-font-weight: 600;
-padding: 12px 18px;
-border-radius: 10px;
-text-decoration: none;
-display: inline-block;
-}
-
-.btn-secondary:hover {
-background: #666;
-}
-</style>
+.container { max-width: 980px; margin: 40px auto; padding: 0 16px; }
+.hero { background: #222; color: #ffe000; padding: 20px; border-radius: 8px; text-align: center; }
+.btn { text-decoration: none; display: inline-block; padding: 12px 18px; border-radius: 10px; font-weight: 800; margin-top: 20px; }
+.btn-primary { background: #2a3552; color: #eaf2ff; border: none; }
+.btn-primary:hover { background: #3a4a6d; }
 </style>
 </head>
 <body>
-
-<!-- Optional app mount -->
-<div id="app"></div>
-
-
+<div class="container">
+<div class="hero">
+<h1>Welcome to Operation Remoralization</h1>
+<p>Track your progress across all six pillars.</p>
+<a id="loginOrDash" class="btn btn-primary" href="/login.html">Log in</a>
+</div>
 </div>
 
-<!-- Supabase: swap login → Open Dashboard when session + tier=platinum -->
-<script>
-// Public keys (safe to expose)
-const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
-
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-(async () => {
-const btn = document.getElementById('loginOrDash');
-if (!btn) return;
-
-// Get logged-in user
-const { data: { user } } = await sb.auth.getUser();
-if (!user) return; // keep showing "Log in"
-
-// Look up user profile (check if Platinum)
-const { data: profile, error } = await sb
-.from('profiles')
-.select('tier')
-.eq('id', user.id)
-.single();
-
-if (!error && profile?.tier === 'platinum') {
-btn.textContent = 'Open Platinum Dashboard';
-btn.href = '/platinum/index.html';
-btn.style.background = '#2a3552';
-btn.style.color = '#eaf2ff';
-btn.style.borderColor = 'transparent';
-}
-})();
-</script>
-
-<!-- Your existing scripts -->
-<script defer src="/app.js?v=2"></script>
-<script defer src="/_vercel/insights/script.js"></script>
-  <!-- Supabase SDK -->
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = "https://qsvelfkcaaxgxgaewwwog.supabase.co";
+const SUPABASE_URL = "https://qsvelfkcaaxqgaewwwog.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 async function applyLoginSwap() {
-const btn = document.getElementById('loginOrDash');
+const btn = document.getElementById("loginOrDash");
 if (!btn) return;
 
-// 1) Session
-const { data: { user }, error: userErr } = await sb.auth.getUser();
-if (userErr) { console.error(userErr); return; }
+// Get session
+const { data: { user } } = await sb.auth.getUser();
+if (!user) {
+btn.textContent = "Log in";
+btn.href = "/login.html";
+return;
+}
 
-if (!user) { btn.style.display = ''; return; } // Logged out → show "Log in"
-
-// 2) Tier
-const { data: profile, error: profErr } = await sb
-.from('profiles').select('tier').eq('id', user.id).single();
-if (profErr) { console.error(profErr); return; }
-
-if (profile?.tier === 'platinum') {
-btn.textContent = 'Open Platinum Dashboard';
-btn.href = '/platinum/index.html';
-btn.classList.remove('btn-secondary');
-btn.classList.add('btn-primary');
-btn.style.display = '';
+// Check profile
+const { data: profile } = await sb.from("profiles").select("tier").eq("id", user.id).single();
+if (profile?.tier === "platinum") {
+btn.textContent = "Open Platinum Dashboard";
+btn.href = "/platinum/index.html";
 } else {
-btn.style.display = 'none'; // logged in but not platinum → hide button
+btn.textContent = "Log in";
+btn.href = "/login.html";
 }
 }
 
-// Run once after DOM is ready
 applyLoginSwap();
-
-// Watch in case app.js re-renders
-const target = document.getElementById('app') || document.body;
-new MutationObserver(() => applyLoginSwap())
-.observe(target, { childList: true, subtree: true });
 </script>
-
-<!-- Your existing scripts -->
-<script defer src="/app.js?v=5"></script>
 </body>
 </html>
-
