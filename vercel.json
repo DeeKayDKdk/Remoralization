@@ -4,9 +4,5 @@
 { "source": "/success", "destination": "/success.html" },
 { "source": "/cancel", "destination": "/cancel.html" },
 { "source": "/login", "destination": "/login.html" }
-],
-"redirects": [
-{ "source": "/platinum", "destination": "https://platinum.remoralization.com" },
-{ "source": "/platinum/(.*)", "destination": "https://platinum.remoralization.com/$1" }
 ]
 }
