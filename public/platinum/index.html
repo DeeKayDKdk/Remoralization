@@ -363,6 +363,18 @@ if(alive) requestAnimationFrame(draw);
 }
 window.confettiBurst = burst;
 })();
+  <script>
+// Debug catcher — show errors directly on the page
+window.addEventListener("error", (e) => {
+document.body.innerHTML += `<pre style="color:red">Error: ${e.message}</pre>`;
+console.error("Error:", e.error || e.message || e);
+});
+
+window.addEventListener("unhandledrejection", (e) => {
+document.body.innerHTML += `<pre style="color:red">Promise Error: ${e.reason}</pre>`;
+console.error("Promise Error:", e.reason);
+});
+</script>
 </script>
 </body>
 </html>
