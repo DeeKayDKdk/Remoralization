@@ -6,8 +6,7 @@
 { "source": "/login", "destination": "/login.html" }
 ],
 "redirects": [
-{ "source": "/platinum", "destination": "https://platinum.remoralization.com", "permanent": true },
-{ "source": "/platinum/(.*)", "destination": "https://platinum.remoralization.com/$1", "permanent": true },
-{ "source": "http://platinum.remoralization.com/(.*)", "destination": "https://platinum.remoralization.com/$1", "permanent": true }
+{ "source": "/platinum", "destination": "https://platinum.remoralization.com" },
+{ "source": "/platinum/(.*)", "destination": "https://platinum.remoralization.com/$1" }
 ]
 }
