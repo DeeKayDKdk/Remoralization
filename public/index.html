@@ -8,89 +8,124 @@
 <style>
 body {
 margin: 0;
-background: #0f1220;
+font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
+background: linear-gradient(to bottom, #0f1220, #1a1d35);
 color: #eaf2ff;
-font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
 }
-.container {
-max-width: 980px;
-margin: 40px auto;
-padding: 0 16px;
-text-align: center;
+
+/* NAVBAR */
+.navbar {
+position: fixed;
+top: 0;
+right: 0;
+padding: 16px 24px;
+width: 100%;
+display: flex;
+justify-content: flex-end;
+background: rgba(0,0,0,0.35);
+backdrop-filter: blur(6px);
+z-index: 1000;
 }
-.hero {
-background: #222;
-padding: 40px;
-border-radius: 8px;
-}
-h1 {
-color: #ffe000;
-margin-bottom: 10px;
-}
-p {
-margin-bottom: 20px;
-}
-.btn {
-text-decoration: none;
-display: inline-block;
-padding: 12px 18px;
-border-radius: 10px;
-font-weight: 600;
-transition: all 0.2s ease;
-}
-.btn-primary {
+.login-btn {
 background: #ffe000;
 color: #101418;
+padding: 6px 14px;
+border-radius: 6px;
+font-size: 14px;
+font-weight: 600;
+text-decoration: none;
+transition: 0.2s ease;
 }
-.btn-secondary {
-background: #444;
-color: #fff;
-}
-.btn:hover {
+.login-btn:hover {
 opacity: 0.85;
+}
+
+/* HERO */
+.hero {
+text-align: center;
+padding: 120px 20px 80px;
+}
+.hero h1 {
+color: #ffe000;
+font-size: 2.5rem;
+margin-bottom: 10px;
+}
+.hero p {
+font-size: 1.2rem;
+color: #cfd6ff;
+max-width: 600px;
+margin: 0 auto;
+}
+
+/* SIX PILLARS SECTION */
+.pillars {
+max-width: 1000px;
+margin: 60px auto;
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 20px;
+padding: 0 20px;
+}
+.pillar {
+background: #222842;
+padding: 20px;
+border-radius: 8px;
+text-align: center;
+transition: 0.2s ease;
+}
+.pillar:hover {
+background: #2e3455;
+}
+.pillar h3 {
+color: #ffe000;
+margin-bottom: 8px;
+}
+.pillar p {
+color: #cfd6ff;
+font-size: 0.95rem;
 }
 </style>
 </head>
 <body>
-<div class="container">
-<div class="hero">
+<!-- NAV -->
+<div class="navbar">
+<a href="/login.html?redirect=/platinum/index.html" class="login-btn">Log In</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
 <h1>Welcome to Operation Remoralization</h1>
-<p>Track your progress across all six pillars.</p>
-<!-- Login / Dashboard Button -->
-<a id="logInOrDash" href="/login.html" class="btn btn-secondary">Log In</a>
+<p>
+A framework to rebuild discipline, restore strength, and track your progress across all six pillars of life.
+</p>
+</section>
+
+<!-- SIX PILLARS -->
+<section class="pillars">
+<div class="pillar">
+<h3>Discipline</h3>
+<p>Strengthen habits through consistency and accountability.</p>
 </div>
+<div class="pillar">
+<h3>Physical</h3>
+<p>Track workouts, nutrition, and build resilience.</p>
 </div>
-
-<!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPABASE_URL = "https://qsvelfkcaaxqgaewwnog.supabase.co";
-const SUPABASE_ANON = "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ"; // replace with real anon key
-
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-async function applyLoginSwap() {
-const btn = document.getElementById('logInOrDash');
-if (!btn) return;
-
-const { data: { user } } = await sb.auth.getUser();
-if (!user) return; // still "Log In"
-
-const { data: profile } = await sb
-.from('profiles')
-.select('tier')
-.eq('id', user.id)
-.single();
-
-if (profile?.tier === 'platinum') {
-btn.textContent = 'Open Platinum Dashboard';
-btn.href = '/platinum/index.html';
-btn.classList.remove('btn-secondary');
-btn.classList.add('btn-primary');
-}
-}
-
-applyLoginSwap();
-</script>
+<div class="pillar">
+<h3>Knowledge</h3>
+<p>Expand mastery through study and deliberate practice.</p>
+</div>
+<div class="pillar">
+<h3>Work</h3>
+<p>Advance in your career and create long-term value.</p>
+</div>
+<div class="pillar">
+<h3>Finance</h3>
+<p>Improve financial literacy and build wealth.</p>
+</div>
+<div class="pillar">
+<h3>Community</h3>
+<p>Serve others, strengthen ties, and lead by example.</p>
+</div>
+</section>
 </body>
 </html>
