@@ -12,11 +12,43 @@ background: #0f1220;
 color: #eaf2ff;
 font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
 }
-.container { max-width: 980px; margin: 40px auto; padding: 0 16px; }
-.hero { background: #222; color: #ffe000; padding: 20px; border-radius: 8px; text-align: center; }
-.btn { text-decoration: none; display: inline-block; padding: 12px 18px; border-radius: 10px; font-weight: 800; margin-top: 20px; }
-.btn-primary { background: #2a3552; color: #eaf2ff; border: none; }
-.btn-primary:hover { background: #3a4a6d; }
+.container {
+max-width: 980px;
+margin: 40px auto;
+padding: 0 16px;
+text-align: center;
+}
+.hero {
+background: #222;
+padding: 40px;
+border-radius: 8px;
+}
+h1 {
+color: #ffe000;
+margin-bottom: 10px;
+}
+p {
+margin-bottom: 20px;
+}
+.btn {
+text-decoration: none;
+display: inline-block;
+padding: 12px 18px;
+border-radius: 10px;
+font-weight: 600;
+transition: all 0.2s ease;
+}
+.btn-primary {
+background: #ffe000;
+color: #101418;
+}
+.btn-secondary {
+background: #444;
+color: #fff;
+}
+.btn:hover {
+opacity: 0.85;
+}
 </style>
 </head>
 <body>
@@ -24,37 +56,37 @@ font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial
 <div class="hero">
 <h1>Welcome to Operation Remoralization</h1>
 <p>Track your progress across all six pillars.</p>
-<a id="loginOrDash" class="btn btn-primary" href="/login.html">Log in</a>
+<!-- Login / Dashboard Button -->
+<a id="logInOrDash" href="/login.html" class="btn btn-secondary">Log In</a>
 </div>
 </div>
 
 <!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = "https://qsvelfkcaaxqgaewwwog.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
+const SUPABASE_URL = "https://qsvelfkcaaxqgaewwnog.supabase.co";
+const SUPABASE_ANON = "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ"; // replace with real anon key
+
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 async function applyLoginSwap() {
-const btn = document.getElementById("loginOrDash");
+const btn = document.getElementById('logInOrDash');
 if (!btn) return;
 
-// Get session
 const { data: { user } } = await sb.auth.getUser();
-if (!user) {
-btn.textContent = "Log in";
-btn.href = "/login.html";
-return;
-}
+if (!user) return; // still "Log In"
 
-// Check profile
-const { data: profile } = await sb.from("profiles").select("tier").eq("id", user.id).single();
-if (profile?.tier === "platinum") {
-btn.textContent = "Open Platinum Dashboard";
-btn.href = "/platinum/index.html";
-} else {
-btn.textContent = "Log in";
-btn.href = "/login.html";
+const { data: profile } = await sb
+.from('profiles')
+.select('tier')
+.eq('id', user.id)
+.single();
+
+if (profile?.tier === 'platinum') {
+btn.textContent = 'Open Platinum Dashboard';
+btn.href = '/platinum/index.html';
+btn.classList.remove('btn-secondary');
+btn.classList.add('btn-primary');
 }
 }
 
