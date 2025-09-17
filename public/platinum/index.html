@@ -140,6 +140,37 @@ const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
+// ✅ Add auth + tier check right here
+(async () => {
+const { data: { user }, error: userError } = await sb.auth.getUser();
+if (userError || !user) {
+location.href = `/login.html?redirect=/platinum/index.html`;
+return;
+}
+
+const { data: profile, error: profError } = await sb
+.from('profiles')
+.select('tier')
+.eq('id', user.id)
+.single();
+
+if (profError) {
+console.error("Profile error:", profError);
+document.body.innerHTML = "<h2>Could not load your profile. Please try again.</h2>";
+return;
+}
+
+if (profile?.tier !== 'platinum') {
+document.body.innerHTML = `
+<h2>Your account is not Platinum.</h2>
+<p><a href="/join/platinum.html">Upgrade to Platinum</a> to access this dashboard.</p>
+`;
+return;
+}
+
+console.log("Platinum user logged in, dashboard unlocked!");
+})();
+
 // Elements
 const statusBox = document.getElementById('status');
 const streakEl = document.getElementById('streak');
