@@ -1,81 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Join Remoralization</title>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Join Remoralization</title>
+
+<!-- Supabase (for magic-link) -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<!-- Same vibe as Join-Platinum -->
 <style>
-:root {
---bg:#0f1220;
---panel:#1b2034;
---text:#9eebfb;
---muted:#9b9lc7;
---accent:#ffdf33;
---accent-ink:#111;
---ring: rgba(255,210,51,.45);
+:root{
+--bg:#0f1220; --card:#1c2233; --ring:#2e80f0;
+--shadow:0 30px 80px rgba(0,0,0,.45);
+--muted:#9fb3c8; --text:#eaf2ff; --accent:#e2a355; --danger:#ff6b6b;
+--radius:14px;
 }
-* { box-sizing:border-box; }
-html,body { height:100% }
-body {
-margin:0;
-background: radial-gradient(1200px 600px at 20% -10%, #222a48 0%, transparent 60%),
-radial-gradient(1000px 600px at 90% -20%, #1b2034 0%, transparent 60%);
-color:var(--text);
-font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-display:grid; place-items:center; padding:28px;
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{
+margin:0; color:var(--text);
+background:
+radial-gradient(1200px at 10% 20%, #182036, transparent 60%),
+radial-gradient(900px at 90% 10%, #241a05, transparent 55%),
+var(--bg);
+font:16px/1.6 "Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+display:grid; place-items:start center;
+padding:28px;
 }
-.wrap { width:min(720px, 96%) }
-.card {
-background:linear-gradient(180deg, #1b2034, #151a2b);
-border:1px solid #242b44; border-radius:14px; padding:28px;
-box-shadow:0 10px 30px rgba(0,0,0,.35);
+.wrap{ max-width:1024px; width:100%; margin:0 auto }
+.card{
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.08);
+border-radius:var(--radius);
+box-shadow:var(--shadow);
+padding:28px;
 }
-h1 { margin:0 0 8px; font-size:32px; letter-spacing:.2px }
-label { display:block; font-weight:600; margin:16px 0 6px }
-input {
+.title{ margin:0 0 8px; font-weight:800; font-size:34px; line-height:1.15 }
+.subtitle{ margin:8px 0 20px; opacity:.75 }
+.grid{
+display:grid; gap:16px;
+grid-template-columns:repeat(3,minmax(260px,1fr));
+margin-top:20px
+}
+@media (max-width:980px){
+.grid{ grid-template-columns:1fr }
+}
+.box{
+background:rgba(255,255,255,.04);
+border:1px solid var(--ring);
+border-radius:var(--radius);
+padding:20px;
+}
+.box h3{ margin:0 0 8px; font-size:20px; letter-spacing:.5px }
+.muted{ color:#9fb3c8; }
+label{ display:block; font-weight:700; margin:12px 6px 6px }
+input{
 width:100%; padding:12px 14px; border-radius:10px;
-border:1px solid #2e3654; background:#0f1426; color:var(--text);
+border:1px solid rgba(255,255,255,.08);
+background:#0f1126; color:var(--text);
 outline:none; transition:border-color .15s, box-shadow .15s;
 }
-input:focus { border-color:var(--accent); box-shadow:0 0 0 4px var(--ring); }
-.row { display:flex; gap:14px; flex-wrap:wrap }
-.actions { display:flex; gap:12px; align-items:center; margin-top:18px }
-.btn {
+input:focus{ border-color:var(--accent); box-shadow:0 0 0 4px var(--ring) }
+.row{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:18px }
+.actions{ display:flex; gap:12px; align-items:center; margin-top:18px }
+.btn{
 display:inline-block; border-radius:10px; padding:12px 18px;
 font-weight:800; text-decoration:none; cursor:pointer; user-select:none;
 border:1px solid transparent; transition:transform .045s ease, filter .12s;
 }
-.btn:active { transform:translateY(1px) }
-.btn-primary { background:var(--accent); color:var(--accent-ink) }
-.btn-primary:hover { filter:saturate(1.05) brightness(1.03) }
-.btn-ghost { background:transparent; color:var(--text); border-color:#2e3654 }
-small.note { color:var(--muted); display:block; margin-top:10px }
-.msg { margin-top:16px; font-weight:700 }
-.msg.ok { color:#22cc88 }
-.msg.err { color:#ff5577 }
+.btn:active{ transform:translateY(1px) }
+.btn-primary{ background:var(--accent); color:#101418 }
+.btn-ghost{ background:transparent; color:var(--text); border-color:#2e3654 }
+.msg{ margin-top:16px; font-weight:700 }
+.msg.ok{ color:#22cc88 } .msg.err{ color:#ff5577 }
+
+/* tiny helper for the footnote */
+small.note{ display:block; margin-top:10px; opacity:.75 }
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="card">
-<h1>Join Remoralization</h1>
-<p class="lead">Create a free account with a magic link. No password, no friction.</p>
+<h1 class="title">Join Remoralization</h1>
+<p class="subtitle">Create a free account with a magic link. No password, no friction.</p>
 
-<div class="row">
-<div>
+<!-- Benefits grid — mirrors Join-Platinum look -->
+<div class="grid">
+<div class="box">
+<h3>Bi-Weekly Review</h3>
+<p class="muted">Report against the six pillars and track momentum.</p>
+</div>
+<div class="box">
+<h3>Daily Micro-Check-Ins</h3>
+<p class="muted">Keep streaks alive without spam.</p>
+</div>
+<div class="box">
+<h3>Priority Help (Members)</h3>
+<p class="muted">Fast answers on workouts, systems, and roadblocks.</p>
+</div>
+<div class="box">
+<h3>Quarterly Challenges</h3>
+<p class="muted">Scoreboards &amp; prizes to push growth.</p>
+</div>
+<div class="box">
+<h3>Member Resources</h3>
+<p class="muted">Templates, trackers, and playbooks.</p>
+</div>
+<div class="box">
+<h3>Community Access</h3>
+<p class="muted">Value-aligned accountability.</p>
+</div>
+</div>
+
+<!-- Magic-link form -->
+<div class="row" style="margin-top:20px">
+<div style="flex:1 1 260px">
 <label for="full_name">Name</label>
 <input id="full_name" type="text" placeholder="Your full name" />
 </div>
-<div>
+<div style="flex:1 1 260px">
 <label for="email">Email</label>
 <input id="email" type="email" placeholder="you@example.com" />
 </div>
 </div>
 
 <div class="actions">
-<button id="sendBtn" type="button" class="btn btn-primary">Send Magic Link</button>
-<a class="btn btn-ghost" href="/">Back to Home</a>
+<button id="sendBtn" class="btn btn-primary">Send Magic Link</button>
+<a class="btn btn-ghost" href="/index.html">Back to Home</a>
 </div>
 
 <small class="note">We’ll email you a sign-in link. By continuing you agree to our terms.</small>
@@ -84,9 +136,10 @@ small.note { color:var(--muted); display:block; margin-top:10px }
 </div>
 
 <script>
-const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ"; // use anon/public key from Supabase dashboard
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// ---- Supabase setup (same as your previous join.html) ----
+const SUPABASE_URL = "https://qsvelfkcaaxgqaewwog.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 const $ = (sel, ctx=document) => ctx.querySelector(sel);
 const msg = (text, ok=false) => {
@@ -98,7 +151,7 @@ m.className = "msg " + (ok ? "ok" : "err");
 $("#sendBtn").addEventListener("click", async () => {
 const full_name = $("#full_name").value.trim();
 const email = $("#email").value.trim();
-if (!email) return msg("⚠ Please enter an email.");
+if (!email) return msg("Please enter an email.");
 
 try {
 const { error } = await supabase.auth.signInWithOtp({
@@ -112,7 +165,7 @@ if (error) throw error;
 msg("✅ Magic link sent! Check your email (and spam).", true);
 } catch (e) {
 console.error("Supabase auth error:", e);
-msg("❌ " + (e.message || "Something went wrong."));
+msg("✖ " + (e.message || "Something went wrong."));
 }
 });
 </script>
