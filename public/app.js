@@ -96,6 +96,9 @@ with a real human holding you accountable.
 
 <div class="actions">
 <a class="btn btn-primary" href="/join/platinum.html">Join Platinum</a>
+<a id="platinumButton" class="btn btn-secondary" href="/platinum/index.html">
+Platinum Login
+</a>
 <a class="btn btn-ghost" href="/join.html">Join Free</a>
 <a class="btn btn-ghost" href="/how.html">See How It Works</a>
 <a class="btn btn-ghost" href="/why.html">See Why It Works</a>
