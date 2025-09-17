@@ -6,150 +6,108 @@
 <title>Operation Remoralization</title>
 <link rel="stylesheet" href="/style.css" />
 <style>
+body { margin: 0; background: #0f1220; }
+</style>
+</head>
+<body>
+<!-- App root (app.js renders into here) -->
+<div id="app"></div>
+<div style="background:#222; color:#FFD700; padding:20px; border-radius:8px; text-align:center; font-size:18px; font-weight:500; margin:40px auto 10px auto; max-width:900px; line-height:1.6;">
+Join Operation Remoralization: Restore discipline, virtue, and purpose in yourself — so you can rebuild your family, your community, and your nation.
+The world doesn’t change from the top down. It changes because you decide to stand firm, live strong, and lead by example.
+The future needs you — become part of the renewal.
+</div>
+
+
+<!-- Load your SPA/router code from /public -->
+<script defer src="/app.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
+
+login.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Platinum Login | Operation Remoralization</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
 body {
-margin: 0;
-background: #0f1220;
-color: #eaf2ff;
-font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-}
-.container {
-max-width: 980px;
-margin: 40px auto 16px;
-padding: 0 16px;
-}
-.hero {
-background: #222;
-color: #ffe700;
-padding: 20px;
-border-radius: 8px;
-text-align: center;
-font-size: 18px;
-font-weight: 500;
-line-height: 1.6;
-}
-.cta-row {
-display: flex;
-gap: 12px;
-flex-wrap: wrap;
-justify-content: center;
-margin: 22px auto 40px;
-}
-.btn {
-text-decoration: none;
-display: inline-block;
-padding: 12px 18px;
-border-radius: 10px;
-font-weight: 800;
-}
-.btn-primary {
-background: #ff0000;
-color: #101418;
-box-shadow: 0 0 4px 18px rgba(255, 208, 0, 0.25);
-}
-.btn-ghost {
-border: 1px solid rgba(255, 255, 255, 0.18);
-color: #fcf1ff;
-backdrop-filter: saturate(120%) blur(6px);
-}
-/* 🔑 This is your login button style */
-.btn-secondary {
-background: #444;
+font-family: 'Inter', sans-serif;
+background: radial-gradient(circle at top, #0a0a0a, #1a1a1a);
 color: #fff;
-font-weight: 600;
-padding: 12px 18px;
-border-radius: 10px;
-text-decoration: none;
-display: inline-block;
+display: flex;
+align-items: center;
+justify-content: center;
+height: 100vh;
+margin: 0;
 }
-.btn-secondary:hover {
-background: #666;
+.card {
+background: rgba(255,255,255,0.05);
+padding: 2rem;
+border-radius: 12px;
+text-align: center;
+box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+max-width: 400px;
+width: 100%;
+}
+input {
+width: 100%;
+padding: 12px;
+margin: 1rem 0;
+border-radius: 8px;
+border: 1px solid #333;
+font-size: 1rem;
+}
+button {
+width: 100%;
+padding: 12px;
+border: none;
+border-radius: 8px;
+background: #ffcc00;
+font-weight: bold;
+font-size: 1rem;
+cursor: pointer;
+}
+button:hover {
+background: #ffaa00;
+}
+.note {
+margin-top: 1rem;
+font-size: 0.9rem;
+color: #aaa;
 }
 </style>
 </head>
 <body>
-<!-- Optional app mount -->
-<div id="app"></div>
+<div class="card">
+<h2>Log in to Platinum</h2>
+<p>Enter your email to receive a magic login link.</p>
+<input id="email" type="email" placeholder="you@example.com" />
+<button onclick="sendMagicLink()">Send Magic Link</button>
+<p id="message" class="note"></p>
+</div>
 
-<!-- Supabase: swap login → Dashboard when session + tier=platinum -->
-<script>
-// Public keys (safe to expose)
-const SUPABASE_URL = "https://qsvelfkcaaxgxaewwwog.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
-
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-(async () => {
-const btn = document.getElementById("loginOrDash");
-if (!btn) return;
-
-// Get logged-in user
-const { data: { user } } = await sb.auth.getUser();
-if (!user) return; // keep showing "Log in"
-
-// Look up user profile (check if Platinum)
-const { data: profile, error } = await sb
-.from("profiles")
-.select("tier")
-.eq("id", user.id)
-.single();
-
-if (!error && profile?.tier === "platinum") {
-btn.textContent = "Open Platinum Dashboard";
-btn.href = "/platinum/index.html";
-btn.style.background = "#2a3552";
-btn.style.color = "#eaf2ff";
-btn.style.borderColor = "transparent";
-}
-})();
-</script>
-
-<!-- Your existing scripts -->
-<script defer src="/app.js?v=2"></script>
-<script defer src="/_vercel/insights/script.js"></script>
-
-<!-- Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const sb2 = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const supabase = supabase.createClient(
+"YOUR_SUPABASE_URL",
+"YOUR_SUPABASE_ANON_KEY"
+);
 
-async function applyLoginSwap() {
-const btn = document.getElementById("loginOrDash");
-if (!btn) return;
-
-// 1) Session
-const { data: { user }, error: userErr } = await sb2.auth.getUser();
-if (userErr) { console.error(userErr); return; }
-if (!user) { btn.style.display = ""; return; } // Logged out → show "Log in"
-
-// 2) Tier
-const { data: profile, error: profErr } = await sb2
-.from("profiles")
-.select("tier")
-.eq("id", user.id)
-.single();
-if (profErr) { console.error(profErr); return; }
-
-if (profile?.tier === "platinum") {
-btn.textContent = "Open Platinum Dashboard";
-btn.href = "/platinum/index.html";
-btn.classList.remove("btn-secondary");
-btn.classList.add("btn-primary");
-btn.style.display = "";
-} else {
-btn.style.display = "none"; // logged in but not platinum
+async function sendMagicLink() {
+const email = document.getElementById("email").value;
+const { error } = await supabase.auth.signInWithOtp({
+email,
+options: { redirectTo: window.location.origin + "/platinum/index.html" }
+});
+document.getElementById("message").textContent = error
+? "❌ " + error.message
+: "✅ Check your email for the login link.";
 }
-}
-
-// Run once after DOM is ready
-applyLoginSwap();
-
-// Watch in case app.js re-renders
-const target = document.getElementById("app") || document.body;
-new MutationObserver(() => applyLoginSwap())
-.observe(target, { childList: true, subtree: true });
 </script>
 </body>
-  <div id="debug" style="position:fixed;left:12px;bottom:12px;padding:6px 10px;border-radius:8px;background:#222;color:#ffd761;font:12px/1.3 system-ui;z-index:9999;opacity:.9">
-loading…
-</div>
 </html>
