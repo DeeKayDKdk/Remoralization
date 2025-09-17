@@ -5,376 +5,197 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Platinum Dashboard · Operation Remoralization</title>
 
-<!-- Fonts & base styles -->
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-
+<!-- (optional) fonts + your styles go here -->
 <style>
-:root{
---bg:#0f1220; --card:#1c2233; --muted:#9fb3c8; --text:#eaf2ff; --accent:#00e6b0; --danger:#ff6b6b;
---ring:rgba(255,255,255,.08); --shadow:0 30px 80px rgba(0,0,0,.45);
---radius:14px;
-}
-*{box-sizing:border-box}
+:root{ --bg:#0f1220; --card:#1c2233; --text:#eaf2ff; --muted:#9fb3c8; --accent:#00e6b0; }
 html,body{height:100%}
-body{
-margin:0; background:radial-gradient(1200px at 10% 20%, #182036, transparent 60%),
-radial-gradient(900px at 90% -10%, #241a45, transparent 55%),
-var(--bg);
-color:var(--text);
-font:16px/1.6 "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-}
-.wrap{
-max-width:1024px; margin:48px auto; padding:0 20px;
-}
-.card{
-background:rgba(255,255,255,.04);
-border:1px solid var(--ring);
-border-radius:var(--radius);
-box-shadow:var(--shadow);
-padding:28px;
-}
-.title{margin:0 0 8px; font-weight:800; font-size:34px; line-height:1.15}
-.subtitle{margin:0 0 20px; color:var(--muted)}
-.grid{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:18px 0 6px}
-.pill{background:rgba(255,255,255,.06); border:1px solid var(--ring); border-radius:12px; padding:14px 16px}
-.pill h4{margin:0 0 4px; font-weight:800; letter-spacing:.2px}
-.row{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:18px}
-.btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:12px 16px; border-radius:10px; text-decoration:none; font-weight:700; border:1px solid transparent}
-.btn-primary{background:#00d084; color:#062019}
-.btn-ghost{background:transparent; border-color:var(--ring); color:#cfe1ff; backdrop-filter:saturate(120%) blur(6px)}
-.btn-danger{background:#2c1a1a; color:#ffdede; border-color:#3a2020}
-.btn-secondary{background:#3a435a; color:#fff}
+body{margin:0; font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color:var(--text); background:#0f1220;}
+.wrap{max-width:1024px; margin:48px auto; padding:0 20px;}
+.card{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:24px; box-shadow:0 30px 80px rgba(0,0,0,.45)}
+h1{margin:0 0 18px; font-weight:800}
+.note{color:var(--muted)}
+.row{display:flex; gap:16px; align-items:center; flex-wrap:wrap}
+.btn{display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.15); text-decoration:none; font-weight:700}
+.btn-primary{background:var(--accent); color:#00241e; border-color:transparent}
+.btn-ghost{background:transparent; color:var(--text)}
+.btn-danger{background:#d62d20}
 .right{margin-left:auto}
-.note{color:var(--muted); font-size:.95rem}
-.tiny{font-size:.85rem; color:var(--muted)}
-.ok{color:var(--accent)} .bad{color:var(--danger)}
-
-.split{display:grid; gap:16px; grid-template-columns:1.1fr .9fr; margin-top:20px}
-@media (max-width: 860px){ .split{grid-template-columns:1fr} }
-
-.box{background:rgba(255,255,255,.05); border:1px solid var(--ring); border-radius:12px; padding:18px}
-.box h3{margin:0 0 8px; font-size:18px}
-.kpi{display:flex; gap:14px; align-items:baseline}
-.kpi b{font-size:32px; letter-spacing:.5px}
-.dim{color:var(--muted)}
-
-/* Confetti canvas on check-in */
-#fx{position:fixed; inset:0; pointer-events:none}
+#status{display:none; margin-bottom:16px}
+pre.error{white-space:pre-wrap; color:#ffb4b4; background:#2a0f12; padding:12px; border-radius:8px; border:1px solid #702; }
 </style>
+
+<!-- Supabase v2 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-<canvas id="fx"></canvas>
-
 <div class="wrap">
 <div class="card">
-<div class="note">PLATINUM DASHBOARD</div>
-<h1 class="title">Welcome back.</h1>
-<p class="subtitle">Track your streaks, check in daily, book your 1:1, and manage billing — all in one place.</p>
+<h1>Platinum Dashboard</h1>
+<p class="note">Track your streaks, check in daily, book your 1:1, and manage billing.</p>
 
-<!-- Status / guards -->
-<div id="status" class="box" style="display:none"></div>
+<div id="status" class="note"></div>
 
-<div class="split">
-<!-- LEFT: Daily check-ins -->
-<div class="box">
-<h3>Daily Micro Check-Ins</h3>
-<div class="kpi">
-<span class="dim">Current streak</span>
-<b id="streak">–</b>
-<span class="dim">days</span>
-</div>
-<div class="row">
+<div class="row" style="margin:18px 0">
+<div><b>Daily Micro Check-Ins</b></div>
 <button id="checkinBtn" class="btn btn-primary">Mark today’s check-in</button>
 <span id="checkinMsg" class="note"></span>
-</div>
-<p class="tiny">Tip: one tap a day keeps momentum alive. We only count 1 check-in per day.</p>
-</div>
-
-<!-- RIGHT: Quick actions -->
-<div class="box">
-<h3>Quick Actions</h3>
-<div class="grid">
-<div class="pill">
-<h4>Bi-Weekly 1:1 Review</h4>
-<div class="note">Personal feedback + 2-week action plan.</div>
-<a class="btn btn-secondary" id="bookBtn" href="https://calendly.com/YOUR_HANDLE/biweekly-review" target="_blank">Book 1:1 Review</a>
-</div>
-<div class="pill">
-<h4>Priority Help</h4>
-<div class="note">Fast answers on workouts, systems, roadblocks.</div>
-<a class="btn btn-ghost" href="mailto:support@yourdomain.com">Contact Support</a>
-</div>
-<div class="pill">
-<h4>Quarterly Challenges</h4>
-<div class="note">Scoreboards + prizes.</div>
-<a class="btn btn-ghost" href="/platinum/challenges.html">View Challenges</a>
-</div>
-<div class="pill">
-<h4>Member Resources</h4>
-<div class="note">Templates and trackers.</div>
-<a class="btn btn-ghost" href="/platinum/resources.html">Open Resources</a>
-</div>
-<div class="pill">
-<h4>Community Access</h4>
-<div class="note">Value-aligned accountability.</div>
-<a class="btn btn-ghost" href="/platinum/community.html">Enter Community</a>
+<div class="right">
+<a id="billingBtn" class="btn btn-ghost" href="#">Open Billing Portal</a>
+<a id="logoutBtn" class="btn btn-danger" href="#">Log out</a>
 </div>
 </div>
 
-<div class="row" style="margin-top:12px">
-<button id="billingBtn" class="btn btn-ghost">Open Billing Portal</button>
-<a id="logoutBtn" class="btn btn-danger right" href="#">Log out</a>
-</div>
-</div>
+<div class="row">
+<div><b>Current streak:</b> <span id="streak">–</span> <span class="note">days</span></div>
 </div>
 </div>
 </div>
 
-<!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// 🔧 Replace these with your real values
-const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ";
+// ==== 1) CONFIG – replace with your real values (no extra spaces/newlines) ====
+const SUPABASE_URL = 'https://qsvelfkcaaxqgaewwwog.supabase.co'.trim(); // <-- your Project URL
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ'.trim(); // <-- your anon public key
+
+// Guard against common copy/paste issues
+if (!/^https?:\/\//.test(SUPABASE_URL)) {
+throw new Error('Supabase URL is not a valid http(s) URL. Double-check copy/paste.');
+}
+if (!SUPABASE_ANON || SUPABASE_ANON.length < 20) {
+throw new Error('Supabase anon key looks empty/short. Paste the full key.');
+}
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-// ✅ Add auth + tier check right here
-(async () => {
-const { data: { user }, error: userError } = await sb.auth.getUser();
-if (userError || !user) {
-location.href = `/login.html?redirect=/platinum/index.html`;
-return;
-}
-
-const { data: profile, error: profError } = await sb
-.from('profiles')
-.select('tier')
-.eq('id', user.id)
-.single();
-
-if (profError) {
-console.error("Profile error:", profError);
-document.body.innerHTML = "<h2>Could not load your profile. Please try again.</h2>";
-return;
-}
-
-if (profile?.tier !== 'platinum') {
-document.body.innerHTML = `
-<h2>Your account is not Platinum.</h2>
-<p><a href="/join/platinum.html">Upgrade to Platinum</a> to access this dashboard.</p>
-`;
-return;
-}
-
-console.log("Platinum user logged in, dashboard unlocked!");
-})();
-
-// Elements
-const statusBox = document.getElementById('status');
-const streakEl = document.getElementById('streak');
-const checkBtn = document.getElementById('checkinBtn');
-const checkMsg = document.getElementById('checkinMsg');
-const logoutBtn = document.getElementById('logoutBtn');
-const billingBtn = document.getElementById('billingBtn');
-
-// --- Auth gate + tier gate ---
-async function init() {
-// must be logged in
-
-if (profError) {
-console.error("Profile error:", profError);
-showStatus("Could not load your profile. Please try again.", "bad");
-return;
-}
-
-if (!profile || profile.tier !== "platinum") {
-showStatus(
-'Your account is not Platinum. <a href="/join/platinum.html">Upgrade to Platinum</a>.',
-"bad",
-true
-);
-disableDashboard();
-return;
-}
-
-// load streak + wire controls
-await refreshStreak();
-wireControls();
-}
-
-// Kick off init when the page loads
-window.addEventListener("DOMContentLoaded", () => {
-init().catch(err => {
-console.error("Init error:", err);
-const box = document.getElementById("status");
-if (box) {
-box.style.display = "block";
-box.innerHTML = `<span class="note">Init error</span> <span>${err.message || err}</span>`;
-}
-});
-
-// Kick off init when the page loads
-window.addEventListener('DOMContentLoaded', () => {
-init().catch(err => {
-console.error('Init error:', err);
-const box = document.getElementById('status');
-if (box) {
+// Small helpers
+const $ = sel => document.querySelector(sel);
+const showStatus = (html, tone = 'ok', sticky = false) => {
+const box = $('#status');
+if (!box) return;
 box.style.display = 'block';
-box.innerHTML = `<span class="note">Init error</span> <span>${err.message || err}</span>`;
-}
-});
-});
+box.innerHTML = html;
+if (!sticky) setTimeout(() => { box.style.display = 'none'; }, 4000);
+};
 
-// must be platinum
-const { data: profile, error } = await sb
+// ==== 2) PAGE GUARD – must be logged in & platinum ====
+async function requirePlatinum() {
+// session
+const { data: { user }, error: userErr } = await sb.auth.getUser();
+if (userErr || !user) {
+// bounce to login and return here after login
+location.href = '/login.html?redirect=%2Fplatinum%2Findex.html';
+return null;
+}
+
+// profile.tier
+const { data: profile, error: profErr } = await sb
 .from('profiles')
 .select('tier')
 .eq('id', user.id)
 .single();
 
-if (error) {
-showStatus("Could not load your profile. Please try again.", "bad");
-return;
+if (profErr) {
+showStatus(`<pre class="error">Could not load your profile.\n${profErr.message || profErr}</pre>`, 'bad', true);
+throw profErr;
 }
 
 if (!profile || profile.tier !== 'platinum') {
-showStatus(`Your account is <b>${profile?.tier || 'free'}</b>.
-<a class="btn btn-primary" style="margin-left:10px" href="/join/platinum.html">Upgrade to Platinum</a>`, "bad", true);
-disableDashboard();
-return;
+showStatus(
+`Your account is <b>${profile?.tier || 'free'}</b>. ` +
+`<a class="btn btn-ghost" href="/join/platinum.html" style="margin-left:10px">Upgrade to Platinum</a>`,
+'bad',
+true
+);
+throw new Error('Not platinum');
 }
 
-// load streak + wire controls
-await refreshStreak();
-wireControls();
-})();
-
-function showStatus(html, tone="ok", sticky=false){
-statusBox.style.display = "block";
-statusBox.innerHTML = `<span class="${tone==='ok'?'ok':'bad'}">●</span> <span class="note">${html}</span>`;
-if(!sticky){
-setTimeout(()=>{ statusBox.style.display="none"; }, 4000);
-}
+return user;
 }
 
-function disableDashboard(){
-checkBtn.disabled = true;
-billingBtn.disabled = true;
-}
-
-// --- Streaks + check-ins ---
-async function refreshStreak(){
+// ==== 3) FEATURE HOOKS (streak, check-in, billing, logout) ====
+async function refreshStreak() {
 const { data: { user } } = await sb.auth.getUser();
+if (!user) return;
+// your RPC or count query here; for now show 0 when unavailable
+try {
 const { data, error } = await sb.rpc('get_streak', { p_user_id: user.id });
-if (error){ streakEl.textContent = "–"; return; }
-streakEl.textContent = data ?? 0;
+$('#streak').textContent = error ? '0' : (data ?? 0);
+} catch {
+$('#streak').textContent = '0';
+}
 }
 
-function todayISO(){
+function todayISO() {
 const d = new Date();
 const m = String(d.getMonth()+1).padStart(2,'0');
 const day = String(d.getDate()).padStart(2,'0');
 return `${d.getFullYear()}-${m}-${day}`;
 }
 
-async function doCheckIn(){
-checkBtn.disabled = true;
-checkMsg.textContent = "Saving…";
+async function doCheckIn() {
+const btn = $('#checkinBtn'); const msg = $('#checkinMsg');
+btn.disabled = true; msg.textContent = 'Saving…';
+try {
 const { data: { user } } = await sb.auth.getUser();
-
 const { error } = await sb
 .from('daily_checkins')
 .upsert({ user_id: user.id, on_date: todayISO() }, { onConflict: 'user_id,on_date' });
-
-if (error){
-checkMsg.textContent = "Already checked in today (or error).";
-checkBtn.disabled = false;
-return;
+if (error) { msg.textContent = 'Already checked in today (or error).'; btn.disabled = false; return; }
+msg.textContent = 'Nice! Logged for today.'; await refreshStreak();
+setTimeout(() => { msg.textContent = ''; btn.disabled = false; }, 1200);
+} catch (e) {
+msg.textContent = 'Check-in failed.'; btn.disabled = false;
+console.error(e);
 }
-checkMsg.textContent = "Nice! Logged for today.";
-confettiBurst();
-await refreshStreak();
-setTimeout(()=>{ checkMsg.textContent=""; checkBtn.disabled=false; }, 1200);
 }
 
-// --- Billing portal (server should return { url }) ---
-async function openBillingPortal(){
-try{
-const res = await fetch('YOUR_PORTAL_ENDPOINT', { method:'POST' });
+async function openBillingPortal(e) {
+e?.preventDefault?.();
+showStatus('Opening billing portal…', 'ok');
+// TODO: replace with your backend endpoint that returns { url }
+try {
+const res = await fetch('/api/billing-portal', { method: 'POST' });
 const j = await res.json();
-if (j?.url) { location.href = j.url; }
-else { showStatus("Could not open billing portal.", "bad"); }
-}catch(e){
-showStatus("Billing portal error.", "bad");
+if (j?.url) location.href = j.url;
+else showStatus(`<pre class="error">Billing portal not configured.</pre>`, 'bad', true);
+} catch (err) {
+showStatus(`<pre class="error">Billing portal error:\n${err.message || err}</pre>`, 'bad', true);
 }
 }
 
-// --- Logout ---
-async function doLogout(){
+async function doLogout(e) {
+e?.preventDefault?.();
 await sb.auth.signOut();
-location.href = "/";
+location.href = '/';
 }
 
-function wireControls(){
-checkBtn.addEventListener('click', doCheckIn);
-billingBtn.addEventListener('click', openBillingPortal);
-logoutBtn.addEventListener('click', (e)=>{ e.preventDefault(); doLogout(); });
-}
+// ==== 4) BOOT ====
+window.addEventListener('DOMContentLoaded', async () => {
+try {
+const user = await requirePlatinum(); // redirects if not logged in
+if (!user) return; // stop here after redirect
 
-// --- Lightweight confetti (no deps) ---
-(function(){
-const c = document.getElementById('fx');
-const ctx = c.getContext('2d');
-let w,h, pieces=[]; const N=120;
-const colors = ["#66e3ff","#a7f30d","#fbcf8e","#fde68a","#c7d2fe","#00e6b0","#ffb703","#ffd166"];
-const rand = (a,b)=>Math.random()*(b-a)+a;
+// wire controls once allowed
+$('#checkinBtn')?.addEventListener('click', doCheckIn);
+$('#billingBtn')?.addEventListener('click', openBillingPortal);
+$('#logoutBtn')?.addEventListener('click', doLogout);
 
-function resize(){ w=c.width=innerWidth; h=c.height=innerHeight; }
-addEventListener('resize', resize, {passive:true}); resize();
-
-function burst(){
-pieces = [];
-for(let i=0;i<N;i++){
-pieces.push({
-x: w/2, y: h/3,
-r: rand(2,5),
-vx: rand(-4,4), vy: rand(-8,-2),
-col: colors[(Math.random()*colors.length)|0],
-a: 1
-});
+await refreshStreak();
+console.log('Platinum user logged in, dashboard unlocked.');
+} catch (err) {
+// If guard throws (not platinum, profile error), keep the message visible
+console.error('Init error:', err);
 }
-requestAnimationFrame(draw);
-}
-
-function draw(){
-ctx.clearRect(0,0,w,h);
-let alive=false;
-for(const p of pieces){
-p.x += p.vx; p.y += p.vy;
-p.vy += 0.15; p.a *= 0.98;
-if(p.a>0.02 && p.y < h+10) alive=true;
-ctx.globalAlpha = Math.max(p.a,0);
-ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.col; ctx.fill();
-}
-ctx.globalAlpha = 1;
-if(alive) requestAnimationFrame(draw);
-}
-window.confettiBurst = burst;
-})();
-  <script>
-// Debug catcher — show errors directly on the page
-window.addEventListener("error", (e) => {
-document.body.innerHTML += `<pre style="color:red">Error: ${e.message}</pre>`;
-console.error("Error:", e.error || e.message || e);
 });
 
-window.addEventListener("unhandledrejection", (e) => {
-document.body.innerHTML += `<pre style="color:red">Promise Error: ${e.reason}</pre>`;
-console.error("Promise Error:", e.reason);
+// ==== 5) Visible crash catcher (handy during setup) ====
+window.addEventListener('error', (e) => {
+document.body.insertAdjacentHTML('beforeend',
+`<pre class="error">Error: ${e.message}</pre>`);
 });
-</script>
+window.addEventListener('unhandledrejection', (e) => {
+document.body.insertAdjacentHTML('beforeend',
+`<pre class="error">Promise Error: ${e.reason?.message || e.reason}</pre>`);
+});
 </script>
 </body>
 </html>
