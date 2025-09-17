@@ -182,18 +182,6 @@ const billingBtn = document.getElementById('billingBtn');
 // --- Auth gate + tier gate ---
 async function init() {
 // must be logged in
-const { data: { user }, error: userError } = await sb.auth.getUser();
-if (userError || !user) {
-location.href = "/login.html?redirect=%2Fplatinum%2Findex.html";
-return;
-}
-
-// must be platinum
-const { data: profile, error: profError } = await sb
-.from("profiles")
-.select("tier")
-.eq("id", user.id)
-.single();
 
 if (profError) {
 console.error("Profile error:", profError);
