@@ -101,11 +101,13 @@ with a real human holding you accountable.
 <a class="btn btn-ghost" href="/why.html">See Why It Works</a>
 <a class="btn btn-ghost" href="/demoralization.html">Demoralization Index</a>
 
-<!-- 👇 This is the login button Supabase will swap -->
-<a id="loginOrDash" class="btn btn-secondary" href="/login.html">Log in</a>
+<!-- 👇 New Platinum Login button -->
+<a id="platinumButton" class="btn btn-secondary" href="/login.html?redirect=/platinum/index.html">
+Platinum Login
+</a>
 </div>
 </section>
-`;
+`
 }
 
 function renderForm(){
