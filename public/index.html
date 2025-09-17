@@ -16,31 +16,10 @@
 }
 * { box-sizing: border-box; }
 html, body { height:100% }
-body {
-margin:0; color:var(--text); background:
-radial-gradient(1200px at 10% 20%, #182036, transparent 60%),
-radial-gradient(900px at 90% 10%, #241a05, transparent 55%),
-var(--bg);
-font:16px/1.6 "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-}
-.wrap { max-width:1024px; margin:48px auto; padding:0 20px; }
-.card { background:rgba(255,255,255,.04); border:1px solid var(--ring); border-radius:var(--radius); box-shadow:var(--shadow); padding:28px; }
-.title { margin:0 0 8px; font-weight:800; font-size:34px; line-height:1.15 }
-.note { color:var(--muted); font-size:14px }
-.grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); margin:18px 0 0 }
-.btn {
-text-decoration:none; display:inline-block; padding:12px 18px; border-radius:10px; font-weight:800; border:1px solid var(--ring);
-box-shadow:0 4px 18px rgba(0,0,0,.25); background:rgba(255,255,255,.04); color:var(--text);
-}
-.btn-primary { background:#e2a355; color:#101418; border-color:transparent }
-.btn-danger { background:#ff6b6b; color:#101418; border-color:transparent }
-.row { display:flex; gap:12px; flex-wrap:wrap; align-items:center }
-.right { margin-left:auto }
-pre.err { white-space:pre-wrap; background:#270606; color:#ffb3b3; padding:10px; border-radius:10px; border:1px solid #3b0f0f }
-canvas#fx { position:fixed; inset:0; pointer-events:none }
-</style>
-</head>
 <body>
+<main id="app"></main>
+<script defer src="/app.js"></script>
+</body>
 
 <canvas id="fx"></canvas>
 
