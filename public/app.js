@@ -342,9 +342,8 @@ toast("Report submitted! You’ll receive a human response within 48 hours.");
 function boot() {
 try {
 const appRoot = document.getElementById('app');
-// If #app exists and the login button isn't in the DOM yet, render the hero
-if (appRoot && !document.getElementById('loginOrDash')) {
-renderHero();
+if (appRoot) {
+renderHero(); // always render hero on boot
 }
 } catch (e) {
 console.error('Boot error:', e);
