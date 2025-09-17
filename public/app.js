@@ -103,6 +103,7 @@ with a real human holding you accountable.
 
 <!-- 👇 This is the login button Supabase will swap -->
 <a id="loginOrDash" class="btn btn-secondary" href="/login.html">Log in</a>
+<a id="platinumButton" class="btn btn-secondary" href="/login.html?redirect=/platinum/index.html">Platinum Login</a>
 </div>
 </section>
 `;
