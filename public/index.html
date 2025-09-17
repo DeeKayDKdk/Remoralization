@@ -3,167 +3,27 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Platinum Dashboard • Operation Remoralization</title>
-<meta name="color-scheme" content="dark light" />
+<title>Operation Remoralization</title>
+
+<!-- fonts -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
+<!-- design tokens (yours) -->
 <style>
 :root{
 --bg:#0f1220; --card:#1c2233; --muted:#9fb3c8; --text:#eaf2ff; --accent:#e2a355; --danger:#ff6b6b;
---ring:rgba(255,255,255,.08); --shadow:0 30px 80px rgba(0,0,0,.45);
---radius:14px;
+--ring:rgba(255,255,255,.08); --shadow:0 30px 80px rgba(0,0,0,.45); --radius:14px;
 }
-* { box-sizing: border-box; }
-html, body { height:100% }
+*{ box-sizing:border-box }
+html, body{ height:100% }
+body{ margin:0; color:var(--text); font:16px/1.6 "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+</style>
+
+<!-- your SPA renderer -->
+<script defer src="/app.js"></script>
+</head>
 <body>
 <main id="app"></main>
-<script defer src="/app.js"></script>
-</body>
-
-<canvas id="fx"></canvas>
-
-<div class="wrap">
-<div class="card">
-<div class="row">
-<div class="right">
-<a id="billingBtn" class="btn">Open Billing Portal</a>
-<a id="logoutBtn" class="btn btn-danger">Log out</a>
-</div>
-</div>
-
-<!-- Supabase SDK -->
-<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- Your public Supabase values (safe to expose) -->
-<script>
-const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ"; // <-- your anon key
-</script>
-
-<script>
-(function(){
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-const statusBox = document.getElementById('status');
-const streakEl = document.getElementById('streak');
-const checkBtn = document.getElementById('checkBtn');
-const checkMsg = document.getElementById('checkMsg');
-const billingBtn= document.getElementById('billingBtn');
-const logoutBtn = document.getElementById('logoutBtn');
-
-function showStatus(html, tone="ok", sticky=false){
-statusBox.style.display = "block";
-statusBox.innerHTML = (tone==="ok" ? html : `<span style="color:#ffb3b3">${html}</span>`);
-if (!sticky) setTimeout(()=>{ statusBox.style.display="none"; }, 4000);
-}
-
-// Redirect helper
-function goLogin() {
-const r = encodeURIComponent('/platinum/index.html');
-location.href = `/login.html?redirect=${r}`;
-}
-
-// Guard: must be logged in + platinum
-(async () => {
-// 1) Session
-const { data: { user }, error: userErr } = await sb.auth.getUser();
-if (userErr || !user) return goLogin();
-
-// 2) Tier
-const { data: profile, error: profErr } = await sb
-.from('profiles').select('tier').eq('id', user.id).single();
-
-if (profErr) { showStatus("Could not load your profile. Please try again.", "bad", true); return; }
-if (!profile || profile.tier !== 'platinum') {
-document.body.innerHTML =
-`<div class="wrap"><div class="card">
-<h2>Upgrade to Platinum</h2>
-<p class="note">Your account isn’t Platinum yet. Unlock coaching, streaks, and more.</p>
-<a class="btn btn-primary" href="/join/platinum.html">Upgrade now</a>
-</div></div>`;
-return;
-}
-
-// Wire actions (you can replace the endpoints with your own)
-if (logoutBtn) logoutBtn.addEventListener('click', async () => {
-await sb.auth.signOut(); location.href = "/";
-});
-
-if (billingBtn) billingBtn.addEventListener('click', async () => {
-try {
-// TODO: Replace with your real API route that returns { url }
-const res = await fetch('/api/create-portal-session', { method:'POST' });
-const j = await res.json();
-if (j?.url) location.href = j.url; else showStatus("Could not open billing portal.", "bad");
-} catch (e) { showStatus("Billing portal error.", "bad"); console.error(e); }
-});
-
-// Example: streak + check-in
-await refreshStreak();
-checkBtn?.addEventListener('click', doCheckIn);
-})();
-
-async function refreshStreak(){
-// Example RPC or count – adjust to your schema
-const { data: { user } } = await sb.auth.getUser();
-if (!user) return;
-// If you have a Postgres function `get_streak(p_user_id uuid)`
-const { data, error } = await sb.rpc('get_streak', { p_user_id: user.id });
-if (error) { streakEl.textContent = "–"; return; }
-streakEl.textContent = data ?? 0;
-}
-
-function todayISO(){
-const d = new Date();
-return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-async function doCheckIn(){
-checkBtn.disabled = true; checkMsg.textContent = "Saving…";
-const { data: { user } } = await sb.auth.getUser();
-if (!user) return goLogin();
-const { error } = await sb
-.from('daily_checkins')
-.upsert({ user_id: user.id, on_date: todayISO() }, { onConflict: 'user_id,on_date' });
-
-if (error) { checkMsg.textContent = "Already checked in today (or error)."; checkBtn.disabled=false; return; }
-checkMsg.textContent = "Nice! Logged for today."; await refreshStreak();
-setTimeout(()=>{ checkMsg.textContent=""; checkBtn.disabled=false; }, 1200);
-}
-
-// Minimal confetti so success feels good
-(function(){ const c = document.getElementById('fx'); if(!c) return;
-const ctx = c.getContext('2d'); let w,h,pieces=[]; const N=120;
-const colors=["#e6e3ff","#a7f38d","#bfcf8e","#fde68a","#c7d2fe","#00e6b0","#ffb703","#ffd166"];
-function resize(){ w=c.width=innerWidth; h=c.height=innerHeight; } addEventListener('resize',resize,{passive:true}); resize();
-function burst(){ pieces=[]; for(let i=0;i<N;i++) pieces.push({x:w/2,y:h/3,r:2+Math.random()*5,vx:-4+Math.random()*8,vy:-8+Math.random()*6,col:colors[(Math.random()*colors.length)|0],a:1}); requestAnimationFrame(draw); }
-function draw(){ ctx.clearRect(0,0,w,h); let alive=false; for(const p of pieces){ p.x+=p.vx; p.y+=p.vy; p.vy+=0.15; p.a*=0.98; if(p.a>0.02 && p.y<h+10) alive=true; ctx.globalAlpha=Math.max(p.a,0); ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.col; ctx.fill(); } ctx.globalAlpha=1; if(alive) requestAnimationFrame(draw); }
-window.addEventListener('checkin:success', burst);
-})();
-
-// Show JS errors on the page so this never silently blanks
-addEventListener('error', e => {
-const box = document.getElementById('status') || document.body;
-box.innerHTML = `<pre class="err">Error: ${e.message}</pre>`;
-box.style.display = 'block';
-});
-addEventListener('unhandledrejection', e => {
-const box = document.getElementById('status') || document.body;
-const msg = e?.reason?.message || e?.reason || 'Unknown promise error';
-box.innerHTML = `<pre class="err">Promise Error: ${msg}</pre>`;
-box.style.display = 'block';
-});
-})();
-</script>
-     <a class="btn btn-secondary" href="/login.html?redirect=/platinum/index.html">
-Platinum Login
-</a>
-     <!-- Platinum Dashboard button (hidden until app.js shows it) -->
-<div style="text-align:center; margin:20px 0;">
-<a id="platinumButton" class="btn btn-secondary" style="display:none">
-Platinum Dashboard
-</a>
-</div>
 </body>
 </html>
