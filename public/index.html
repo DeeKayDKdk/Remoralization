@@ -4,26 +4,132 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Operation Remoralization</title>
-
-<!-- fonts -->
+<meta name="color-scheme" content="dark light" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
-<!-- design tokens (yours) -->
 <style>
 :root{
---bg:#0f1220; --card:#1c2233; --muted:#9fb3c8; --text:#eaf2ff; --accent:#e2a355; --danger:#ff6b6b;
---ring:rgba(255,255,255,.08); --shadow:0 30px 80px rgba(0,0,0,.45); --radius:14px;
+--bg:#0f1220; --card:#1c2233; --muted:#9fb3c8; --text:#eaf2ff;
+--accent:#2a3555; --ring:rgba(255,255,255,.08); --radius:14px;
+--shadow:0 30px 80px rgba(0,0,0,.45);
 }
-*{ box-sizing:border-box }
-html, body{ height:100% }
-body{ margin:0; color:var(--text); font:16px/1.6 "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-</style>
+* { box-sizing:border-box }
+html, body { height:100% }
+body{
+margin:0;
+color:var(--text);
+font:16px/1.6 "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+background:
+radial-gradient(1200px 600px at 20% -10%, #182036, transparent 60%),
+radial-gradient(900px at 90% 10%, #1a204e, transparent 55%),
+#0d0f1e;
+}
 
-<!-- your SPA renderer -->
-<script defer src="/app.js"></script>
+.main-hero { max-width:1000px; margin:64px auto 24px; padding:0 20px; text-align:center; }
+.title{ font-size:48px; font-weight:800; letter-spacing:.4px; margin:0 0 10px; }
+.subtitle{ color:var(--muted); margin:0 auto 22px; max-width:820px; }
+.actions{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+.btn{ display:inline-block; padding:12px 18px; border-radius:10px; text-decoration:none; font-weight:700; user-select:none; border:1px solid transparent; }
+.btn-primary{ background:#ffbd00; color:#101418; border-color:#ffd36a; box-shadow:0 4px 18px rgba(0,0,0,.25); }
+.btn-ghost{ background:transparent; color:var(--text); border-color:#2e3654; }
+
+.section-title{ max-width:1000px; margin:28px auto 8px; padding:0 20px; }
+.badge{ color:#9fb3c8; font-size:14px; }
+
+.container{ max-width:1000px; margin:0 auto 80px; padding:0 20px; }
+.grid{ display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+.card{
+background:rgba(255,255,255,.04);
+border:1px solid var(--ring);
+border-radius:var(--radius);
+padding:18px 18px 16px;
+box-shadow:var(--shadow);
+}
+.card h3{ margin:0 0 8px; }
+.card ul{ margin:0; padding-left:18px; }
+footer{ color:#ffc94d; opacity:.9; font-size:14px; text-align:center; margin:0 auto 28px; max-width:1000px; padding:0 20px; }
+</style>
 </head>
 <body>
-<main id="app"></main>
+
+<section class="main-hero">
+<h1 class="title">A call to adventure.</h1>
+<p class="subtitle">
+Build discipline, uphold values, and report your progress every two weeks — with a real human holding you accountable.
+</p>
+<div class="actions">
+<a class="btn btn-primary" href="/join.html">Join Free</a>
+<a class="btn btn-ghost" href="/how.html">See How It Works</a>
+<a class="btn btn-ghost" href="/why.html">See Why It Works</a>
+<a class="btn btn-ghost" href="/demoralization.html">Demoralization Index</a>
+</div>
+</section>
+
+<div class="section-title">
+<h2>The Six Pillars</h2>
+<div class="badge">Accountability-based growth</div>
+</div>
+
+<section class="container grid">
+<article class="card">
+<h3>Physical Discipline</h3>
+<ul>
+<li>Discipline made visible through physical form.</li>
+<li>A strong, healthy body reflects order, resilience, and gratitude.</li>
+<li>Purpose: To extend vitality and serve with energy, courage, and presence.</li>
+</ul>
+</article>
+
+<article class="card">
+<h3>Responsibility to Others</h3>
+<ul>
+<li>Duty binds the individual to family, community, and nation.</li>
+<li>Responsibility creates trust, stability, and purpose beyond self.</li>
+<li>Purpose: To be a protector, provider, and contributor, not a burden.</li>
+</ul>
+</article>
+
+<article class="card">
+<h3>Belief &amp; Morality</h3>
+<ul>
+<li>Morality gives direction, stability, and higher meaning.</li>
+<li>A shared belief system builds trust, law, and civilization.</li>
+<li>Purpose: To align daily action with timeless truth and the transcendent.</li>
+</ul>
+</article>
+
+<article class="card">
+<h3>Skill &amp; Mastery</h3>
+<ul>
+<li>Skill transforms potential into value; mastery creates legacy.</li>
+<li>Competence earns respect, independence, and authority.</li>
+<li>Purpose: To refine talent into contribution that uplifts others.</li>
+</ul>
+</article>
+
+<article class="card">
+<h3>Self-Reliance</h3>
+<ul>
+<li>Independence guards freedom and preserves dignity.</li>
+<li>Reliance on oneself builds resilience in hardship and strength in crisis.</li>
+<li>Purpose: To ensure each person is a pillar, not a liability, in civilization.</li>
+</ul>
+</article>
+
+<article class="card">
+<h3>Integrity &amp; Consistency</h3>
+<ul>
+<li>Integrity unites word and deed; consistency compounds virtue into legacy.</li>
+<li>Trust, leadership, and stability flow from steady, honest action.</li>
+<li>Purpose: To live by principle daily, protecting against corruption and collapse.</li>
+</ul>
+</article>
+</section>
+
+<footer>
+Join Operation Remoralization: Restore discipline, virtue, and purpose in yourself — so you can rebuild your family, your community, and your nation.
+</footer>
+
 </body>
 </html>
