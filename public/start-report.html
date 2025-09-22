@@ -2,548 +2,455 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Start Your Report</title>
 
-<!-- Theme (matches your main page) -->
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+/* ===== Theme (matches your main page) ===== */
 :root{
 --bg:#0f1220; /* page background */
 --panel:#1b2034; /* card background */
---text:#e9eefb; /* body text */
---muted:#9bb1c7; /* secondary text */
---accent:#ffd233; /* yellow brand */
+--text:#9ee0fb; /* body text */
+--muted:#9bb3c9; /* secondary text */
+--accent:#e2a355; /* yellow brand */
 --ink:#111; /* black on yellow */
---ring: rgba(255,210,51,.45);
---border:#242b44;
---glass: rgba(255,255,255,.06);
+--glass: rgba(255,255,255,.04);
+--border: rgba(235,235,251,.10);
 }
-
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-margin:0;
-color:var(--text);
+margin:0; color:var(--text);
 background:
 radial-gradient(1200px 600px at 20% -10%, #222a48 0%, transparent 60%),
 radial-gradient(1000px 600px at 90% -20%, #1b2034 0%, transparent 60%),
 var(--bg);
 font:16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
-
-.wrap{
-min-height:100%;
-display:grid;
-place-items:start center;
-padding:32px 18px 64px;
-}
+.wrap{min-height:100%; display:grid; place-items:start center; padding:32px 10px 64px}
 .card{
-width:min(900px, 94vw);
-background: linear-gradient(180deg, #1b2034, #151a2b);
+width:min(980px, 94vw);
+background: linear-gradient(185deg, #1b2034, #151a2b);
 border:1px solid var(--border);
-border-radius:16px;
-padding:28px;
+border-radius:16px; padding:28px;
 box-shadow: 0 12px 40px rgba(0,0,0,.35), inset 0 1px 0 var(--glass);
 }
-
-h1{
-margin:0 0 8px;
-font-size:clamp(26px, 3.2vw, 40px);
-letter-spacing:.2px;
+h1{margin:0 0 10px; font-size:clamp(26px, 3.2vw, 40px); letter-spacing:.2px}
+.meta{color:var(--muted); font-size:.95rem; margin-bottom:22px}
+.grid{display:grid; gap:16px}
+@media (min-width:880px){ .grid{grid-template-columns:1fr 1fr} }
+.field{background:rgba(255,255,255,.03); border:1px solid #2e3654; border-radius:12px; padding:14px 14px 10px}
+.label{display:block; color:var(--muted); font-weight:700; font-size:.92rem; margin:0 0 8px}
+input[type="number"], input[type="text"], textarea, select{
+width:100%; color:var(--text); background:#0f1426; border:1px solid #2e3654;
+border-radius:10px; padding:12px 14px; outline:none; transition:border-color .15s, box-shadow .15s;
 }
-.meta{
-color:var(--muted);
-font-size:.95rem;
-margin-bottom:22px;
-}
-
-.grid {
-display: grid;
-gap: 16px;
-grid-template-columns: 1fr; /* one column only */
-}
-@media (max-width: 880px){
-.grid{ grid-template-columns:1fr 1fr; }
-}
-@media (max-width: 560px){
-.grid{ grid-template-columns:1fr; }
-}
-
-.field{
-background: rgba(255,255,255,.03);
-border:1px solid #2e3654;
-border-radius:12px;
-padding:14px 14px 10px;
-transition:border-color .15s, box-shadow .15s;
-}
-.label{
-display:block;
-color:var(--muted);
-font-weight:700;
-font-size:.92rem;
-margin:0 0 8px;
-}
-input[type="number"], input[type="text"], textarea{
-width:100%;
-color:var(--text);
-background:#0f1426;
-border:1px solid #2e3654;
-border-radius:10px;
-padding:12px 14px;
-outline:none;
-transition:border-color .15s, box-shadow .15s;
-}
-input:focus, textarea:focus{
-border-color:var(--accent);
-box-shadow:0 0 0 4px var(--ring);
-}
-
-textarea{
-min-height:160px;
-resize:vertical;
-}
-
-.note{
-color:var(--muted);
-margin-top:6px;
-font-size:.9rem;
-}
-
-.actions{
-display:flex;
-gap:12px;
-align-items:center;
-margin-top:18px;
-flex-wrap:wrap;
-}
-.btn{
-display:inline-block;
-border-radius:12px;
-padding:12px 18px;
-font-weight:800;
-border:1px solid transparent;
-text-decoration:none;
-cursor:pointer;
-user-select:none;
-transition:transform .045s ease, filter .12s, box-shadow .12s, background .12s;
-}
-.btn:active{ transform:translateY(1px) }
-
-.btn-primary{
-background:var(--accent);
-color:var(--ink);
-box-shadow: 0 10px 24px rgba(255,210,51,.25);
-}
-.btn-primary:hover{ filter:saturate(1.05) brightness(1.02) }
-.btn-ghost{
-background:transparent;
-color:var(--text);
-border-color:#2e3654;
-}
-
+input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shadow:0 0 4px var(--accent) }
+textarea{min-height:140px; resize:vertical}
+.actions{display:flex; gap:12px; align-items:center; margin-top:18px; flex-wrap:wrap}
+.btn{display:inline-block; border-radius:12px; padding:12px 18px; font-weight:800; border:1px solid transparent; text-decoration:none; cursor:pointer; user-select:none; transition:transform .045s ease, filter .12s, box-shadow .12s, background .12s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{ background:var(--accent); color:var(--ink); box-shadow:0 10px 24px rgba(255,210,51,.25) }
+.btn-ghost{ background:transparent; color:var(--text); border-color:#2e3654 }
 .msg{ margin-top:14px; font-weight:700 }
-.msg.ok{ color:#22cc88 }
-.msg.err{ color:#ff5577 }
+.msg.ok{ color:#22cc88 } .msg.err{ color:#ff5577 }
+.note{ color:var(--muted); font-size:.9rem; margin: 6px 0 12px }
 
-/* little divider card for the narrative */
-.section{
-margin-top:18px;
-padding-top:6px;
-border-top:1px solid #232842;
-}
-  .note {
-margin-top: 6px;
-color: var(--muted, #c9c9c9);
-font-size: .92rem;
-}
+/* WHY hero strip */
+.report-hero { text-align:center; background: linear-gradient(145deg, #1c1c1c, #2a2a2a); color:#f5f5f5; padding: 18px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,.4); margin: 8px 0 18px }
+.report-hero h2{ margin: 0 0 6px; color:#ff4dad }
+.prefs{display:grid; gap:12px}
+@media (min-width:880px){ .prefs{grid-template-columns: 1.2fr .8fr} }
 
-button[disabled] {
-opacity: .6;
-cursor: not-allowed;
-filter: saturate(.5);
-}
+/* Drag list */
+.rank { list-style:none; padding:0; margin:0; display:grid; gap:8px }
+.rank li{ background:#121735; border:1px dashed #334; border-radius:10px; padding:10px 12px; cursor:grab; font-weight:700 }
+.rank li.dragging{ opacity:.5 }
+
+/* small chips */
+.chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px }
+.chip{ background:#18224a; border:1px solid #2e3654; padding:6px 10px; border-radius:999px; font-size:.85rem }
+
+/* inline badges */
+.badge{ display:inline-block; padding:4px 8px; border-radius:8px; background:#0e1733; border:1px solid #24305a; color:#8fb9ff; font-size:.8rem }
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="card">
-  <!-- Hero Section -->
-<div class="report-hero">
-<h1>🔥 Start Your Report. Sharpen Your Edge.</h1>
-<p class="hero-subtext">
-This is not busywork — it’s your <strong>checkpoint</strong>. Every reflection here measures
-where you stood strong, where you slipped, and where you’ll rise next.
-</p>
-
-<ul class="hero-list">
-<li>✅ <strong>Be Honest</strong> — Patterns matter more than perfect answers.</li>
-<li>✅ <strong>Stack Wins</strong> — One small improvement, repeated, changes everything.</li>
-<li>✅ <strong>Aim Forward</strong> — End each section with one action you’ll take in the next two weeks.</li>
-</ul>
-
-<p class="hero-footer">
-<strong>Why It Matters:</strong><br>
-Discipline, responsibility, morality, skill, vision, and legacy don’t improve by accident.
-They improve when measured. This report is how you measure, reset, and raise your standards.
-</p>
-
-<p class="hero-motivation">
-Take 10 minutes. Be real. Leave stronger than you arrived.
-</p>
+<!-- Header -->
+<h1>Start Your Report. Sharpen Your Edge.</h1>
+<div class="meta">
+<span id="periodMeta">Signed in as – Period: —</span>
+<span class="badge" id="cooldownNote" style="margin-left:8px"></span>
 </div>
 
-<!-- Add this CSS -->
-<style>
-.report-hero {
-text-align: center;
-background: linear-gradient(145deg, #1c1c1c, #2a2a2a);
-color: #f5f5f5;
-padding: 2rem;
-border-radius: 12px;
-margin-bottom: 2rem;
-box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-}
+<!-- WHY + Reminder / Scheduling -->
+<div class="report-hero">
+<h2>Your WHY</h2>
+<p style="margin:0 0 10px">Anchor your actions to something intrinsic. We’ll save this with your report and use it in reminders.</p>
+<div class="prefs">
+<div class="field">
+<label class="label" for="why_text">Why are you doing this?</label>
+<textarea id="why_text" placeholder="Write the reason that makes discipline worth it. Who/what are you protecting or building for?"></textarea>
+<div class="chips">
+<span class="chip">Family</span><span class="chip">Health</span><span class="chip">Service</span>
+<span class="chip">Mastery</span><span class="chip">Freedom</span><span class="chip">Legacy</span>
+</div>
+<div class="note">Tip: short, specific, and felt. You’ll see it in your weekly reminder.</div>
+</div>
 
-.report-hero h1 {
-font-size: 2rem;
-margin-bottom: 1rem;
-color: #ff4d4d; /* bold motivating color */
-}
+<div class="field">
+<label class="label">Reminders & Check-ins</label>
+<div class="grid" style="grid-template-columns:1fr">
+<button id="addWhyCalendar" class="btn btn-ghost">➕ Add Weekly WHY to Calendar (.ics)</button>
+<button id="enableNotify" class="btn btn-ghost">🔔 Enable Browser Notifications</button>
+<button id="bookCall" class="btn btn-ghost">📹 Book 20-min Check-in (1x / 2 weeks)</button>
+<a id="mailtoWhy" class="btn btn-ghost" href="#" target="_blank">✉️ Email my WHY to myself</a>
+<div class="note">We’ll nudge you the day <b>before</b> your period ends and on the <b>day of</b>. Calendar + notifications keep you honest.</div>
+</div>
+</div>
+</div>
+</div>
 
-.report-hero .hero-subtext {
-font-size: 1.1rem;
-margin-bottom: 1rem;
-}
-
-.report-hero .hero-list {
-list-style: none;
-padding: 0;
-margin: 1rem 0;
-text-align: left;
-max-width: 600px;
-margin-left: auto;
-margin-right: auto;
-}
-
-.report-hero .hero-list li {
-margin: 0.5rem 0;
-font-size: 1rem;
-}
-
-.report-hero .hero-footer {
-font-size: 1rem;
-margin-top: 1rem;
-line-height: 1.5;
-}
-
-.report-hero .hero-motivation {
-margin-top: 1rem;
-font-size: 1.2rem;
-font-weight: bold;
-color: #ffd166;
-}
-</style>
-<h1>Start Your Report</h1>
-<div class="meta" id="periodMeta">Signed in as • Period: </div>
-
-<!-- Scores grid -->
+<!-- Pillar textareas (unchanged content; ids preserved) -->
 <div class="grid">
 <div class="field">
 <label class="label" for="pd_note">Physical Discipline</label>
-<textarea id="pd_note" class="tarea" placeholder="What training, sleep, or nutrition wins did you have? Where did discipline slip? What’s the one improvement you’ll make next?"></textarea>
+<textarea id="pd_note" placeholder="Training, sleep, or nutrition wins? Where did discipline slip? What’s the one improvement you’ll make next?"></textarea>
 </div>
-
 <div class="field">
 <label class="label" for="ro_note">Responsibility to Others</label>
-<textarea id="ro_note" class="tarea" placeholder="How did you show up for family, friends, team, or community? What do you regret not doing? What will you do differently?"></textarea>
+<textarea id="ro_note" placeholder="How did you show up for family, friends, team, or community? What will you do differently?"></textarea>
 </div>
-
 <div class="field">
 <label class="label" for="bm_note">Belief & Morality</label>
-<textarea id="bm_note" class="tarea" placeholder="What principles guided your choices? Any moments you compromised or stood firm? One concrete way to align actions and values next."></textarea>
+<textarea id="bm_note" placeholder="What principles guided your choices? Any moments you compromised or stood firm? One concrete way to align actions and values next."></textarea>
 </div>
-
 <div class="field">
 <label class="label" for="sm_note">Skill & Mastery</label>
-<textarea id="sm_note" class="tarea" placeholder="What skills did you practice or ship? Where did you get stuck? What’s the next deliberate practice or milestone?"></textarea>
+<textarea id="sm_note" placeholder="What skills did you practice or ship? Where did you get stuck? What’s the next deliberate practice or milestone? "></textarea>
 </div>
-
 <div class="field">
 <label class="label" for="sr_note">Self-Reliance</label>
-<textarea id="sr_note" class="tarea" placeholder="Where did you solve problems independently? Where did dependency creep in? What’s one system or preparation you’ll add?"></textarea>
+<textarea id="sr_note" placeholder="Where did you solve problems independently? Any dependency? One system or preparation you’ll add next. "></textarea>
 </div>
-
 <div class="field">
 <label class="label" for="ic_note">Integrity & Consistency</label>
-<textarea id="ic_note" class="tarea" placeholder="Did your actions match your word? Where did you drift? What small daily habit will lock integrity in?"></textarea>
+<textarea id="ic_note" placeholder="Did your actions match your word? Where did you drift? What small daily habit will lock integrity in place? "></textarea>
 </div>
-</div>
-<!-- Narrative -->
-<div class="section field" style="margin-top:22px;">
+<div class="field" style="grid-column:1/-1">
 <label class="label" for="notes">Narrative / Reflection</label>
-<textarea id="notes" placeholder="What went well? What needs work? What’s one explicit commitment for the next two weeks?"></textarea>
-<small class="note" id="cooldownNote"></small>
+<textarea id="notes" placeholder="What went well? What needs work? One explicit commitment for the next two weeks."></textarea>
+</div>
 </div>
 
-<!-- Actions -->
-<!-- Success + Countdown placeholders -->
-<div id="msg" class="msg"></div>
-<div id="cooldownNote" class="note"></div>
+<!-- Rank Order (drag & drop) -->
+<div class="field" style="margin-top:14px">
+<label class="label">Rank which pillar you need most help with (top = needs most help)</label>
+<ul id="rankList" class="rank">
+<li draggable="true" data-key="physical">Physical Discipline</li>
+<li draggable="true" data-key="others">Responsibility to Others</li>
+<li draggable="true" data-key="morality">Belief & Morality</li>
+<li draggable="true" data-key="mastery">Skill & Mastery</li>
+<li draggable="true" data-key="selfReliance">Self-Reliance</li>
+<li draggable="true" data-key="integrity">Integrity & Consistency</li>
+</ul>
+<div class="note">Drag to reorder. We’ll tailor your action plan to your top 1–2.</div>
+</div>
+
+<!-- Action plan (auto-generated) -->
+<div class="field">
+<label class="label">Suggested Action Plan (auto)</label>
+<div id="planBox" class="note">When you save, we’ll generate 3 concrete next steps from your entries.</div>
+</div>
 
 <!-- Actions -->
 <div class="actions">
 <button id="saveBtn" class="btn btn-primary">Save Report</button>
-<a class="btn btn-ghost" href="/">Back to Home</a>
+<a class="btn btn-ghost" href="/index.html">Back to Home</a>
+<span id="msg" class="msg"></span>
 </div>
 
-<!-- (Optional) Hook up period text + cooldown display if you already compute these in JS -->
-<script>
-// Example: set the period line dynamically if you have start/end dates available
-// document.getElementById('periodMeta').textContent =
-// `Signed in as ${email} • Period: ${periodStart} → ${periodEnd}`;
+<div class="note">By saving you agree to store this report securely. You’ll receive a human response within 48 hours.</div>
+</div>
+</div>
 
-// Example: show a cooldown note if you’re enforcing 14-day spacing server-side
-// const msLeft = /* compute ms until next allowed report */ 0;
-// const cd = document.getElementById('cooldownNote');
-// if (msLeft > 0) {
-// const days = Math.floor(msLeft / 86400000);
-// const hours = Math.floor((msLeft % 86400000) / 3600000);
-// cd.textContent = `Next report available in ${days}d ${hours}h.`;
-// }
-
-// Wire your existing save logic to #saveBtn and the field IDs above.
-// On success: msg('Saved ✔', true) ; on error: msg('Error …', false)
-function msg(text, ok){
-const m = document.getElementById('msg');
-m.textContent = text;
-m.className = 'msg ' + (ok ? 'ok' : 'err');
-}
-</script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- ===== Scripts ===== -->
 <script>
-// 🔧 Replace these with your Supabase project values
-const SUPABASE_URL = 'https://qsvelfkcaaqxgaewwwog.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ';
+/** === CONFIG – replace with your values === **/
+const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co"; // ← replace
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ"; // ← replace
+const CAL_BOOKING_URL = "https://cal.com/your-handle/20-min-checkin"; // ← replace (or Calendly)
+
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const $ = (s)=>document.querySelector(s);
+/** === tiny helpers === */
+const $ = (sel, ctx=document) => ctx.querySelector(sel);
+const $$ = (sel, ctx=document) => [...ctx.querySelectorAll(sel)];
+function msg(text, ok=true){ const el=$("#msg"); if(!el) return; el.textContent=text; el.className="msg "+(ok?"ok":"err"); }
+function userEmailFallback(){ return (window._cachedUser && window._cachedUser.email) || ""; }
 
-function msg(text, ok=true){
-const el = $('#msg'); if(!el) return;
-el.textContent = text;
-el.className = 'msg ' + (ok ? 'ok':'err');
+/** === auth + period meta (uses your prior 14-day cooldown scent) === */
+const DAY = 86400000, COOLDOWN_MS = 13 * DAY; // 13 days block; show “period end” on day 14
+let nextReportAt = Number(localStorage.getItem("nextReportAt")||0);
+
+async function boot(){
+// who’s signed in
+const { data: { user }, error } = await supabase.auth.getUser();
+window._cachedUser = user || null;
+
+const meta = $("#periodMeta");
+if (user) {
+const start = new Date(); // start now for display
+const end = new Date(Date.now() + 14*DAY);
+meta.textContent = `Signed in as ${user.email} · Period: ${start.toISOString().slice(0,10)} → ${end.toISOString().slice(0,10)}`;
+} else {
+meta.textContent = "Not signed in";
 }
 
+// cooldown text + notifications check
+if (nextReportAt) startCountdown();
+setupReminderButtons();
+setupRankDrag();
+setupMailto();
+}
+document.addEventListener("DOMContentLoaded", boot);
+
+/** === Calendar file (.ics) for weekly WHY === */
+function makeICS({title, description, startDate, hours=9, minutes=0}){
+const dt = new Date(startDate);
+dt.setHours(hours, minutes, 0, 0);
+const pad = n=>String(n).padStart(2,"0");
+const stamp = (d)=>(
+d.getUTCFullYear()+
+pad(d.getUTCMonth()+1)+
+pad(d.getUTCDate())+"T"+
+pad(d.getUTCHours())+
+pad(d.getUTCMinutes())+
+pad(d.getUTCSeconds())+"Z"
+);
+const now = stamp(new Date());
+const dtstart = stamp(dt);
+const dtend = stamp(new Date(dt.getTime()+30*60000)); // 30min
+
+const ics = [
+"BEGIN:VCALENDAR",
+"VERSION:2.0",
+"PRODID:-//Remoralization//WHY Weekly//EN",
+"BEGIN:VEVENT",
+"UID:"+crypto.randomUUID(),
+"DTSTAMP:"+now,
+"DTSTART:"+dtstart,
+"DTEND:"+dtend,
+"RRULE:FREQ=WEEKLY",
+"SUMMARY:"+title,
+"DESCRIPTION:"+description.replace(/\n/g,"\\n"),
+"END:VEVENT",
+"END:VCALENDAR"
+].join("\r\n");
+
+const blob = new Blob([ics], {type:"text/calendar"});
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url; a.download = "why-weekly.ics"; a.click();
+setTimeout(()=>URL.revokeObjectURL(url), 2000);
+}
+
+/** === Notifications: day-before + day-of period end === */
+function setupReminderButtons(){
+$("#addWhyCalendar").addEventListener("click", ()=>{
+const why = ($("#why_text").value || "Remember your WHY.");
+makeICS({
+title:"WHY Reminder",
+description: why,
+startDate: new Date() // first reminder now; RRULE weekly
+});
+});
+
+$("#enableNotify").addEventListener("click", async ()=>{
+if (!("Notification" in window)) { msg("Notifications not supported in this browser.", false); return; }
+const perm = await Notification.requestPermission();
+if (perm !== "granted") { msg("Enable notifications to get period reminders.", false); return; }
+localStorage.setItem("notify_ok","1");
+msg("Notifications enabled. We’ll check daily for ‘day-before’ & ‘day-of’ alerts.", true);
+});
+
+// check daily for period reminders
+scheduleDailyCheck();
+}
+function scheduleDailyCheck(){
+// run now + every 6 hours
+checkPeriodAlerts();
+setInterval(checkPeriodAlerts, 6*60*60*1000);
+}
+function notifyOnce(key, title, body){
+if (localStorage.getItem(key)) return;
+if (localStorage.getItem("notify_ok")==="1" && "Notification" in window && Notification.permission==="granted"){
+new Notification(title, { body });
+localStorage.setItem(key, String(Date.now()));
+}
+}
+function checkPeriodAlerts(){
+if (!nextReportAt) return;
+const end = Number(nextReportAt); // “next report allowed at” timestamp
+const dayBefore = end - DAY;
+const now = Date.now();
+if (now >= dayBefore && now < end) {
+notifyOnce("alert_day_before", "Report tomorrow", "Your 2-week period ends tomorrow. Finish strong and line up your next actions.");
+}
+if (now >= end) {
+notifyOnce("alert_day_of", "Report today", "Your 2-week period ends today. Submit your report and book your check-in.");
+}
+}
+
+/** === Cal/Calendly booking guard (1x / 2 weeks) === */
+function setupMailto(){
+const a = $("#mailtoWhy");
+a.addEventListener("click", (e)=>{
+e.preventDefault();
+const subject = encodeURIComponent("My WHY (reminder)");
+const body = encodeURIComponent(($("#why_text").value||"")+"\n\n— sent from Remoralization");
+const email = userEmailFallback() || "";
+window.open(`mailto:${encodeURIComponent(email)}?subject=${subject}&body=${body}`, "_blank");
+});
+}
+$("#bookCall").addEventListener("click", (e)=>{
+e.preventDefault();
+const last = Number(localStorage.getItem("lastBookingAt")||0);
+const okAt = (last||0) + (14*DAY);
+if (Date.now() < okAt) {
+const days = Math.ceil((okAt - Date.now())/DAY);
+msg(`You already booked a check-in. You can book again in ~${days} day(s).`, false);
+return;
+}
+const email = encodeURIComponent(userEmailFallback());
+const link = `${CAL_BOOKING_URL}?email=${email}`;
+window.open(link, "_blank");
+localStorage.setItem("lastBookingAt", String(Date.now()));
+msg("Booking link opened in a new tab.", true);
+});
+
+/** === Drag & drop rank === */
+function setupRankDrag(){
+const list = $("#rankList");
+let dragEl = null;
+list.addEventListener("dragstart", (e)=>{ dragEl = e.target; dragEl.classList.add("dragging"); });
+list.addEventListener("dragend", (e)=>{ if(dragEl){ dragEl.classList.remove("dragging"); dragEl=null; }});
+list.addEventListener("dragover", (e)=>{
+e.preventDefault();
+const after = [...list.querySelectorAll("li:not(.dragging)")].find(li => e.clientY <= li.getBoundingClientRect().top + li.offsetHeight/2);
+if (!dragEl) return;
+if (after) list.insertBefore(dragEl, after); else list.appendChild(dragEl);
+});
+}
+function getRankOrder(){
+return $$("#rankList li").map(li => li.getAttribute("data-key"));
+}
+
+/** === Countdown & cooldown UI (keeps your original behavior) === */
+function startCountdown(){
+const cEl = $("#cooldownNote"), btn=$("#saveBtn");
+function update(){
+const left = nextReportAt - Date.now();
+if (left <= 0){ cEl.textContent = "You can submit a new report now."; btn.removeAttribute("disabled"); return; }
+const d = Math.floor(left / DAY), h = Math.floor((left % DAY) / 3600000);
+cEl.textContent = `Next report in ${d}d ${h}h`;
+btn.setAttribute("disabled", "true");
+}
+update();
+setInterval(update, 60000);
+}
+
+/** === Gather & plan === */
 function gatherForm(){
 return {
-physical: $('#pd_note')?.value?.trim() || '',
-others: $('#ro_note')?.value?.trim() || '',
-morality: $('#bm_note')?.value?.trim() || '',
-mastery: $('#sm_note')?.value?.trim() || '',
-selfreliance: $('#sr_note')?.value?.trim() || '',
-integrity: $('#ic_note')?.value?.trim() || '',
-notes: $('#notes')?.value?.trim() || ''
+why: ($("#why_text").value || "").trim(),
+physical: ($("#pd_note").value||"").trim(),
+others: ($("#ro_note").value||"").trim(),
+morality: ($("#bm_note").value||"").trim(),
+mastery: ($("#sm_note").value||"").trim(),
+selfReliance: ($("#sr_note").value||"").trim(),
+integrity: ($("#ic_note").value||"").trim(),
+narrative: ($("#notes").value||"").trim(),
+rank: getRankOrder()
 };
 }
 
-// ⏳ countdown helpers
-const DAY = 86400000;
-const COOLDOWN_MS = 13 * DAY; // 13 days
-function startCountdown(){
-const cdEl = $('#cooldownNote'), btn = $('#saveBtn');
-const target = parseInt(localStorage.getItem('nextReportAt'),10);
-if(!cdEl || !target) return;
-
-function update(){
-const left = target - Date.now();
-if (left <= 0){
-cdEl.textContent = "🎉 You can submit a new report now.";
-btn?.removeAttribute('disabled');
-clearInterval(t);
-return;
-}
-const d = Math.floor(left / DAY);
-const h = Math.floor((left % DAY) / 3600000);
-const m = Math.floor((left % 3600000) / 60000);
-cdEl.textContent = `⏳ Next report in ${d}d ${h}h ${m}m`;
-btn?.setAttribute('disabled','true'); // block during cooldown
+// simple plan generator (1–3 steps)
+function makePlan(form){
+const pick = (txt)=> (txt||"").split(/\n|\. |- /).map(s=>s.trim()).filter(Boolean)[0] || null;
+const top = (form.rank && form.rank[0]) || "physical";
+const map = {
+physical: ["Block 3× 45-min training sessions in your calendar.", "Pre-log meals for 3 days.", "Set sleep cutoff alarm at 10:00pm."],
+others: ["Schedule one deliberate act of service this week.", "Send 2 ‘thank-you & update’ messages.", "Plan a family/mentor check-in."],
+morality: ["Copy one guiding principle where you’ll see it daily.", "Choose one temptation guardrail for next 2 weeks.", "Do one integrity audit of a routine."],
+mastery: ["Define one drill you’ll practice 5× this week.", "Ship a tiny demo by next Friday.", "Book a 20-min feedback review."],
+selfReliance:["Replace 1 outsourced task with self-sufficiency.", "Batch prep for the hardest day ahead.", "Create a basic checklist for that recurring task."],
+integrity: ["Pick one micro-habit you’ll never miss (2 min).", "Track streak daily (no zero days).", "Reduce scope; keep the promise."]
+};
+const seed = pick(form[top]);
+const base = map[top];
+const steps = [];
+if (seed) steps.push(`1) ${seed}`);
+steps.push(...base.slice(0, 3 - steps.length));
+return { top, steps };
 }
 
-update();
-const t = setInterval(update, 60000); // update every minute
-}
-
+/** === Save === */
 async function saveReport(){
-const btn = $('#saveBtn');
-btn?.setAttribute('disabled','true');
-msg('Saving…');
+const btn = $("#saveBtn");
+btn.setAttribute("disabled","true");
+msg("Saving…");
 
 // must be logged in
-const { data:{ user }, error:authErr } = await supabase.auth.getUser();
-if(authErr || !user){ msg('Please sign in first.', false); btn?.removeAttribute('disabled'); return; }
+const { data: { user }, error:authErr } = await supabase.auth.getUser();
+if (authErr || !user){ msg("Please sign in first.", false); btn.removeAttribute("disabled"); return; }
 
-// send to DB (expects a JSONB column "form_data" in public.reports)
+const form = gatherForm();
+const plan = makePlan(form);
+$("#planBox").innerHTML = `<div><b>Top focus:</b> ${plan.top.replace(/([A-Z])/g," $1")}</div><ul>${plan.steps.map(s=>`<li>${s}</li>`).join("")}</ul>`;
+
+// send to DB (store new fields inside JSONB)
 const payload = {
 user_id: user.id,
-pillar_scores: gatherForm(), // goes into JSONB
-narrative: document.getElementById('notes')?.value.trim() || '', // goes into text
-period_start: new Date().toISOString().slice(0, 10),
-period_end: new Date(Date.now() + 13 * 86400000).toISOString().slice(0, 10)
+pillar_scores: form, // JSONB
+narrative: form.narrative,
+action_plan: plan, // JSONB
+period_start: new Date().toISOString().slice(0,10),
+period_end: new Date(Date.now() + 13*DAY).toISOString().slice(0,10) // display end (day 14)
 };
 
 const { data, error } = await supabase
-.from('reports')
+.from("reports")
 .insert(payload)
-.select('id')
+.select("id")
 .single();
 
-if (error) {
-msg('Error saving: ' + error.message, false);
-btn?.removeAttribute('disabled');
-return;
-} else {
-console.log("Report inserted with id:", data.id);
-}
+if (error){ msg("Error saving: "+error.message, false); btn.removeAttribute("disabled"); return; }
 
-// success + start cooldown
-msg('✅ Report saved! You’ll receive a human response within 48 hours.', true);
-const next = Date.now() + COOLDOWN_MS;
-localStorage.setItem('nextReportAt', String(next));
+// success → start cooldown + reminders
+nextReportAt = Date.now() + COOLDOWN_MS;
+localStorage.setItem("nextReportAt", String(nextReportAt));
+localStorage.removeItem("alert_day_before");
+localStorage.removeItem("alert_day_of");
 startCountdown();
+checkPeriodAlerts();
+
+msg("Report saved! You’ll receive a human response within 48 hours.", true);
 }
+$("#saveBtn").addEventListener("click", saveReport);
 
-document.addEventListener('DOMContentLoaded', () => {
-$('#saveBtn')?.addEventListener('click', saveReport);
-if(localStorage.getItem('nextReportAt')) startCountdown();
-});
-</script>
-  <script>
-(function () {
-// ---- 1) Prompt banks (10 pairs = 20 prompts per pillar) ----
-const PROMPTS = {
-pd_note: [
-{ past: "What training, sleep, or nutrition win defined the last 2 weeks?", future: "What one physical habit will you improve in the next 2 weeks?" },
-{ past: "Where did your discipline slip in the last 2 weeks?", future: "What safeguard will you add to hold discipline in the next 2 weeks?" },
-{ past: "What recovery practices helped most?", future: "What recovery change will make the biggest difference in the next 2 weeks?" },
-{ past: "When did you push past comfort in the last 2 weeks?", future: "Where will you seek discomfort next to grow stronger?" },
-{ past: "What consistent small win did you rack up physically?", future: "What single habit will you double down on for the next 2 weeks?" },
-{ past: "What derailed your nutrition or training?", future: "What pre-plan will stop that derailment next time?" },
-{ past: "What was your toughest physical test?", future: "What deliberate test will you set for yourself in the next 2 weeks?" },
-{ past: "How well did you sleep and recover overall?", future: "What’s one practical step to lock in better rest?" },
-{ past: "What energy trends did you notice over the last 2 weeks?", future: "What shift will you make to sustain higher energy?" },
-{ past: "What moment made you feel strongest?", future: "What moment do you want to create in the next 2 weeks?" }
-],
-ro_note: [
-{ past: "Who benefited most from your presence in the last 2 weeks?", future: "Who will you invest extra energy in over the next 2 weeks?" },
-{ past: "When did you fail to show up for someone?", future: "What concrete step will you take to repair or show up better?" },
-{ past: "What team or family moment stands out?", future: "What moment will you intentionally create in the next 2 weeks?" },
-{ past: "Who needed encouragement and got it?", future: "Who will you encourage directly in the next 2 weeks?" },
-{ past: "What promise did you keep?", future: "What promise will you make and keep in the next 2 weeks?" },
-{ past: "When did you put self over others?", future: "What one sacrifice will you make for others in the next 2 weeks?" },
-{ past: "What service act defined your last 2 weeks?", future: "What service act will define the next 2 weeks?" },
-{ past: "Where did you avoid responsibility?", future: "Where will you lean in next time?" },
-{ past: "Who did you mentor or guide?", future: "Who will you intentionally guide in the next 2 weeks?" },
-{ past: "How did you support your community?", future: "What specific community action will you take soon?" }
-],
-bm_note: [
-{ past: "What principle guided your hardest choice?", future: "What principle will you commit to living more visibly?" },
-{ past: "Where did you compromise values?", future: "Where will you refuse compromise in the next 2 weeks?" },
-{ past: "What virtue was strongest in your last 2 weeks?", future: "What virtue will you strengthen going forward?" },
-{ past: "Where were words and actions misaligned?", future: "What action will you align to your words?" },
-{ past: "When did you stand firm under pressure?", future: "Where will you prepare to stand firm next?" },
-{ past: "What temptation did you resist?", future: "What temptation will you guard against next?" },
-{ past: "What moral example did you set?", future: "What moral example do you want others to see?" },
-{ past: "What situation tested your values most?", future: "What upcoming situation will test them again?" },
-{ past: "When did you inspire belief in others?", future: "How will you inspire belief next?" },
-{ past: "What lesson about morality did you learn?", future: "What lesson will you live out in the next 2 weeks?" }
-],
-sm_note: [
-{ past: "What skill progressed most in the last 2 weeks?", future: "What single drill will accelerate mastery in the next 2 weeks?" },
-{ past: "Where did you get stuck?", future: "What exact drill or experiment will break the block?" },
-{ past: "What milestone did you achieve?", future: "What milestone is next on the path?" },
-{ past: "What new knowledge was most useful?", future: "What knowledge will you seek out in the next 2 weeks?" },
-{ past: "What feedback helped you improve?", future: "Who will you request feedback from next?" },
-{ past: "Where did you waste effort?", future: "What system will you use to cut wasted effort?" },
-{ past: "What output are you proud of?", future: "What output will you produce in the next 2 weeks?" },
-{ past: "Where did you shrink from challenge?", future: "What challenge will you face head-on?" },
-{ past: "What tool or method helped?", future: "What tool or method will you adopt?" },
-{ past: "What tiny improvement compounded?", future: "What small improvement will you compound next?" }
-],
-sr_note: [
-{ past: "What problem did you solve independently?", future: "What problem will you take full ownership of next?" },
-{ past: "Where did dependency creep in?", future: "What system will you add to reduce dependency?" },
-{ past: "When did you take initiative?", future: "Where will you take initiative next?" },
-{ past: "What resourcefulness did you show?", future: "What resource will you create or secure next?" },
-{ past: "When did you adapt to solve a challenge?", future: "What adaptation will you practice in the next 2 weeks?" },
-{ past: "Where did you lean too much on others?", future: "Where will you strengthen independence?" },
-{ past: "What survival or practical skill did you use?", future: "What survival or practical skill will you develop?" },
-{ past: "When did you take responsibility for your own prep?", future: "What prep will you add next?" },
-{ past: "What self-sufficient habit grew?", future: "What habit will you establish next?" },
-{ past: "What was your strongest independent action?", future: "What independent action will you take in the next 2 weeks?" }
-],
-ic_note: [
-{ past: "Did your actions match your words?", future: "What one small action will reinforce your word next?" },
-{ past: "Where did you drift from consistency?", future: "What habit will lock integrity in place?" },
-{ past: "What routine held firm?", future: "What routine will you establish or strengthen?" },
-{ past: "Where did you break a commitment?", future: "What new system will help you keep it next time?" },
-{ past: "When did you persist despite low motivation?", future: "Where will you persist again?" },
-{ past: "What truth was hardest to admit?", future: "What truth will you commit to live out?" },
-{ past: "What habit gave the biggest payoff?", future: "What habit will you reinforce daily?" },
-{ past: "When did you act with integrity unseen?", future: "What unseen integrity act will you repeat?" },
-{ past: "What consistency gave you strength?", future: "What consistency will you double down on?" },
-{ past: "Where were you two-faced?", future: "Where will you unify inner and outer self?" }
-],
-narrative_note: [
-{ past: "What story defined your last 2 weeks?", future: "What story do you want to write in the next 2 weeks?" },
-{ past: "What went well?", future: "What one explicit commitment will you make for the next 2 weeks?" },
-{ past: "What needs work?", future: "What concrete step will you take to address it?" },
-{ past: "What lesson did you learn?", future: "What lesson will you apply forward?" },
-{ past: "What surprised you?", future: "What surprise will you prepare for next?" },
-{ past: "What felt heavy?", future: "What will you lighten in the next 2 weeks?" },
-{ past: "What connection mattered most?", future: "What connection will you invest in next?" },
-{ past: "What setback taught you most?", future: "What comeback will you plan next?" },
-{ past: "What theme tied your last 2 weeks?", future: "What theme will define your next 2 weeks?" },
-{ past: "What memory stands out most?", future: "What memory do you want to create soon?" }
-]
-};
-
-// ---- 2) Determine today's index (0–9) ----
-function dayIndex() {
-const d = new Date();
-const start = new Date(d.getFullYear(), 0, 0);
-const diff = d - start + (start.getTimezoneOffset() - d.getTimezoneOffset()) * 60000;
-const day = Math.floor(diff / 86400000);
-return (day % 10); // 0–9 for 10-day cycle
-}
-const todayIndex = dayIndex();
-
-// ---- 3) Render prompts into placeholders + helper text ----
-Object.entries(PROMPTS).forEach(([id, pairs]) => {
-const ta = document.getElementById(id);
-if (!ta) return;
-
-const { past, future } = pairs[todayIndex];
-ta.setAttribute("placeholder", past + "\n\n" + future);
-
-const label = document.querySelector(`label[for="${id}"]`);
-if (label && !label.nextElementSibling?.classList?.contains("today-note")) {
-const note = document.createElement("div");
-note.className = "today-note";
-note.innerHTML = `<strong>Past:</strong> ${past}<br><strong>Future:</strong> ${future}`;
-label.insertAdjacentElement("afterend", note);
+/** === Prefill tiny conveniences === */
+document.addEventListener("click", (e)=>{
+if (e.target.classList.contains("chip")) {
+const t = $("#why_text");
+t.value = (t.value ? t.value+"\n" : "") + e.target.textContent;
 }
 });
-})();
 </script>
-
-<style>
-.today-note{
-color: var(--muted, #9c9c9c);
-font-size: .9rem;
-margin: 6px 0 8px;
-}
-</style>
-
 </body>
 </html>
