@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Start Your Report</title>
 
+<!-- Calendly widget styles -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -108,7 +114,11 @@ textarea{min-height:140px; resize:vertical}
 <div class="grid" style="grid-template-columns:1fr">
 <button id="addWhyCalendar" class="btn btn-ghost">➕ Add Weekly WHY to Calendar (.ics)</button>
 <button id="enableNotify" class="btn btn-ghost">🔔 Enable Browser Notifications</button>
-<button id="bookCall" class="btn btn-ghost">📹 Book 20-min Check-in (1x / 2 weeks)</button>
+<button
+class="btn btn-ghost"
+onclick="Calendly.initPopupWidget({ url: 'https://calendly.com/dylankundert/30min' }); return false;">
+📅 Book 20-min Check-in (1x / 2 weeks)
+</button>
 <a id="mailtoWhy" class="btn btn-ghost" href="#" target="_blank">✉️ Email my WHY to myself</a>
 <div class="note">We’ll nudge you the day <b>before</b> your period ends and on the <b>day of</b>. Calendar + notifications keep you honest.</div>
 </div>
@@ -452,5 +462,6 @@ t.value = (t.value ? t.value+"\n" : "") + e.target.textContent;
 }
 });
 </script>
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
 </body>
 </html>
