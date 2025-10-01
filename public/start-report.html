@@ -65,6 +65,33 @@ textarea{min-height:140px; resize:vertical}
 .msg.ok{ color:#22cc88 } .msg.err{ color:#ff5577 }
 .note{ color:var(--muted); font-size:.9rem; margin: 6px 0 12px }
 
+  /* === WHY section custom styles === */
+.section-title-why {
+font-size: 2.4rem;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: 2px;
+text-align: center;
+margin: 20px 0;
+
+/* Golden gradient effect */
+background: linear-gradient(90deg, #FFD700, #FFB700, #FFD700);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+
+/* Glowing effect */
+text-shadow: 0 0 10px rgba(255, 215, 0, 0.6),
+0 0 20px rgba(255, 183, 0, 0.4),
+0 0 30px rgba(255, 215, 0, 0.2);
+}
+
+.why-subtext {
+text-align: center;
+font-size: 1.1rem;
+color: #FFD700;
+margin-bottom: 15px;
+}
+
 /* WHY hero strip */
 .report-hero { text-align:center; background: linear-gradient(145deg, #1c1c1c, #2a2a2a); color:#f5f5f5; padding: 18px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,.4); margin: 8px 0 18px }
 .report-hero h2{ margin: 0 0 6px; color:#ff4dad }
@@ -96,17 +123,27 @@ textarea{min-height:140px; resize:vertical}
 
 <!-- WHY + Reminder / Scheduling -->
 <div class="report-hero">
-<h2>Your WHY</h2>
-<p style="margin:0 0 10px">Anchor your actions to something intrinsic. We’ll save this with your report and use it in reminders.</p>
-<div class="prefs">
+<h2 class="section-title-why">Your WHY</h2>
+<p class="why-subtext">
+Anchor your actions to something <strong>grand</strong> and <strong>lasting</strong>.
+This is your <em>North Star</em> — we’ll save it with your report and bring it back in your reminders.
+</p>
+
 <div class="field">
 <label class="label" for="why_text">Why are you doing this?</label>
 <textarea id="why_text" placeholder="Write the reason that makes discipline worth it. Who/what are you protecting or building for?"></textarea>
-<div class="chips">
-<span class="chip">Family</span><span class="chip">Health</span><span class="chip">Service</span>
-<span class="chip">Mastery</span><span class="chip">Freedom</span><span class="chip">Legacy</span>
+<div class="prefs">
+<span class="chip">Family</span>
+<span class="chip">Health</span>
+<span class="chip">Service</span>
+<span class="chip">Mastery</span>
+<span class="chip">Freedom</span>
+<span class="chip">Legacy</span>
 </div>
-<div class="note">Tip: short, specific, and felt. You’ll see it in your weekly reminder.</div>
+<div class="note">
+Tip: short, specific, and felt. You’ll see it in your weekly reminder.
+</div>
+</div>
 </div>
 
 <div class="field">
