@@ -158,18 +158,175 @@ onclick="Calendly.initPopupWidget({ url: 'https://calendly.com/dylankundert/30mi
 </div>
 </div>
 
-<!-- Rank Order (drag & drop) -->
-<div class="field" style="margin-top:14px">
-<label class="label">Rank which pillar you need most help with (top = needs most help)</label>
-<ul id="rankList" class="rank">
-<li draggable="true" data-key="physical">Physical Discipline</li>
-<li draggable="true" data-key="others">Responsibility to Others</li>
-<li draggable="true" data-key="morality">Belief & Morality</li>
-<li draggable="true" data-key="mastery">Skill & Mastery</li>
-<li draggable="true" data-key="selfReliance">Self-Reliance</li>
-<li draggable="true" data-key="integrity">Integrity & Consistency</li>
-</ul>
-<div class="note">Drag to reorder. We’ll tailor your action plan to your top 1–2.</div>
+<!-- RANK: mobile-friendly + desktop-drag (progressive enhancement) -->
+<section class="rank-box" id="rank-pillars">
+<h3>Rank which pillar you need most help with <small>(top = needs most help)</small></h3>
+
+<!-- Hidden field you can read on submit (comma-separated ids) -->
+<input type="hidden" name="pillars_order" id="pillars_order" value="physical,responsibility,belief,skill,self,integrity" />
+
+<ol class="rank-list" role="listbox" aria-label="Reorder pillars">
+<!-- Each <li> needs a stable data-id -->
+<li class="rank-item" data-id="physical" tabindex="0">
+<span class="item-label">Physical Discipline</span>
+<div class="item-controls" aria-hidden="true">
+<button class="btn-move-top" type="button" title="Move to top">⤒</button>
+<button class="btn-up" type="button" title="Move up">▲</button>
+<button class="btn-down" type="button" title="Move down">▼</button>
+</div>
+<span class="item-handle" draggable="true" aria-grabbed="false" aria-label="Drag handle">⋮⋮</span>
+</li>
+<li class="rank-item" data-id="responsibility" tabindex="0">
+<span class="item-label">Responsibility to Others</span>
+<div class="item-controls" aria-hidden="true">
+<button class="btn-move-top" type="button" title="Move to top">⤒</button>
+<button class="btn-up" type="button" title="Move up">▲</button>
+<button class="btn-down" type="button" title="Move down">▼</button>
+</div>
+<span class="item-handle" draggable="true" aria-grabbed="false" aria-label="Drag handle">⋮⋮</span>
+</li>
+<li class="rank-item" data-id="belief" tabindex="0">
+<span class="item-label">Belief &amp; Morality</span>
+<div class="item-controls" aria-hidden="true">
+<button class="btn-move-top" type="button" title="Move to top">⤒</button>
+<button class="btn-up" type="button" title="Move up">▲</button>
+<button class="btn-down" type="button" title="Move down">▼</button>
+</div>
+<span class="item-handle" draggable="true" aria-grabbed="false" aria-label="Drag handle">⋮⋮</span>
+</li>
+<li class="rank-item" data-id="skill" tabindex="0">
+<span class="item-label">Skill &amp; Mastery</span>
+<div class="item-controls" aria-hidden="true">
+<button class="btn-move-top" type="button" title="Move to top">⤒</button>
+<button class="btn-up" type="button" title="Move up">▲</button>
+<button class="btn-down" type="button" title="Move down">▼</button>
+</div>
+<span class="item-handle" draggable="true" aria-grabbed="false" aria-label="Drag handle">⋮⋮</span>
+</li>
+<li class="rank-item" data-id="self" tabindex="0">
+<span class="item-label">Self-Reliance</span>
+<div class="item-controls" aria-hidden="true">
+<button class="btn-move-top" type="button" title="Move to top">⤒</button>
+<button class="btn-up" type="button" title="Move up">▲</button>
+<button class="btn-down" type="button" title="Move down">▼</button>
+</div>
+<span class="item-handle" draggable="true" aria-grabbed="false" aria-label="Drag handle">⋮⋮</span>
+</li>
+<li class="rank-item" data-id="integrity" tabindex="0">
+<span class="item-label">Integrity &amp; Consistency</span>
+<div class="item-controls" aria-hidden="true">
+<button class="btn-move-top" type="button" title="Move to top">⤒</button>
+<button class="btn-up" type="button" title="Move up">▲</button>
+<button class="btn-down" type="button" title="Move down">▼</button>
+</div>
+<span class="item-handle" draggable="true" aria-grabbed="false" aria-label="Drag handle">⋮⋮</span>
+</li>
+</ol>
+
+<p class="rank-hint">Tip: On phones, use ▲ ▼ or “⤒” to reorder. On desktop, you can also drag via ⋮⋮.</p>
+</section>
+
+<style>
+.rank-box { padding:16px; border-radius:12px; background:#0C1222; border:1px solid #1F2A44; }
+.rank-box h3 { color:#D7E3FF; margin:0 0 10px; }
+.rank-list { margin:0; padding:0; list-style:decimal; counter-reset:item; }
+.rank-item {
+display:flex; align-items:center; gap:10px;
+background:#101933; border:1px dashed #2B3A66; border-radius:12px;
+padding:14px; margin:10px 0; color:#E7EEFF;
+}
+.item-label { flex:1; font-weight:600; }
+.item-controls { display:flex; gap:6px; }
+.item-controls button {
+font-size:14px; line-height:1; padding:8px 10px; border:1px solid #2B3A66;
+background:#0D1430; color:#E7EEFF; border-radius:8px;
+}
+.item-controls button:active { transform: translateY(1px); }
+.item-handle {
+cursor:grab; user-select:none; padding:8px 10px; border-radius:8px;
+border:1px solid #2B3A66; background:#0D1430;
+}
+/* Touch devices: emphasize buttons and de-emphasize drag handle */
+.touch .item-handle { opacity:0.4; }
+.touch .item-controls { opacity:1; }
+.rank-hint { color:#9AB0FF; font-size:0.9rem; margin-top:8px; }
+</style>
+
+<script>
+(function () {
+const root = document.getElementById('rank-pillars');
+const list = root.querySelector('.rank-list');
+const hidden = document.getElementById('pillars_order');
+
+// Detect touch to tweak UI
+if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+document.documentElement.classList.add('touch');
+}
+
+// Helpers
+function updateHidden() {
+const order = [...list.querySelectorAll('.rank-item')].map(li => li.dataset.id);
+hidden.value = order.join(',');
+}
+function move(li, dir) {
+if (dir === 'up' && li.previousElementSibling) {
+list.insertBefore(li, li.previousElementSibling);
+} else if (dir === 'down' && li.nextElementSibling) {
+list.insertBefore(li.nextElementSibling, li);
+}
+updateHidden();
+}
+function moveTop(li) {
+list.insertBefore(li, list.firstElementChild);
+updateHidden();
+}
+
+// Button events
+list.addEventListener('click', (e) => {
+const li = e.target.closest('.rank-item');
+if (!li) return;
+if (e.target.classList.contains('btn-up')) move(li, 'up');
+if (e.target.classList.contains('btn-down')) move(li, 'down');
+if (e.target.classList.contains('btn-move-top')) moveTop(li);
+});
+
+// Keyboard support (Up/Down/Home)
+list.addEventListener('keydown', (e) => {
+const li = e.target.closest('.rank-item');
+if (!li) return;
+if (e.key === 'ArrowUp') { e.preventDefault(); move(li, 'up'); li.focus(); }
+if (e.key === 'ArrowDown') { e.preventDefault(); move(li, 'down'); li.focus(); }
+if (e.key === 'Home') { e.preventDefault(); moveTop(li); li.focus(); }
+});
+
+// Simple desktop drag using HTML5 drag events (not shown on touch)
+if (!document.documentElement.classList.contains('touch')) {
+let dragging = null;
+list.addEventListener('dragstart', (e) => {
+const handle = e.target.closest('.item-handle');
+if (!handle) { e.preventDefault(); return; }
+dragging = handle.parentElement;
+handle.setAttribute('aria-grabbed', 'true');
+e.dataTransfer.effectAllowed = 'move';
+});
+list.addEventListener('dragover', (e) => {
+if (!dragging) return;
+e.preventDefault();
+const over = e.target.closest('.rank-item');
+if (over && over !== dragging) {
+const rect = over.getBoundingClientRect();
+const before = (e.clientY - rect.top) < rect.height / 2;
+list.insertBefore(dragging, before ? over : over.nextElementSibling);
+}
+});
+list.addEventListener('drop', () => { dragging?.querySelector('.item-handle')?.setAttribute('aria-grabbed','false'); dragging=null; updateHidden(); });
+list.addEventListener('dragend', () => { dragging?.querySelector('.item-handle')?.setAttribute('aria-grabbed','false'); dragging=null; updateHidden(); });
+}
+
+// Initialize current order in hidden field
+updateHidden();
+})();
+</script>
 </div>
 
 <!-- Action plan (auto-generated) -->
