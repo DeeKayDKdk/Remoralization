@@ -335,6 +335,23 @@ updateHidden();
 <div id="planBox" class="note">When you save, we’ll generate 3 concrete next steps from your entries.</div>
 </div>
 
+  <!-- Accountability Partner -->
+<div class="field" style="margin-top:18px">
+<label class="label" for="partner_email">Accountability Partner (optional)</label>
+<div style="display:flex; gap:8px; flex-wrap:wrap">
+<input id="partner_email" name="partner_email" type="email"
+placeholder="partner@email.com"
+style="flex:1; min-width:240px" />
+<button id="sendPartnerInvite" type="button" class="btn btn-secondary">
+Send Invite
+</button>
+</div>
+<div class="note">
+We’ll email them a secure sign-in link. They’ll land on your signup page with you marked as the inviter.
+</div>
+<span id="partnerInviteStatus" class="msg"></span>
+</div>
+  
 <!-- Actions -->
 <div class="actions">
 <button id="saveBtn" class="btn btn-primary">Save Report</button>
@@ -345,6 +362,69 @@ updateHidden();
 <div class="note">By saving you agree to store this report securely. You’ll receive a human response within 48 hours.</div>
 </div>
 </div>
+// ===== Accountability Partner Invite =====
+(function () {
+const emailInput = document.getElementById('partner_email');
+const sendBtn = document.getElementById('sendPartnerInvite');
+const statusEl = document.getElementById('partnerInviteStatus');
+
+if (!emailInput || !sendBtn) return;
+
+function setStatus(text, ok=false) {
+statusEl.textContent = text || '';
+statusEl.style.color = ok ? '#5bd08d' : '#ff9b9b';
+}
+
+function validEmail(s) {
+return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+}
+
+async function sendInvite() {
+const partnerEmail = (emailInput.value || '').trim().toLowerCase();
+if (!validEmail(partnerEmail)) {
+setStatus('Enter a valid email.', false);
+emailInput.focus();
+return;
+}
+
+try {
+sendBtn.disabled = true;
+const oldTxt = sendBtn.textContent;
+sendBtn.textContent = 'Sending…';
+setStatus('');
+
+// Get current user (optional—used to tag inviter id)
+const { data: userData } = await supabase.auth.getUser();
+const inviterId = userData?.user?.id || 'anon';
+
+// Where the partner lands after clicking their magic link
+const redirectTo =
+`${window.location.origin}/index.html?invited_by=${encodeURIComponent(inviterId)}`;
+
+// Send a magic link to the partner
+const { error } = await supabase.auth.signInWithOtp({
+email: partnerEmail,
+options: { emailRedirectTo: redirectTo }
+});
+
+if (error) throw error;
+
+setStatus('Invite sent! Ask them to check inbox (and spam).', true);
+
+} catch (err) {
+console.error(err);
+setStatus('Couldn’t send invite. Try again.', false);
+} finally {
+sendBtn.disabled = false;
+sendBtn.textContent = 'Send Invite';
+}
+}
+
+sendBtn.addEventListener('click', sendInvite);
+emailInput.addEventListener('keydown', (e) => {
+if (e.key === 'Enter') { e.preventDefault(); sendInvite(); }
+});
+})();
 
 <!-- ===== Scripts ===== -->
 <script>
