@@ -362,7 +362,17 @@ We’ll email them a secure sign-in link. They’ll land on your signup page wit
 <div class="note">By saving you agree to store this report securely. You’ll receive a human response within 48 hours.</div>
 </div>
 </div>
-// ===== Accountability Partner Invite =====
+
+<!-- ===== Scripts ===== -->
+<script>
+/** === CONFIG – replace with your values === **/
+const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co"; // ← replace
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ"; // ← replace
+const CAL_BOOKING_URL = "https://cal.com/your-handle/20-min-checkin"; // ← replace (or Calendly)
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ===== Accountability Partner Invite =====
 (function () {
 const emailInput = document.getElementById('partner_email');
 const sendBtn = document.getElementById('sendPartnerInvite');
@@ -425,15 +435,6 @@ emailInput.addEventListener('keydown', (e) => {
 if (e.key === 'Enter') { e.preventDefault(); sendInvite(); }
 });
 })();
-
-<!-- ===== Scripts ===== -->
-<script>
-/** === CONFIG – replace with your values === **/
-const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co"; // ← replace
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzdmVsZmtjYWFxeGdhZXd3d29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5ODUwNDYsImV4cCI6MjA3MjU2MTA0Nn0.kBZLf09JYQQNK-2xsJs5mj2m43q8bHgVs2jEZvObkMQ"; // ← replace
-const CAL_BOOKING_URL = "https://cal.com/your-handle/20-min-checkin"; // ← replace (or Calendly)
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /** === tiny helpers === */
 const $ = (sel, ctx=document) => ctx.querySelector(sel);
