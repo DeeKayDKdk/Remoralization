@@ -319,13 +319,20 @@ const messageEl = document.getElementById("formMessage");
 function setMessage(message, type = "default") {
 if (!messageEl) return;
 messageEl.textContent = message;
-messageEl.style.color =
-type === "error" ? "#ff8a8a" :
-type === "success" ? "#9fe870" :
-"var(--muted)";
+
+if (type === "error") {
+messageEl.style.color = "#ff8a8a";
+} else if (type === "success") {
+messageEl.style.color = "#9fe870";
+} else {
+messageEl.style.color = "var(--muted)";
+}
 }
 
-form?.addEventListener("submit", async (e) => {
+if (!form) {
+console.error("joinForm not found");
+} else {
+form.addEventListener("submit", async (e) => {
 e.preventDefault();
 
 const name = document.getElementById("name")?.value.trim() || "";
@@ -359,8 +366,8 @@ if (error) throw error;
 setMessage("Magic link sent. Check your email to continue.", "success");
 form.reset();
 } catch (err) {
-console.error(err);
-setMessage(err.message || "Something went wrong sending your magic link.", "error");
+console.error("Supabase auth error:", err);
+setMessage(err?.message || "Something went wrong sending your magic link.", "error");
 } finally {
 if (submitBtn) {
 submitBtn.disabled = false;
@@ -368,6 +375,7 @@ submitBtn.textContent = "Start Your Baseline";
 }
 }
 });
+}
 </script>
 </body>
 </html>
