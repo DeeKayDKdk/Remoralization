@@ -6,7 +6,7 @@
 <title>Join Remoralization</title>
 <meta
 name="description"
-content="Start your baseline assessment and begin your first accountability cycle in Physical Discipline, Order, Responsibility, and Mastery."
+content="Start your free baseline assessment and first score preview in Physical Discipline, Order, Responsibility, and Mastery."
 />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
@@ -31,7 +31,8 @@ gap: 22px;
 align-items: start;
 }
 
-.join-panel {
+.join-panel,
+.join-right {
 padding: 28px;
 }
 
@@ -52,6 +53,7 @@ margin: 0 0 22px;
 color: #fff0ae;
 font-weight: 800;
 font-size: 15px;
+line-height: 1.5;
 }
 
 .join-grid {
@@ -62,8 +64,8 @@ margin-top: 18px;
 }
 
 .join-mini-card {
-background: rgba(255,255,255,0.02);
-border: 1px solid rgba(255,255,255,0.07);
+background: rgba(255, 255, 255, 0.02);
+border: 1px solid rgba(255, 255, 255, 0.07);
 border-radius: 16px;
 padding: 18px;
 }
@@ -77,10 +79,35 @@ margin-bottom: 8px;
 margin: 0;
 color: var(--muted);
 font-size: 15px;
+line-height: 1.55;
 }
 
-.join-right {
-padding: 26px;
+.pillars-strip {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 18px;
+}
+
+.pillars-strip span {
+display: inline-block;
+padding: 8px 10px;
+border-radius: 999px;
+background: rgba(255, 255, 255, 0.03);
+border: 1px solid rgba(255, 255, 255, 0.06);
+color: #d5e0ef;
+font-size: 14px;
+font-weight: 600;
+}
+
+.back-link {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+margin-top: 18px;
+color: #d8e2f0;
+font-weight: 700;
+text-decoration: none;
 }
 
 .join-right h2 {
@@ -143,6 +170,10 @@ flex-wrap: wrap;
 margin-top: 4px;
 }
 
+.join-actions .btn {
+min-width: 190px;
+}
+
 .join-note {
 margin-top: 10px;
 color: var(--muted);
@@ -153,33 +184,7 @@ font-size: 14px;
 margin-top: 12px;
 font-size: 13px;
 color: var(--muted);
-}
-
-.pillars-strip {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-margin-top: 18px;
-}
-
-.pillars-strip span {
-display: inline-block;
-padding: 8px 10px;
-border-radius: 999px;
-background: rgba(255,255,255,0.03);
-border: 1px solid rgba(255,255,255,0.06);
-color: #d5e0ef;
-font-size: 14px;
-font-weight: 600;
-}
-
-.back-link {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-margin-top: 18px;
-color: #d8e2f0;
-font-weight: 700;
+line-height: 1.5;
 }
 
 @media (max-width: 980px) {
@@ -204,6 +209,7 @@ flex-direction: column;
 
 .join-actions .btn {
 width: 100%;
+min-width: 0;
 }
 }
 </style>
@@ -215,12 +221,12 @@ width: 100%;
 <div class="eyebrow">Start your baseline</div>
 <h1>Join Remoralization</h1>
 <p class="join-subtitle">
-Begin with a free baseline assessment and first score preview.
-Then step into a real accountability system built around
-<strong>Physical Discipline</strong>, <strong>Order</strong>,
-<strong>Responsibility</strong>, and <strong>Mastery</strong>.
+Begin with a free baseline assessment and first score preview. Then step into a real accountability system built around
+<strong>Physical Discipline</strong>, <strong>Order</strong>, <strong>Responsibility</strong>, and <strong>Mastery</strong>.
 </p>
-<p class="join-tagline">No password friction. Just a magic link to get started.</p>
+<p class="join-tagline">
+No password to remember. Just a magic link and your first step into the system.
+</p>
 
 <div class="join-grid">
 <article class="join-mini-card">
@@ -256,16 +262,15 @@ Then step into a real accountability system built around
 
 <div class="card join-right">
 <div class="eyebrow">Free front door</div>
-<h2>Your first step is simple</h2>
+<h2>Start with the free front door</h2>
 <p>
-Create your account and begin the front door process. Free should show you where you stand.
-The full system keeps you moving.
+Create your account and begin the front door process. Free shows you where you stand. The full system keeps you moving.
 </p>
 
 <ul class="join-list">
+<li>create your account</li>
 <li>complete your baseline assessment</li>
 <li>get your first score preview</li>
-<li>define your body goal and main pursuit</li>
 <li>begin your first accountability cycle</li>
 </ul>
 
@@ -281,7 +286,7 @@ The full system keeps you moving.
 </div>
 
 <div class="join-actions">
-<button type="submit" class="btn btn-primary">Send Magic Link</button>
+<button type="submit" class="btn btn-primary">Start Your Baseline</button>
 <a class="btn btn-ghost" href="/how.html">See How It Works</a>
 </div>
 </form>
@@ -311,8 +316,7 @@ alert("Please enter your email.");
 return;
 }
 
-// Replace this block with your actual Supabase / auth logic.
-// Example placeholder behavior:
+// Replace this placeholder with your real auth logic.
 console.log("Magic link request:", { name, email });
 
 alert("Magic link flow placeholder: connect this form to your auth logic.");
