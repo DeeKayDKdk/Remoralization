@@ -308,7 +308,7 @@ By continuing, you agree to your terms and acknowledge that this is the start of
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const SUPABASE_URL = "https://qsvelkfcaaqxgaewwwog.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O";
+const SUPABASE_ANON_KEY = "PASTE_YOUR_sb_publishable_KEY_HERE";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -316,21 +316,13 @@ const form = document.getElementById("joinForm");
 const submitBtn = document.getElementById("joinSubmitBtn");
 const messageEl = document.getElementById("formMessage");
 
-if (!form) {
-console.error("joinForm not found");
-}
-
 function setMessage(message, type = "default") {
 if (!messageEl) return;
 messageEl.textContent = message;
-
-if (type === "error") {
-messageEl.style.color = "#ff8a8a";
-} else if (type === "success") {
-messageEl.style.color = "#9fe870";
-} else {
-messageEl.style.color = "var(--muted)";
-}
+messageEl.style.color =
+type === "error" ? "#ff8a8a" :
+type === "success" ? "#9fe870" :
+"var(--muted)";
 }
 
 form?.addEventListener("submit", async (e) => {
@@ -355,7 +347,7 @@ try {
 const { error } = await supabase.auth.signInWithOtp({
 email,
 options: {
-emailRedirectTo: "https://www.remoralization.com/start-report.html",
+emailRedirectTo: "https://remoralization.com/start-report.html",
 data: {
 full_name: name
 }
