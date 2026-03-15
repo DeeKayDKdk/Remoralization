@@ -36,6 +36,15 @@ return `
 `;
 }
 
+function proofCard(title, body) {
+return `
+<article class="card proof-journey-card">
+<div class="panel-label">${title}</div>
+<p class="card-copy">${body}</p>
+</article>
+`;
+}
+
 function homePage() {
 return `
 <header class="topbar">
@@ -51,12 +60,15 @@ return `
 <section class="hero container">
 <div class="hero-copy">
 ${sectionLabel("Structured accountability for men")}
-<h1>Build integrity through visible progress.</h1>
+<h1>A structured accountability system for men who are done drifting.</h1>
 <p class="subtitle">
-Remoralization is a real accountability system for men who want measurable improvement in
-<strong>Physical Discipline</strong>, <strong>Order</strong>, <strong>Responsibility</strong>, and
-<strong>Skill / Mastery</strong>. Report every two weeks. Review monthly. Build proof that your life is changing.
+Remoralization helps men build visible progress in
+<strong>Physical Discipline</strong>, <strong>Order</strong>,
+<strong>Responsibility</strong>, and <strong>Mastery</strong>
+through biweekly scorecards, monthly review, and real human accountability.
 </p>
+
+<p class="hero-tagline">Integrity is not a feeling. It is proof.</p>
 
 <div class="actions">
 <a class="btn btn-primary" href="/join.html">Join Free</a>
@@ -77,7 +89,7 @@ Remoralization is a real accountability system for men who want measurable impro
 ${scoreRow("Physical Discipline", "19 / 25", "tone-good")}
 ${scoreRow("Order", "17 / 25", "tone-mid")}
 ${scoreRow("Responsibility", "21 / 25", "tone-good")}
-${scoreRow("Skill / Mastery", "18 / 25", "tone-mid")}
+${scoreRow("Mastery", "18 / 25", "tone-mid")}
 </div>
 
 <div class="score-total">
@@ -100,13 +112,32 @@ ${scoreRow("Skill / Mastery", "18 / 25", "tone-mid")}
 </div>
 </section>
 
+<section class="container section section-tight">
+<div class="join-strip card">
+<div class="join-strip-copy">
+${sectionLabel("When you join")}
+<h2>Your first step is simple</h2>
+<p>
+You complete a baseline assessment, define your body goal and main pursuit,
+get scored across the 4 pillars, and begin your first 2-week cycle.
+</p>
+</div>
+<div class="join-strip-points">
+<div class="join-point"><strong>1.</strong> Baseline assessment</div>
+<div class="join-point"><strong>2.</strong> First score preview</div>
+<div class="join-point"><strong>3.</strong> Start your first cycle</div>
+</div>
+</div>
+</section>
+
 <section class="container section">
 <div class="section-heading narrow">
 ${sectionLabel("Who this is for")}
-<h2>For men who are tired of drifting</h2>
+<h2>For men whose standards are higher than their current reality</h2>
 <p>
-This is for men who feel scattered, inconsistent, under-structured, or below their potential.
-They do not need more passive content. They need a system that makes progress visible and drift harder to ignore.
+If your routines are unstable, your environment is not fully in order,
+and your actions do not yet match your standards, this system is for you.
+This is not more passive content. It is structure, measurement, and accountability.
 </p>
 </div>
 </section>
@@ -116,8 +147,8 @@ They do not need more passive content. They need a system that makes progress vi
 ${sectionLabel("How it works")}
 <h2>A simple accountability loop</h2>
 <p>
-The product should feel concrete. A member joins, defines his focus, reports every two weeks,
-reviews monthly, and builds visible proof over time.
+The system should feel concrete. A man joins, defines his focus,
+reports every two weeks, reviews monthly, and builds visible proof over time.
 </p>
 </div>
 
@@ -125,7 +156,7 @@ reviews monthly, and builds visible proof over time.
 ${stepCard("01", "Baseline Assessment", "Define your current state, body goal, primary pursuit, and next commitments.")}
 ${stepCard("02", "Biweekly Scorecard", "Report progress every two weeks across the 4 pillars with clear evidence and honest scoring.")}
 ${stepCard("03", "Monthly Review", "Review the trend, identify misses, tighten standards, and reset the next phase.")}
-${stepCard("04", "Visible Progress", "Track score improvement, promises kept, better body composition, more order, and stronger follow-through.")}
+${stepCard("04", "Visible Progress", "Track score improvement, promises kept, better body composition, stronger routines, and follow-through.")}
 </div>
 </section>
 
@@ -155,7 +186,7 @@ ${pillarCard(
 ["commitments kept", "punctuality", "family / work duties", "burdens handled beyond self"]
 )}
 ${pillarCard(
-"Skill / Mastery",
+"Mastery",
 "Advance in a meaningful pursuit through focused effort and measurable progress.",
 ["hours practiced", "sessions completed", "milestones reached", "output produced"]
 )}
@@ -176,7 +207,7 @@ scored, reviewed, and reinforced over time.
 <li><strong>Physical Discipline:</strong> body, training, food, sleep</li>
 <li><strong>Order:</strong> environment, schedule, admin, life control</li>
 <li><strong>Responsibility:</strong> obligations, dependability, duties carried</li>
-<li><strong>Skill / Mastery:</strong> focused practice, milestones, real output</li>
+<li><strong>Mastery:</strong> focused practice, milestones, real output</li>
 </ul>
 </div>
 
@@ -194,12 +225,28 @@ scored, reviewed, and reinforced over time.
 </section>
 
 <section class="container section">
+<div class="section-heading">
+${sectionLabel("Proof")}
+<h2>What visible progress can look like</h2>
+<p>
+The more concrete the mechanism feels, the more believable the system becomes.
+Even one clear before-and-after journey makes the idea real.
+</p>
+</div>
+
+<div class="grid grid-3">
+${proofCard("Week 1", "Scattered routine, poor follow-through, room not in order, no clear pursuit rhythm.")}
+${proofCard("Week 6", "Physical score up, living space cleaner, more commitments kept, stronger daily structure.")}
+${proofCard("Week 12", "Leaner or fitter, less drift, better self-respect, and real momentum in one meaningful pursuit.")}
+</div>
+</section>
+
+<section class="container section">
 <div class="section-heading narrow">
 ${sectionLabel("Free and paid")}
 <h2>Start with the front door, then step into the full system</h2>
 <p>
-Free should introduce the idea and let a man see where he stands.
-Paid should deliver the actual accountability mechanism.
+Free should let a man see where he stands. Paid should deliver the recurring accountability mechanism.
 </p>
 </div>
 
@@ -210,7 +257,7 @@ Paid should deliver the actual accountability mechanism.
 <ul class="metric-list">
 <li>baseline assessment</li>
 <li>first score preview</li>
-<li>introduction to the 4 pillars</li>
+<li>initial diagnosis</li>
 <li>clear next step into the system</li>
 </ul>
 </article>
@@ -221,7 +268,7 @@ Paid should deliver the actual accountability mechanism.
 <ul class="metric-list">
 <li>biweekly scorecards</li>
 <li>monthly review</li>
-<li>progress tracking</li>
+<li>tracked progress over time</li>
 <li>real human follow-through</li>
 </ul>
 </article>
