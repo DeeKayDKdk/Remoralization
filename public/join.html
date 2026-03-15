@@ -286,11 +286,11 @@ Create your account and begin the front door process. Free shows you where you s
 </div>
 
 <div class="join-actions">
-<button type="submit" class="btn btn-primary">Start Your Baseline</button>
+<button type="submit" class="btn btn-primary" id="joinSubmitBtn">Start Your Baseline</button>
 <a class="btn btn-ghost" href="/how.html">See How It Works</a>
 </div>
 
-  <div id="formMessage" class="join-note" aria-live="polite"></div>
+<div id="formMessage" class="join-note" aria-live="polite"></div>
 </form>
 
 <div class="join-note">
@@ -307,8 +307,8 @@ By continuing, you agree to your terms and acknowledge that this is the start of
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O";
+const SUPABASE_URL = "https://qsvelkfcaaqxgaewwwog.supabase.co";
+const SUPABASE_ANON_KEY = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -316,7 +316,12 @@ const form = document.getElementById("joinForm");
 const submitBtn = document.getElementById("joinSubmitBtn");
 const messageEl = document.getElementById("formMessage");
 
+if (!form) {
+console.error("joinForm not found");
+}
+
 function setMessage(message, type = "default") {
+if (!messageEl) return;
 messageEl.textContent = message;
 
 if (type === "error") {
@@ -328,19 +333,22 @@ messageEl.style.color = "var(--muted)";
 }
 }
 
-form.addEventListener("submit", async (e) => {
+form?.addEventListener("submit", async (e) => {
 e.preventDefault();
 
-const name = document.getElementById("name").value.trim();
-const email = document.getElementById("email").value.trim();
+const name = document.getElementById("name")?.value.trim() || "";
+const email = document.getElementById("email")?.value.trim() || "";
 
 if (!email) {
 setMessage("Please enter your email.", "error");
 return;
 }
 
+if (submitBtn) {
 submitBtn.disabled = true;
 submitBtn.textContent = "Sending link...";
+}
+
 setMessage("Preparing your sign-in link...");
 
 try {
@@ -359,10 +367,13 @@ if (error) throw error;
 setMessage("Magic link sent. Check your email to continue.", "success");
 form.reset();
 } catch (err) {
+console.error(err);
 setMessage(err.message || "Something went wrong sending your magic link.", "error");
 } finally {
+if (submitBtn) {
 submitBtn.disabled = false;
 submitBtn.textContent = "Start Your Baseline";
+}
 }
 });
 </script>
