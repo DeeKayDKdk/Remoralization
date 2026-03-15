@@ -3,146 +3,514 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>How It Works • Operation Remoralization</title>
-<link rel="stylesheet" href="style.css" />
+<title>How It Works | Remoralization</title>
+<meta
+name="description"
+content="See exactly how Remoralization works: baseline assessment, biweekly scorecards, monthly review, and visible progress across Physical Discipline, Order, Responsibility, and Mastery."
+/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+rel="stylesheet"
+/>
+<link rel="stylesheet" href="/style.css" />
+<style>
+.how-page {
+padding: 28px 0 72px;
+}
 
-<!-- Calendly widget styles (for the popup CTA) -->
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+.how-shell {
+width: min(1120px, calc(100% - 32px));
+margin: 0 auto;
+}
+
+.how-hero {
+display: grid;
+grid-template-columns: 1.08fr 0.92fr;
+gap: 22px;
+align-items: start;
+margin-bottom: 28px;
+}
+
+.how-hero-copy,
+.how-hero-panel,
+.how-section,
+.how-cta {
+padding: 28px;
+}
+
+.how-hero-copy h1 {
+font-size: clamp(34px, 5.5vw, 62px);
+line-height: 1.04;
+margin-bottom: 14px;
+}
+
+.how-subtitle {
+color: var(--muted);
+font-size: 18px;
+margin: 0 0 18px;
+max-width: 760px;
+}
+
+.how-tagline {
+margin: 0;
+color: #fff0ae;
+font-weight: 800;
+font-size: 15px;
+}
+
+.how-bullets {
+display: grid;
+gap: 10px;
+margin-top: 18px;
+}
+
+.how-bullet {
+padding: 12px 14px;
+border-radius: 14px;
+background: rgba(255,255,255,0.03);
+border: 1px solid rgba(255,255,255,0.06);
+color: #d9e2f1;
+font-weight: 600;
+}
+
+.panel-title {
+color: #ffd86a;
+font-size: 12px;
+font-weight: 800;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+margin-bottom: 10px;
+}
+
+.panel-copy {
+color: var(--muted);
+margin: 0 0 18px;
+}
+
+.mini-score {
+display: grid;
+gap: 10px;
+}
+
+.mini-score-row {
+display: flex;
+justify-content: space-between;
+gap: 12px;
+padding: 10px 0;
+border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.mini-score-row span {
+color: #d7e0ee;
+}
+
+.mini-score-row strong {
+color: #fff0ae;
+}
+
+.section-stack {
+display: grid;
+gap: 18px;
+}
+
+.section-heading {
+max-width: 820px;
+margin-bottom: 22px;
+}
+
+.section-heading p {
+margin: 0;
+color: var(--muted);
+}
+
+.eyebrow-inline {
+display: inline-block;
+margin-bottom: 14px;
+padding: 6px 10px;
+border-radius: 999px;
+background: rgba(255, 204, 51, 0.14);
+border: 1px solid rgba(255, 204, 51, 0.28);
+color: #ffd86a;
+font-size: 12px;
+font-weight: 700;
+letter-spacing: 0.04em;
+}
+
+.steps-grid {
+display: grid;
+grid-template-columns: repeat(4, minmax(0, 1fr));
+gap: 18px;
+}
+
+.step-card {
+position: relative;
+padding-top: 58px;
+}
+
+.step-number {
+position: absolute;
+top: 18px;
+left: 18px;
+width: 30px;
+height: 30px;
+border-radius: 999px;
+display: grid;
+place-items: center;
+font-size: 12px;
+font-weight: 800;
+background: rgba(255, 204, 51, 0.16);
+border: 1px solid rgba(255, 204, 51, 0.28);
+color: #ffd86a;
+}
+
+.step-card p,
+.how-section p,
+.how-list,
+.pillar-list {
+color: var(--muted);
+}
+
+.how-list,
+.pillar-list {
+margin: 14px 0 0;
+padding-left: 20px;
+}
+
+.how-list li,
+.pillar-list li {
+margin-bottom: 8px;
+}
+
+.pillars-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 18px;
+}
+
+.split-grid {
+display: grid;
+grid-template-columns: 1.08fr 0.92fr;
+gap: 18px;
+align-items: start;
+}
+
+.faq-grid {
+display: grid;
+gap: 14px;
+}
+
+.faq-item h3 {
+font-size: 18px;
+margin-bottom: 8px;
+}
+
+.faq-item p {
+margin: 0;
+}
+
+.how-actions {
+display: flex;
+gap: 12px;
+flex-wrap: wrap;
+margin-top: 20px;
+}
+
+.how-cta {
+text-align: center;
+}
+
+.how-cta p {
+color: var(--muted);
+margin: 10px auto 0;
+max-width: 760px;
+}
+
+@media (max-width: 980px) {
+.how-hero,
+.steps-grid,
+.pillars-grid,
+.split-grid {
+grid-template-columns: 1fr;
+}
+}
+
+@media (max-width: 640px) {
+.how-hero-copy,
+.how-hero-panel,
+.how-section,
+.how-cta {
+padding: 20px;
+}
+
+.how-actions .btn {
+width: 100%;
+}
+}
+</style>
 </head>
 <body>
-<div class="wrap" style="max-width:1100px; padding-top:32px;">
-<!-- Header -->
-<div class="card" style="padding:28px;">
-<h1 style="margin-bottom:8px;">How Operation Remoralization Works</h1>
-<p style="opacity:.9; margin:0">
-Build discipline, uphold values, and report your progress every two weeks — with a real human holding you accountable.
+<main class="how-page">
+<div class="how-shell">
+<section class="how-hero">
+<div class="card how-hero-copy">
+<div class="eyebrow">How it works</div>
+<h1>A real accountability system with a simple rhythm.</h1>
+<p class="how-subtitle">
+Remoralization helps men build visible progress in
+<strong>Physical Discipline</strong>, <strong>Order</strong>,
+<strong>Responsibility</strong>, and <strong>Mastery</strong>
+through a repeatable cycle: baseline, biweekly scorecard, monthly review, and visible progress over time.
+</p>
+<p class="how-tagline">The goal is simple: less drift, more proof.</p>
+
+<div class="how-bullets">
+<div class="how-bullet">Baseline assessment to establish your starting point</div>
+<div class="how-bullet">Biweekly scorecards to measure visible progress</div>
+<div class="how-bullet">Monthly review to course-correct and reset</div>
+<div class="how-bullet">Real human accountability to keep momentum alive</div>
+</div>
+
+<div class="how-actions">
+<a class="btn btn-primary" href="/join.html">Join Free</a>
+<a class="btn btn-ghost" href="/index.html">Back to Home</a>
+</div>
+</div>
+
+<div class="card how-hero-panel">
+<div class="panel-title">What the system does</div>
+<p class="panel-copy">
+It takes discipline out of the realm of vague intention and makes it measurable.
+You define a focus, report honestly, review the trend, and keep moving.
+</p>
+
+<div class="mini-score">
+<div class="mini-score-row">
+<span>Physical Discipline</span>
+<strong>Body, training, sleep</strong>
+</div>
+<div class="mini-score-row">
+<span>Order</span>
+<strong>Environment, schedule, admin</strong>
+</div>
+<div class="mini-score-row">
+<span>Responsibility</span>
+<strong>Obligations, reliability, follow-through</strong>
+</div>
+<div class="mini-score-row">
+<span>Mastery</span>
+<strong>Focused pursuit, milestones, output</strong>
+</div>
+</div>
+</div>
+</section>
+
+<div class="section-stack">
+<section class="card how-section">
+<div class="section-heading">
+<div class="eyebrow-inline">The process</div>
+<h2>The accountability loop</h2>
+<p>
+The product should feel concrete. A man joins, defines his focus, reports every two weeks,
+reviews monthly, and builds visible proof over time.
 </p>
 </div>
 
-<!-- Why this works -->
-<div class="grid" style="grid-template-columns: 1fr; gap:16px; margin-top:16px;">
-<div class="card" style="padding:24px;">
-<h2 style="margin:0 0 8px 0;">Why this works</h2>
-<ul style="margin:8px 0 0 16px;">
-<li><b>Cadence creates momentum.</b> A simple two-week cycle forces action and review.</li>
-<li><b>Accountability beats motivation.</b> You perform better when you report to someone you respect.</li>
-<li><b>Focus on fundamentals.</b> Six pillars cover the habits that actually move life forward.</li>
-<li><b>Your “WHY” powers adherence.</b> You’ll write it once and see it weekly so it stays felt, not forgotten.</li>
-</ul>
-</div>
+<div class="steps-grid">
+<article class="card step-card">
+<div class="step-number">01</div>
+<h3>Baseline Assessment</h3>
+<p>
+Define your current state, body goal, primary pursuit, and next commitments.
+This establishes where you are starting from.
+</p>
+</article>
 
-<!-- 5-step process -->
-<div class="card" style="padding:24px;">
-<h2 style="margin:0 0 8px 0;">The 5-Step Process</h2>
-<ol style="margin:8px 0 0 18px; line-height:1.5;">
-<li><b>Join</b> and sign in (free).</li>
-<li><b>Start your report</b> across the Six Pillars (10–15 minutes). Keep it honest and specific.</li>
-<li><b>Anchor your “WHY”.</b> One short sentence that makes the hard thing worth it. We’ll remind you weekly.</li>
-<li><b>Get your action plan.</b> Clear next steps for the next two weeks — simple, measurable, doable.</li>
-<li><b>Review with a human.</b> Book a 20-minute check-in. You’ll get direct feedback, course-corrections, and a nudge to stay on the rails.</li>
-</ol>
+<article class="card step-card">
+<div class="step-number">02</div>
+<h3>Biweekly Scorecard</h3>
+<p>
+Report progress every two weeks across the 4 pillars with clear evidence,
+honest scoring, and concrete next steps.
+</p>
+</article>
 
-<div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
-<a class="btn btn-primary" href="start-report.html">Start Your First Report</a>
-<a class="btn btn-ghost" href="join.html">Join Free</a>
-<button class="btn btn-ghost"
-onclick="Calendly.initPopupWidget({ url: 'https://calendly.com/dylankundert/30min' }); return false;">
-Book a 20-min Check-in
-</button>
-</div>
-</div>
+<article class="card step-card">
+<div class="step-number">03</div>
+<h3>Monthly Review</h3>
+<p>
+Review the trend, identify misses, tighten standards, and reset the next phase.
+This keeps the system from becoming passive.
+</p>
+</article>
 
-<!-- The Six Pillars -->
-<div class="card" style="padding:24px;">
-<h2 style="margin:0 0 8px 0;">The Six Pillars (what we measure)</h2>
-<div class="grid" style="grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:12px;">
-<div class="card" style="padding:16px;">
-<h3 style="margin:0 0 6px 0;">Physical Discipline</h3>
-<p style="margin:0">Training, sleep, and nutrition made visible. Health is the foundation of force and service.</p>
+<article class="card step-card">
+<div class="step-number">04</div>
+<h3>Visible Progress</h3>
+<p>
+Track better body composition, more promises kept, cleaner order,
+and stronger momentum in one meaningful pursuit.
+</p>
+</article>
 </div>
-<div class="card" style="padding:16px;">
-<h3 style="margin:0 0 6px 0;">Responsibility to Others</h3>
-<p style="margin:0">Show up for family, friends, team, and community. Be a protector, provider, and contributor.</p>
-</div>
-<div class="card" style="padding:16px;">
-<h3 style="margin:0 0 6px 0;">Belief & Morality</h3>
-<p style="margin:0">Align daily actions to timeless truth. Integrity over convenience, principle over impulse.</p>
-</div>
-<div class="card" style="padding:16px;">
-<h3 style="margin:0 0 6px 0;">Skill & Mastery</h3>
-<p style="margin:0">Choose one valuable skill. Practice deliberately. Ship work. Turn competence into contribution.</p>
-</div>
-<div class="card" style="padding:16px;">
-<h3 style="margin:0 0 6px 0;">Self-Reliance</h3>
-<p style="margin:0">Solve problems independently and build systems. Become a pillar, not a liability.</p>
-</div>
-<div class="card" style="padding:16px;">
-<h3 style="margin:0 0 6px 0;">Integrity & Consistency</h3>
-<p style="margin:0">Do what you said you would — especially when it’s hard. Consistency compounds into legacy.</p>
-</div>
-</div>
-</div>
+</section>
 
-<!-- What you get -->
-<div class="card" style="padding:24px;">
-<h2 style="margin:0 0 8px 0;">What you get</h2>
-<ul style="margin:8px 0 0 16px;">
-<li><b>Every-two-weeks report</b> that shows your real progress (and where you’re drifting).</li>
-<li><b>Weekly WHY reminder</b> emailed to you so your reason stays in front of you.</li>
-<li><b>Action plan</b> with 3 focused next steps per cycle.</li>
-<li><b>20-minute accountability check-in</b> with a human — direct, honest, helpful.</li>
-<li><b>Demoralization Index (beta)</b> to visualize momentum across pillars.</li>
-</ul>
-</div>
-
-<!-- Why weekly WHY + biweekly report -->
-<div class="card" style="padding:24px;">
-<h2 style="margin:0 0 8px 0;">Why weekly reminders + 2-week cycles?</h2>
-<p style="margin:0 0 10px 0;">
-Two weeks is long enough to make real progress and short enough to course-correct quickly. The weekly WHY
-reminder keeps your purpose emotionally active — not buried in a notebook. Together they create a simple,
-repeatable rhythm that builds a life you respect.
+<section class="card how-section">
+<div class="section-heading">
+<div class="eyebrow-inline">The 4 pillars</div>
+<h2>What gets measured</h2>
+<p>
+Integrity becomes visible when it is measured in real domains of life.
 </p>
 </div>
 
-<!-- Trust & Privacy -->
-<div class="card" style="padding:24px;">
-<h2 style="margin:0 0 8px 0;">Trust & Privacy</h2>
-<ul style="margin:8px 0 0 16px;">
-<li>Your reports are stored securely. We never sell your data.</li>
-<li>You can export or delete your data at any time.</li>
-<li>Feedback is private and direct.</li>
+<div class="pillars-grid">
+<article class="card">
+<h3>Physical Discipline</h3>
+<p>Train the body and build visible proof of discipline.</p>
+<ul class="pillar-list">
+<li>workouts completed</li>
+<li>bodyweight or waist trend</li>
+<li>nutrition compliance</li>
+<li>sleep consistency</li>
+</ul>
+</article>
+
+<article class="card">
+<h3>Order</h3>
+<p>Bring structure to your environment, schedule, and life systems.</p>
+<ul class="pillar-list">
+<li>room / workspace reset</li>
+<li>weekly planning</li>
+<li>admin handled</li>
+<li>loose ends reduced</li>
+</ul>
+</article>
+
+<article class="card">
+<h3>Responsibility</h3>
+<p>Carry real obligations to others and to real life.</p>
+<ul class="pillar-list">
+<li>commitments kept</li>
+<li>punctuality</li>
+<li>family / work duties</li>
+<li>burdens handled beyond self</li>
+</ul>
+</article>
+
+<article class="card">
+<h3>Mastery</h3>
+<p>Advance in a meaningful pursuit through focused effort and measurable progress.</p>
+<ul class="pillar-list">
+<li>hours practiced</li>
+<li>sessions completed</li>
+<li>milestones reached</li>
+<li>output produced</li>
+</ul>
+</article>
+</div>
+</section>
+
+<section class="split-grid">
+<div class="card how-section">
+<div class="section-heading">
+<div class="eyebrow-inline">Why it works</div>
+<h2>Why this system works better than vague motivation</h2>
+<p>
+Most men do not fail from lack of information. They fail from lack of structure,
+follow-through, and real accountability.
+</p>
+</div>
+
+<ul class="how-list">
+<li><strong>Cadence creates momentum.</strong> A repeatable cycle keeps action alive.</li>
+<li><strong>Measurement exposes drift.</strong> What gets scored is harder to ignore.</li>
+<li><strong>Accountability beats intention.</strong> Reporting to someone creates pressure to follow through.</li>
+<li><strong>Monthly review prevents stagnation.</strong> You adjust the system instead of guessing.</li>
+<li><strong>Visible progress builds self-respect.</strong> The point is not inspiration. The point is proof.</li>
 </ul>
 </div>
 
-<!-- FAQs -->
-<div class="card" style="padding:24px;">
-<h2 style="margin:0 0 8px 0;">FAQ</h2>
-<p><b>How long does a report take?</b> ~10–15 minutes for most people.</p>
-<p><b>What if I miss a check-in?</b> No drama. Book the next slot and keep your cadence.</p>
-<p><b>Is this coaching?</b> It’s structured accountability with brief, direct feedback — not long therapy sessions.</p>
-<p><b>Cost?</b> The core is free. A premium tier adds deeper reviews and priority check-ins.</p>
+<div class="card how-section">
+<div class="section-heading">
+<div class="eyebrow-inline">What you get</div>
+<h2>The practical output</h2>
+<p>
+This is not just a philosophy page. It is a system that produces visible signals.
+</p>
 </div>
 
-<!-- CTA -->
-<div class="card" style="padding:24px; text-align:center;">
-<h2 style="margin:0 0 8px 0;">Ready to begin?</h2>
-<p style="opacity:.9; margin:0 0 12px 0;">Join, write your WHY, and complete your first report today.</p>
-<div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-<a class="btn btn-primary" href="start-report.html">Start Your First Report</a>
-<a class="btn btn-ghost" href="join.html">Join Free</a>
-<button class="btn btn-ghost"
-onclick="Calendly.initPopupWidget({ url: 'https://calendly.com/dylankundert/30min' }); return false;">
-Book a 20-min Check-in
-</button>
+<ul class="how-list">
+<li>a baseline assessment that shows where you stand</li>
+<li>a recurring biweekly scorecard</li>
+<li>clear next commitments for the next cycle</li>
+<li>a monthly review to reset and tighten focus</li>
+<li>real human accountability instead of passive consumption</li>
+</ul>
+</div>
+</section>
+
+<section class="split-grid">
+<div class="card how-section">
+<div class="section-heading">
+<div class="eyebrow-inline">FAQ</div>
+<h2>Common questions</h2>
+</div>
+
+<div class="faq-grid">
+<div class="faq-item">
+<h3>How long does a scorecard take?</h3>
+<p>For most people, around 10–15 minutes.</p>
+</div>
+
+<div class="faq-item">
+<h3>What if I miss a cycle?</h3>
+<p>You reset, report honestly, and keep moving. The point is trend, not perfection theater.</p>
+</div>
+
+<div class="faq-item">
+<h3>Is this coaching or therapy?</h3>
+<p>It is structured accountability with direct feedback and measurable review.</p>
+</div>
+
+<div class="faq-item">
+<h3>What does free include?</h3>
+<p>Free is the front door: baseline assessment, first score preview, and a clear next step into the system.</p>
+</div>
 </div>
 </div>
 
-<div style="height:12px;"></div>
-</div>
+<div class="card how-section">
+<div class="section-heading">
+<div class="eyebrow-inline">Trust</div>
+<h2>Simple and direct</h2>
+<p>
+The product should feel clear, not bloated. The goal is a repeatable system that helps a man get back in command of himself.
+</p>
 </div>
 
-<!-- Calendly script (for the popup buttons) -->
-<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript"></script>
+<ul class="how-list">
+<li>clear scoring instead of vague encouragement</li>
+<li>private reporting and direct feedback</li>
+<li>focused commitments instead of scattered goals</li>
+<li>a measurable path toward better body, order, responsibility, and mastery</li>
+</ul>
+</div>
+</section>
+
+<section class="card how-cta">
+<div class="eyebrow-inline">Ready to begin?</div>
+<h2>Start your baseline and enter the system.</h2>
+<p>
+Free shows you where you stand. The full system keeps you moving.
+</p>
+<div class="how-actions" style="justify-content:center;">
+<a class="btn btn-primary" href="/join.html">Join Free</a>
+<a class="btn btn-ghost" href="/index.html">Back to Home</a>
+</div>
+</section>
+</div>
+</div>
+</main>
 </body>
 </html>
