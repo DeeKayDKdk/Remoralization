@@ -1305,18 +1305,53 @@ async function saveBaseline() {
 if (!currentReport) return;
 
 const payload = {
+user_id: currentUser?.id || null,
 user_email: currentUser?.email || null,
-why_text: currentReport.why,
-why_tags: currentReport.tags,
-bottleneck: currentReport.bottleneck,
-horizon: currentReport.horizon,
-overall_score: currentReport.overall,
-strongest_pillar: currentReport.strongest.label,
-weakest_pillar: currentReport.weakest.label,
-next_step: currentReport.nextStep,
-pillar_scores: currentReport.pillarScores,
+
+assessment_type: "front_door_baseline",
+assessment_version: 1,
+
+why_text: currentReport.why || null,
+why_tags: currentReport.tags || [],
+bottleneck: currentReport.bottleneck || null,
+horizon: currentReport.horizon || null,
+
+answers: currentReport.answers || {},
+
+overall_score: currentReport.overall ?? null,
+pillar_scores: currentReport.pillarScores || {},
+
+strongest_pillar: currentReport.strongest?.label || null,
+weakest_pillar: currentReport.weakest?.label || null,
+
+diagnosis_summary: currentReport.diagnosisSummary || null,
+next_step: currentReport.nextStep || null,
+
+commitment_window_days: 14,
+source_page: "start-report.html",
+
 created_at_iso: new Date().toISOString()
 };
+
+console.log("Baseline payload:", payload);
+
+setMessage("Saving your baseline...", "success");
+
+const { error } = await supabase
+.from("baselines")
+.insert([payload]);
+
+if (error) {
+console.error("Supabase insert error:", error);
+setMessage("We couldn’t save your baseline right now. Please try again.", "error");
+return;
+}
+
+setMessage("Baseline complete. Your first score preview is ready.", "success");
+
+setTimeout(() => {
+window.location.href = "/join.html";
+}, 1200);
 
 console.log("Baseline payload:", payload);
 
