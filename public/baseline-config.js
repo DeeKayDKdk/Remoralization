@@ -6,6 +6,8 @@ pillars: [
 "Physical Discipline"
 ],
 
+totalQuestions: 2,
+  
 questions: [
 {
 key: "q1_physical_order_state",
