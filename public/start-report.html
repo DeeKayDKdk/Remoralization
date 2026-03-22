@@ -1059,9 +1059,10 @@ pageMessage.style.color = "var(--muted)";
 
 function renderPillars() {
 pillarsGrid.innerHTML = pillars.map((pillar) => {
-const questionsHtml = questionsToUse.map((question, qIndex) => {
-const name = configQuestion?.key || `${pillar.key}_${qIndex}`;
+const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
+const questionsToUse = pillarConfigQuestions.length ? pillarConfigQuestions.map((q) => q.prompt) : pillar.questions;
 
+const questionsHtml = questionsToUse.map((question, qIndex) => {
 const configQuestion = pillarConfigQuestions.length ? pillarConfigQuestions[qIndex] : null;
 const name = configQuestion?.key || `${pillar.key}_${qIndex}`;
 const optionsToUse = configQuestion?.options || [1, 2, 3, 4, 5].map((score) => ({
@@ -1085,7 +1086,8 @@ return `
 id="${inputId}"
 type="radio"
 name="${name}"
-value="${optionScore}"
+value="${optionValue}"
+data-score="${optionScore}"
 data-label="${option.label}"
 />
 <label for="${inputId}">${option.label}</label>
@@ -1184,14 +1186,33 @@ return true;
 
 function collectScores() {
 const pillarScores = pillars.map((pillar) => {
-const rawScores = pillar.questions.map((_, index) => {
-const checked = document.querySelector(`input[name="${pillar.key}_${index}"]:checked`);
-return Number(checked?.value || 0);
+const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
+
+const questionsForThisPillar = pillarConfigQuestions.length
+? pillarConfigQuestions
+: pillar.questions.map((question, index) => ({
+key: `${pillar.key}_${index}`,
+prompt: question,
+options: [1, 2, 3, 4, 5].map((score) => ({
+label: String(score),
+value: score,
+score
+}))
+}));
+
+const rawScores = questionsForThisPillar.map((question, index) => {
+const questionName = question.key || `${pillar.key}_${index}`;
+const checked = document.querySelector(`input[name="${questionName}"]:checked`);
+return Number(checked?.dataset.score || checked?.value || 0);
 });
 
 const total = rawScores.reduce((sum, n) => sum + n, 0);
-const max = rawScores.length * 5;
-const normalized = Math.round((total / max) * 100);
+const max = questionsForThisPillar.reduce((sum, question) => {
+const optionScores = (question.options || []).map((option) => Number(option.score || option.value || 0));
+const questionMax = optionScores.length ? Math.max(...optionScores) : 5;
+return sum + questionMax;
+}, 0);
+const normalized = max ? Math.round((total / max) * 100) : 0;
 
 return {
 key: pillar.key,
