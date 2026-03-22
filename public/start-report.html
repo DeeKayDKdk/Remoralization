@@ -961,8 +961,11 @@ const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  
+console.log("BASELINE_CONFIG loaded:", window.BASELINE_CONFIG);
+  
 
-const pillars = [
+const pillars = window.BASELINE_CONFIG?.pillars || [
 {
 key: "body",
 label: "Body",
@@ -1004,7 +1007,10 @@ questions: [
 ]
 }
 ];
-
+  
+const configQuestions = window.BASELINE_CONFIG?.questions || [];
+console.log("configQuestions count:", configQuestions.length);
+  
 const stepMeta = document.getElementById("stepMeta");
 const stepHint = document.getElementById("stepHint");
 const progressFill = document.getElementById("progressFill");
