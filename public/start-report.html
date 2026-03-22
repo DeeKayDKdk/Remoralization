@@ -1059,7 +1059,9 @@ pageMessage.style.color = "var(--muted)";
 
 function renderPillars() {
 pillarsGrid.innerHTML = pillars.map((pillar) => {
-const questionsHtml = pillar.questions.map((question, qIndex) => {
+const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
+const questionsToUse = pillarConfigQuestions.length ? pillarConfigQuestions.map((q) => q.prompt) : pillar.questions;
+const questionsHtml = questionsToUse.map((question, qIndex) => {
 const name = `${pillar.key}_${qIndex}`;
 return `
 <div class="question">
