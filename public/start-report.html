@@ -1009,6 +1009,7 @@ questions: [
 ];
   
 const configQuestions = window.BASELINE_CONFIG?.questions || [];
+const configTotalQuestions = window.BASELINE_CONFIG?.totalQuestions || configQuestions.length;  
 console.log("configQuestions count:", configQuestions.length);
   
 const stepMeta = document.getElementById("stepMeta");
