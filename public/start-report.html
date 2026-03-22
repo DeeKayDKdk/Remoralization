@@ -1060,9 +1060,10 @@ pageMessage.style.color = "var(--muted)";
 function renderPillars() {
 pillarsGrid.innerHTML = pillars.map((pillar) => {
 const questionsHtml = questionsToUse.map((question, qIndex) => {
-const name = `${pillar.key}_${qIndex}`;
+const name = configQuestion?.key || `${pillar.key}_${qIndex}`;
 
 const configQuestion = pillarConfigQuestions.length ? pillarConfigQuestions[qIndex] : null;
+const name = configQuestion?.key || `${pillar.key}_${qIndex}`;
 const optionsToUse = configQuestion?.options || [1, 2, 3, 4, 5].map((score) => ({
 label: String(score),
 value: score,
