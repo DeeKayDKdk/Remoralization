@@ -1024,8 +1024,7 @@ const bottleneckGrid = document.getElementById("bottleneckGrid");
 const reportCard = document.getElementById("reportCard");
 const flowCard = document.getElementById("flowCard");
 const signedInLabel = document.getElementById("signedInLabel");
-
-stepMeta.textContent = `Loaded config questions: ${configTotalQuestions}`;  
+ 
 
 const toStep2 = document.getElementById("toStep2");
 const toStep3 = document.getElementById("toStep3");
@@ -1103,7 +1102,7 @@ const stepHints = {
 3: "Choose your pressure point."
 };
 
-stepMeta.textContent = `Step ${currentStep} of 3`;
+stepMeta.textContent = `Step ${currentStep} of 3 · ${configTotalQuestions} baseline questions`;
 stepHint.textContent = stepHints[currentStep];
 progressFill.style.width = `${(currentStep / 3) * 100}%`;
 
