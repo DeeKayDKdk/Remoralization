@@ -1059,20 +1059,38 @@ pageMessage.style.color = "var(--muted)";
 
 function renderPillars() {
 pillarsGrid.innerHTML = pillars.map((pillar) => {
-const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
-const questionsToUse = pillarConfigQuestions.length ? pillarConfigQuestions.map((q) => q.prompt) : pillar.questions;
 const questionsHtml = questionsToUse.map((question, qIndex) => {
 const name = `${pillar.key}_${qIndex}`;
+
+const configQuestion = pillarConfigQuestions.length ? pillarConfigQuestions[qIndex] : null;
+const optionsToUse = configQuestion?.options || [1, 2, 3, 4, 5].map((score) => ({
+label: String(score),
+value: score,
+score
+}));
+
 return `
 <div class="question">
 <label class="question-label">${question}</label>
 <div class="scale">
-${[1,2,3,4,5].map((score) => `
+${optionsToUse.map((option, optionIndex) => {
+const optionValue = option.value ?? option.label;
+const optionScore = option.score ?? option.value ?? option.label;
+const inputId = `${name}_${optionIndex}`;
+
+return `
 <div>
-<input id="${name}_${score}" type="radio" name="${name}" value="${score}" />
-<label for="${name}_${score}">${score}</label>
+<input
+id="${inputId}"
+type="radio"
+name="${name}"
+value="${optionScore}"
+data-label="${option.label}"
+/>
+<label for="${inputId}">${option.label}</label>
 </div>
-`).join("")}
+`;
+}).join("")}
 </div>
 </div>
 `;
