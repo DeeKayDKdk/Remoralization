@@ -1060,12 +1060,22 @@ pageMessage.style.color = "var(--muted)";
 function renderPillars() {
 pillarsGrid.innerHTML = pillars.map((pillar) => {
 const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
-const questionsToUse = pillarConfigQuestions.length ? pillarConfigQuestions.map((q) => q.prompt) : pillar.questions;
 
-const questionsHtml = questionsToUse.map((question, qIndex) => {
-const configQuestion = pillarConfigQuestions.length ? pillarConfigQuestions[qIndex] : null;
-const name = configQuestion?.key || `${pillar.key}_${qIndex}`;
-const optionsToUse = configQuestion?.options || [1, 2, 3, 4, 5].map((score) => ({
+const questionsForThisPillar = pillarConfigQuestions.length
+? pillarConfigQuestions
+: pillar.questions.map((question, index) => ({
+key: `${pillar.key}_${index}`,
+prompt: question,
+options: [1, 2, 3, 4, 5].map((score) => ({
+label: String(score),
+value: score,
+score
+}))
+}));
+
+const questionsHtml = questionsForThisPillar.map((question, qIndex) => {
+const name = question.key || `${pillar.key}_${qIndex}`;
+const optionsToUse = question.options || [1, 2, 3, 4, 5].map((score) => ({
 label: String(score),
 value: score,
 score
@@ -1073,7 +1083,7 @@ score
 
 return `
 <div class="question">
-<label class="question-label">${question}</label>
+<label class="question-label">${question.prompt}</label>
 <div class="scale">
 ${optionsToUse.map((option, optionIndex) => {
 const optionValue = option.value ?? option.label;
