@@ -1416,28 +1416,23 @@ console.log("Baseline payload:", payload);
 
 setMessage("Saving your baseline...", "success");
 
-const { error } = await supabase
+const { data, error } = await supabase
 .from("baselines")
-.insert([payload]);
+.insert([payload])
+.select();
 
 if (error) {
-console.error("Supabase insert error:", error);
-setMessage("We couldn’t save your baseline right now. Please try again.", "error");
+console.error("Supabase save error:", error);
+setMessage(`Save failed: ${error.message || "Unknown error"}`, "error");
 return;
 }
 
-setMessage("Baseline complete. Your first score preview is ready.", "success");
+console.log("Baseline saved:", data);
+setMessage("Baseline saved successfully.", "success");
 
 setTimeout(() => {
 window.location.href = "/join.html";
 }, 1200);
-
-console.log("Baseline payload:", payload);
-
-setMessage(
-"Baseline ready. Next step: create a Supabase table and save this payload there.",
-"success"
-);
 }
 
 whyTags.addEventListener("click", (e) => {
