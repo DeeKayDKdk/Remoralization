@@ -1358,26 +1358,26 @@ window.scrollTo({ top: 0, behavior: "smooth" });
 
 async function checkUser() {
 try {
-const url = new URL(window.location.href);
-const errorDescription = url.searchParams.get("error_description");
+const { data, error } = await supabase.auth.getSession();
 
-if (errorDescription) {
-setMessage(decodeURIComponent(errorDescription), "error");
-}
-
-const { data, error } = await supabase.auth.getUser();
 if (error) throw error;
 
-currentUser = data.user || null;
+currentUser = data?.session?.user || null;
 
+if (signedInLabel) {
 if (currentUser?.email) {
 signedInLabel.textContent = `Signed in as ${currentUser.email}`;
 } else {
-signedInLabel.textContent = "Signed in state not detected. You can still test the front-door flow.";
+signedInLabel.textContent = "Not signed in. Request a fresh magic link.";
+}
 }
 } catch (err) {
-console.error(err);
+console.error("checkUser error:", err);
+currentUser = null;
+
+if (signedInLabel) {
 signedInLabel.textContent = "Could not verify sign-in state.";
+}
 }
 }
 
