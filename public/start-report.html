@@ -1165,15 +1165,33 @@ return true;
 }
 
 function validateStep2() {
-for (const pillar of pillars) {
-for (let i = 0; i < pillar.questions.length; i += 1) {
-const checked = document.querySelector(`input[name="${pillar.key}_${i}"]:checked`);
+const missing = [];
+
+pillars.forEach((pillar) => {
+const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
+
+const questionsForThisPillar = pillarConfigQuestions.length
+? pillarConfigQuestions
+: pillar.questions.map((question, index) => ({
+key: `${pillar.key}_${index}`,
+prompt: question
+}));
+
+questionsForThisPillar.forEach((question, index) => {
+const questionName = question.key || `${pillar.key}_${index}`;
+const checked = document.querySelector(`input[name="${questionName}"]:checked`);
+
 if (!checked) {
-setMessage(`Score every statement in ${pillar.label} before continuing.`, "error");
+missing.push(`${pillar.label}: ${question.prompt || `Question ${index + 1}`}`);
+}
+});
+});
+
+if (missing.length) {
+setMessage("Answer every baseline question before continuing.", "error");
 return false;
 }
-}
-}
+
 return true;
 }
 
