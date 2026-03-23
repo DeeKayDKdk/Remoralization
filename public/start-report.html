@@ -1419,7 +1419,8 @@ setMessage("Saving your baseline...", "success");
 const { data, error } = await supabase
 .from("baselines")
 .insert([payload])
-.select();
+.select()
+.single();
 
 if (error) {
 console.error("Supabase save error:", error);
@@ -1427,13 +1428,64 @@ setMessage(`Save failed: ${error.message || "Unknown error"}`, "error");
 return;
 }
 
+const baselineId = data.id;
+
+const answerRows = [];
+
+pillars.forEach((pillar) => {
+const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
+
+const questionsForThisPillar = pillarConfigQuestions.length
+? pillarConfigQuestions
+: pillar.questions.map((question, index) => ({
+key: `${pillar.key}_${index}`,
+prompt: question,
+pillar: pillar.label,
+subpillar: null,
+options: [1, 2, 3, 4, 5].map((score) => ({
+label: String(score),
+value: score,
+score
+}))
+}));
+
+questionsForThisPillar.forEach((question, index) => {
+const questionName = question.key || `${pillar.key}_${index}`;
+const checked = document.querySelector(`input[name="${questionName}"]:checked`);
+if (!checked) return;
+
+answerRows.push({
+baseline_id: baselineId,
+question_key: questionName,
+pillar: question.pillar || pillar.label,
+subpillar: question.subpillar || null,
+question_text: question.prompt || null,
+answer_label: checked.dataset.label || checked.value || null,
+answer_value: checked.value || null,
+score_value: Number(checked.dataset.score || checked.value || 0)
+});
+});
+});
+
+if (answerRows.length) {
+const { error: answersError } = await supabase
+.from("baseline_answers")
+.insert(answerRows);
+
+if (answersError) {
+console.error("Supabase baseline_answers save error:", answersError);
+setMessage(`Baseline saved, but answers failed: ${answersError.message || "Unknown error"}`, "error");
+return;
+}
+}
+
 console.log("Baseline saved:", data);
+console.log("Baseline answers saved:", answerRows);
 setMessage("Baseline saved successfully.", "success");
 
 setTimeout(() => {
 window.location.href = "/join.html";
 }, 1200);
-}
 
 whyTags.addEventListener("click", (e) => {
 const btn = e.target.closest(".chip");
