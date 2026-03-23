@@ -1386,31 +1386,30 @@ if (!currentReport) return;
 
 const payload = {
 user_id: currentUser?.id || null,
-user_email: currentUser?.email || null,
 
-assessment_type: "front_door_baseline",
-assessment_version: 1,
+total_score: currentReport.overall ?? null,
 
-why_text: currentReport.why || null,
-why_tags: currentReport.tags || [],
-bottleneck: currentReport.bottleneck || null,
-horizon: currentReport.horizon || null,
+body_score:
+currentReport.pillarScores?.find((p) => p.label === "Physical Discipline")?.normalized ?? null,
 
-answers: currentReport.answers || {},
+order_score:
+currentReport.pillarScores?.find((p) => p.label === "Order")?.normalized ?? null,
 
-overall_score: currentReport.overall ?? null,
-pillar_scores: currentReport.pillarScores || {},
+responsibility_score:
+currentReport.pillarScores?.find((p) => p.label === "Responsibility")?.normalized ?? null,
+
+mastery_score:
+currentReport.pillarScores?.find((p) => p.label === "Mastery")?.normalized ?? null,
 
 strongest_pillar: currentReport.strongest?.label || null,
 weakest_pillar: currentReport.weakest?.label || null,
 
+diagnosis_type: currentReport.weakest?.label || null,
 diagnosis_summary: currentReport.diagnosisSummary || null,
-next_step: currentReport.nextStep || null,
-
-commitment_window_days: 14,
-source_page: "start-report.html",
-
-created_at_iso: new Date().toISOString()
+main_bottleneck: currentReport.bottleneck || null,
+recommended_challenge: currentReport.bottleneck || null,
+next_move: currentReport.nextStep || null,
+share_text: currentReport.shareText || null
 };
 
 console.log("Baseline payload:", payload);
