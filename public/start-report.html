@@ -283,6 +283,8 @@ display: flex;
 flex-wrap: wrap;
 gap: 10px;
 margin-top: 10px;
+position: relative;
+z-index: 3;
 }
 
 .chip {
@@ -297,6 +299,9 @@ font-size: 14px;
 font-weight: 700;
 cursor: pointer;
 transition: all 160ms ease;
+position: relative;
+z-index: 4;
+pointer-events: auto;
 }
 
 .chip:hover {
