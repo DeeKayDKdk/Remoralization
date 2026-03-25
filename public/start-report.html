@@ -1535,7 +1535,9 @@ currentReport = null;
 goToStep(1);
 });
 
+if (saveBaselineBtn) {
 saveBaselineBtn.addEventListener("click", saveBaseline);
+}
 
 renderPillars();
 renderBottlenecks();
