@@ -9,6 +9,33 @@ const $ = (s, c = document) => c.querySelector(s);
 const app = $("#app");
 let latestBaseline = null;
 
+async function loadLatestBaseline() {
+const {
+data: { session },
+} = await supabase.auth.getSession();
+
+if (!session?.user?.id) {
+latestBaseline = null;
+return;
+}
+
+const { data, error } = await supabase
+.from("baselines")
+.select("*")
+.eq("user_id", session.user.id)
+.order("created_at", { ascending: false })
+.limit(1)
+.maybeSingle();
+
+if (error) {
+console.error("Dashboard baseline load error:", error);
+latestBaseline = null;
+return;
+}
+
+latestBaseline = data || null;
+}
+
 function dashboardPage() {
 return `
 <header class="topbar">
