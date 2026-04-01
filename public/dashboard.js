@@ -59,17 +59,17 @@ and your next 14-day action plan.
 <div class="grid grid-3" style="margin-top:24px;">
 <article class="card pillar-card">
 <h3>Latest baseline</h3>
-<p class="card-copy">Coming next: latest saved score and date.</p>
+<p class="card-copy">${latestBaseline ? `${latestBaseline.total_score ?? "—"} / 100` : "No baseline saved yet."}</p>
 </article>
 
 <article class="card pillar-card">
 <h3>Main bottleneck</h3>
-<p class="card-copy">Coming next: your current weakest point.</p>
+<p class="card-copy">${latestBaseline ? (latestBaseline.main_bottleneck || "No bottleneck saved yet.") : "No baseline saved yet."}</p>
 </article>
 
 <article class="card pillar-card">
 <h3>Next move</h3>
-<p class="card-copy">Coming next: start your 14-day cycle.</p>
+<p class="card-copy">${latestBaseline ? (latestBaseline.next_move || "No next move saved yet.") : "No baseline saved yet."}</p>
 </article>
 </div>
 </div>
@@ -78,8 +78,9 @@ and your next 14-day action plan.
 `;
 }
 
-function boot() {
+async function boot() {
 try {
+await loadLatestBaseline();
 app.innerHTML = dashboardPage();
 } catch (e) {
 console.error(e);
