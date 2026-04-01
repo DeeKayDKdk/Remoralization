@@ -1,0 +1,60 @@
+const $ = (s, c = document) => c.querySelector(s);
+const app = $("#app");
+
+function dashboardPage() {
+return `
+<header class="topbar">
+<div class="brand">REMORALIZATION</div>
+<nav class="top-actions">
+<a class="btn btn-ghost" href="/start-report.html">Retake Baseline</a>
+<a class="btn btn-ghost" href="/index.html">Home</a>
+</nav>
+</header>
+
+<main>
+<section class="container section">
+<div class="card final-cta-card">
+<div class="eyebrow">Member home</div>
+<h1>Your dashboard</h1>
+<p class="subtitle">
+This will become the home base for your score, your strongest and weakest pillar,
+and your next 14-day action plan.
+</p>
+
+<div class="grid grid-3" style="margin-top:24px;">
+<article class="card pillar-card">
+<h3>Latest baseline</h3>
+<p class="card-copy">Coming next: latest saved score and date.</p>
+</article>
+
+<article class="card pillar-card">
+<h3>Main bottleneck</h3>
+<p class="card-copy">Coming next: your current weakest point.</p>
+</article>
+
+<article class="card pillar-card">
+<h3>Next move</h3>
+<p class="card-copy">Coming next: start your 14-day cycle.</p>
+</article>
+</div>
+</div>
+</section>
+</main>
+`;
+}
+
+function boot() {
+try {
+app.innerHTML = dashboardPage();
+} catch (e) {
+console.error(e);
+app.innerHTML = `
+<div style="max-width:720px;margin:40px auto;color:#ffb4b4;padding:0 16px;">
+<h2>Load error</h2>
+<pre>${String(e)}</pre>
+</div>
+`;
+}
+}
+
+boot();
