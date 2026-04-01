@@ -4,6 +4,7 @@ const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z890";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+window.supabase = supabase;
 
 const $ = (s, c = document) => c.querySelector(s);
 const app = $("#app");
