@@ -7,6 +7,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const $ = (s, c = document) => c.querySelector(s);
 const app = $("#app");
+let latestBaseline = null;
 
 function dashboardPage() {
 return `
