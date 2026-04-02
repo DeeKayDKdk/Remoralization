@@ -966,6 +966,7 @@ const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+window.supabase = supabase;
   
 console.log("BASELINE_CONFIG loaded:", window.BASELINE_CONFIG);
   
