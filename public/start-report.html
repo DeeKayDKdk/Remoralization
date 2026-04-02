@@ -1390,7 +1390,7 @@ async function saveBaseline() {
 if (!currentReport) return;
 
 const payload = {
-user_id: currentUser?.id || null,
+user_id: (await supabase.auth.getUser()).data.user?.id || null,
 
 total_score: currentReport.overall ?? null,
 
