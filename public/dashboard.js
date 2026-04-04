@@ -1,13 +1,13 @@
-import { createClient } from “https://esm.sh/@supabase/supabase-js@2”;
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL = “https://qsvelfkcaaqxgaewwwog.supabase.co”;
-const SUPABASE_ANON_KEY = “sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z890”;
+const SUPABASE_URL = "https://qsvelfkcaaqxgaewwwog.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z890";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 window.supabase = supabase;
 
 const $ = (s, c = document) => c.querySelector(s);
-const app = $(”#app”);
+const app = $("#app");
 let latestBaseline = null;
 let currentUser = null;
 
@@ -17,22 +17,22 @@ async function loadData() {
 const { data: { session } } = await supabase.auth.getSession();
 
 if (!session?.user?.id) {
-window.location.href = “/login.html”;
+window.location.href = "/login.html";
 return;
 }
 
 currentUser = session.user;
 
 const { data, error } = await supabase
-.from(“baselines”)
-.select(”*”)
-.eq(“user_id”, session.user.id)
-.order(“created_at”, { ascending: false })
+.from("baselines")
+.select("*")
+.eq("user_id", session.user.id)
+.order("created_at", { ascending: false })
 .limit(1)
 .maybeSingle();
 
 if (error) {
-console.error(“Dashboard baseline load error:”, error);
+console.error("Dashboard baseline load error:", error);
 latestBaseline = null;
 return;
 }
@@ -43,19 +43,19 @@ latestBaseline = data || null;
 // ─── Score helpers ────────────────────────────────────────────────────────────
 
 function getScoreLabel(score) {
-if (score === null || score === undefined) return { label: “No data”, tone: “tone-muted” };
-if (score >= 85) return { label: “Excellent”, tone: “tone-good” };
-if (score >= 70) return { label: “Strong”, tone: “tone-good” };
-if (score >= 55) return { label: “Average”, tone: “tone-mid” };
-if (score >= 40) return { label: “Weak”, tone: “tone-low” };
-return { label: “Critical”, tone: “tone-danger” };
+if (score === null || score === undefined) return { label: "No data", tone: "tone-muted" };
+if (score >= 85) return { label: "Excellent", tone: "tone-good" };
+if (score >= 70) return { label: "Strong", tone: "tone-good" };
+if (score >= 55) return { label: "Average", tone: "tone-mid" };
+if (score >= 40) return { label: "Weak", tone: "tone-low" };
+return { label: "Critical", tone: "tone-danger" };
 }
 
 function getTrend(current, previous) {
-if (current === null || previous === null) return “”;
-if (current > previous + 2) return “↑”;
-if (current < previous - 2) return “↓”;
-return “→”;
+if (current === null || previous === null) return "";
+if (current > previous + 2) return "↑";
+if (current < previous - 2) return "↓";
+return "→";
 }
 
 function scoreBar(label, score, tone) {
@@ -86,14 +86,13 @@ return `
 <div class="brand">REMORALIZATION</div>
 <nav class="top-actions">
 <a class="btn btn-ghost" href="/start-report.html">
-${noBaseline ? “Take Baseline” : “Retake Baseline”}
+${noBaseline ? "Take Baseline" : "Retake Baseline"}
 </a>
 <a class="btn btn-ghost" href="/index.html">Home</a>
 <button class="btn btn-ghost" id="signOutBtn">Sign Out</button>
 </nav>
 </header>
 
-```
 <main class="dashboard-shell">
 
 ${noBaseline ? `
@@ -230,8 +229,6 @@ ${scoreBar("Pursuit", null, "tone-muted")}
 <footer class="footer">
 Remoralization — structured accountability for men.
 </footer>
-```
-
 `;
 }
 
@@ -242,8 +239,6 @@ try {
 await loadData();
 app.innerHTML = dashboardPage();
 
-```
-// Sign out
 const signOutBtn = document.getElementById("signOutBtn");
 if (signOutBtn) {
 signOutBtn.addEventListener("click", async () => {
@@ -251,7 +246,6 @@ await supabase.auth.signOut();
 window.location.href = "/index.html";
 });
 }
-```
 
 } catch (e) {
 console.error(e);
