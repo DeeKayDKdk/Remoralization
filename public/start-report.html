@@ -214,14 +214,8 @@ animation: fadeUp 220ms ease;
 }
 
 @keyframes fadeUp {
-from {
-opacity: 0;
-transform: translateY(6px);
-}
-to {
-opacity: 1;
-transform: translateY(0);
-}
+from { opacity: 0; transform: translateY(6px); }
+to { opacity: 1; transform: translateY(0); }
 }
 
 .step-title {
@@ -315,46 +309,99 @@ border-color: rgba(255, 204, 51, 0.42);
 color: #fff2b0;
 }
 
+/* ── PILLARS GRID ─────────────────────────────── */
 .pillars-grid {
 display: grid;
-grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 18px;
+grid-template-columns: 1fr;
+gap: 24px;
 }
 
+/* ── PILLAR CARD ──────────────────────────────── */
 .pillar-card {
-background: rgba(255, 255, 255, 0.03);
-border: 1px solid rgba(255, 255, 255, 0.07);
-border-radius: 20px;
-padding: 18px;
+background: rgba(255, 255, 255, 0.025);
+border: 1px solid rgba(255, 255, 255, 0.08);
+border-radius: 22px;
+overflow: hidden;
 }
 
-.pillar-card h3 {
-margin: 0 0 8px;
-font-size: 20px;
+.pillar-card-header {
+padding: 22px 26px 18px;
+border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+background: rgba(255, 255, 255, 0.02);
 }
 
-.pillar-card p {
-margin: 0 0 18px;
+.pillar-card-header h3 {
+margin: 0 0 5px;
+font-size: 22px;
+letter-spacing: -0.02em;
+color: #ffffff;
+}
+
+.pillar-card-header p {
+margin: 0;
 color: var(--muted);
 font-size: 14px;
 line-height: 1.6;
 }
 
+.pillar-questions {
+padding: 4px 0 8px;
+}
+
+/* ── QUESTION ROWS ────────────────────────────── */
 .question {
-margin-bottom: 16px;
+padding: 18px 26px;
+border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+margin: 0;
 }
 
 .question:last-child {
-margin-bottom: 0;
+border-bottom: none;
+padding-bottom: 20px;
+}
+
+.question:nth-child(even) {
+background: rgba(255, 255, 255, 0.012);
+}
+
+.question-number {
+display: inline-block;
+font-size: 11px;
+font-weight: 800;
+letter-spacing: 0.07em;
+text-transform: uppercase;
+color: rgba(174, 185, 214, 0.45);
+margin-bottom: 6px;
 }
 
 .question-label {
 display: block;
-font-size: 14px;
+font-size: 15px;
+font-weight: 600;
+margin-bottom: 14px;
+color: #e8eeff;
+line-height: 1.55;
+}
+
+/* ── SCALE ────────────────────────────────────── */
+.scale-wrap {
+display: flex;
+flex-direction: column;
+gap: 7px;
+}
+
+.scale-endpoints {
+display: flex;
+justify-content: space-between;
+padding: 0 3px;
+}
+
+.scale-endpoints span {
+font-size: 11px;
 font-weight: 700;
-margin-bottom: 8px;
-color: #eef3ff;
-line-height: 1.5;
+letter-spacing: 0.05em;
+text-transform: uppercase;
+color: rgba(174, 185, 214, 0.5);
 }
 
 .scale {
@@ -368,30 +415,35 @@ display: none;
 }
 
 .scale label {
-display: inline-flex;
+display: flex;
 justify-content: center;
 align-items: center;
-min-height: 42px;
+min-height: 48px;
 border-radius: 12px;
-border: 1px solid rgba(255,255,255,0.09);
-background: rgba(255,255,255,0.03);
-color: #d3dcf4;
+border: 1px solid rgba(255, 255, 255, 0.09);
+background: rgba(255, 255, 255, 0.03);
+color: #c8d4f0;
 font-weight: 800;
+font-size: 16px;
 cursor: pointer;
 transition: all 140ms ease;
+user-select: none;
 }
 
 .scale label:hover {
-border-color: rgba(255, 204, 51, 0.24);
+border-color: rgba(255, 204, 51, 0.3);
+background: rgba(255, 204, 51, 0.06);
+color: #ffffff;
 }
 
 .scale input:checked + label {
 background: rgba(255, 204, 51, 0.18);
-border-color: rgba(255, 204, 51, 0.45);
+border-color: rgba(255, 204, 51, 0.5);
 color: #fff1aa;
-box-shadow: inset 0 0 0 1px rgba(255, 204, 51, 0.1);
+box-shadow: 0 0 0 1px rgba(255, 204, 51, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.07);
 }
 
+/* ── BOTTLENECK / HORIZON ─────────────────────── */
 .bottleneck-grid,
 .horizon-grid {
 display: grid;
@@ -427,6 +479,7 @@ border-color: rgba(255, 204, 51, 0.4);
 color: #fff2b0;
 }
 
+/* ── ACTIONS ──────────────────────────────────── */
 .step-actions {
 display: flex;
 justify-content: space-between;
@@ -458,9 +511,7 @@ justify-content: center;
 transition: transform 120ms ease, opacity 120ms ease, background 120ms ease;
 }
 
-.btn:hover {
-transform: translateY(-1px);
-}
+.btn:hover { transform: translateY(-1px); }
 
 .btn-primary {
 background: linear-gradient(180deg, var(--gold-2), var(--gold));
@@ -493,6 +544,7 @@ font-size: 14px;
 line-height: 1.6;
 }
 
+/* ── REPORT ───────────────────────────────────── */
 .report-card {
 margin-top: 20px;
 padding: 30px 28px;
@@ -578,15 +630,8 @@ margin: 0 0 12px;
 font-size: 18px;
 }
 
-.bars {
-display: grid;
-gap: 12px;
-}
-
-.bar-row {
-display: grid;
-gap: 7px;
-}
+.bars { display: grid; gap: 12px; }
+.bar-row { display: grid; gap: 7px; }
 
 .bar-head {
 display: flex;
@@ -596,9 +641,7 @@ font-size: 14px;
 font-weight: 700;
 }
 
-.bar-head span:last-child {
-color: #fff3ba;
-}
+.bar-head span:last-child { color: #fff3ba; }
 
 .bar-track {
 height: 11px;
@@ -615,10 +658,7 @@ width: 0%;
 transition: width 320ms ease;
 }
 
-.diagnosis-list {
-display: grid;
-gap: 12px;
-}
+.diagnosis-list { display: grid; gap: 12px; }
 
 .diagnosis-item {
 border-radius: 16px;
@@ -686,13 +726,11 @@ font-size: 14px;
 font-weight: 700;
 }
 
-.hidden {
-display: none !important;
-}
+.hidden { display: none !important; }
 
+/* ── RESPONSIVE ───────────────────────────────── */
 @media (max-width: 900px) {
 .hero-points,
-.pillars-grid,
 .score-grid,
 .bottleneck-grid,
 .horizon-grid {
@@ -701,9 +739,10 @@ grid-template-columns: 1fr;
 
 .hero-card,
 .step-card,
-.report-card {
-padding: 22px;
-}
+.report-card { padding: 22px; }
+
+.question { padding: 16px 20px; }
+.pillar-card-header { padding: 18px 20px 16px; }
 }
 
 @media (max-width: 640px) {
@@ -712,32 +751,20 @@ width: min(100% - 16px, 100%);
 margin: 16px auto 28px;
 }
 
-.progress-wrap {
-padding: 16px;
-}
-
-.step-actions {
-align-items: stretch;
-}
+.progress-wrap { padding: 16px; }
+.step-actions { align-items: stretch; }
 
 .actions-left,
-.actions-right {
-width: 100%;
-}
+.actions-right { width: 100%; }
 
 .actions-left .btn,
 .actions-right .btn,
-.report-actions .btn {
-width: 100%;
-}
+.report-actions .btn { width: 100%; }
 
-.scale {
-gap: 6px;
-}
-
-.scale label {
-min-height: 40px;
-}
+.scale { gap: 6px; }
+.scale label { min-height: 44px; font-size: 15px; }
+.question { padding: 14px 18px; }
+.pillar-card-header { padding: 16px 18px 14px; }
 }
 </style>
 </head>
@@ -837,7 +864,7 @@ Move quickly. Rate each statement from 1 to 5. Your score is based on honesty, n
 <div class="pillars-grid" id="pillarsGrid"></div>
 
 <p class="helper-note">
-Scale: 1 = weak / inconsistent, 3 = mixed, 5 = strong / reliable.
+Scale: 1 = weak / inconsistent &nbsp;·&nbsp; 3 = mixed &nbsp;·&nbsp; 5 = strong / reliable
 </p>
 
 <div class="step-actions">
@@ -967,9 +994,8 @@ const SUPABASE_ANON_KEY = "sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O";
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 window.supabase = supabase;
-  
+
 console.log("BASELINE_CONFIG loaded:", window.BASELINE_CONFIG);
-  
 
 const pillars = [
 { key: "order", label: "Order",
@@ -986,12 +1012,11 @@ description: "How strong, sharp, and regulated your physical foundation is.",
 questions: [] }
 ];
 
-  
 const configQuestions = window.BASELINE_CONFIG?.questions || [];
-const configTotalQuestions = window.BASELINE_CONFIG?.totalQuestions || configQuestions.length;  
+const configTotalQuestions = window.BASELINE_CONFIG?.totalQuestions || configQuestions.length;
 console.log("configQuestions count:", configQuestions.length);
-console.log("configTotalQuestions:", configTotalQuestions);  
-  
+console.log("configTotalQuestions:", configTotalQuestions);
+
 const stepMeta = document.getElementById("stepMeta");
 const stepHint = document.getElementById("stepHint");
 const progressFill = document.getElementById("progressFill");
@@ -1003,7 +1028,6 @@ const bottleneckGrid = document.getElementById("bottleneckGrid");
 const reportCard = document.getElementById("reportCard");
 const flowCard = document.getElementById("flowCard");
 const signedInLabel = document.getElementById("signedInLabel");
- 
 
 const toStep2 = document.getElementById("toStep2");
 const toStep3 = document.getElementById("toStep3");
@@ -1012,7 +1036,6 @@ const backTo2 = document.getElementById("backTo2");
 const generateReportBtn = document.getElementById("generateReportBtn");
 const restartBtn = document.getElementById("restartBtn");
 const saveBaselineBtn = document.getElementById("saveBaselineBtn");
-
 const whyInput = document.getElementById("whyInput");
 
 let currentStep = 1;
@@ -1022,23 +1045,17 @@ let currentReport = null;
 
 function setMessage(message = "", type = "default") {
 pageMessage.textContent = message;
-if (!message) {
-pageMessage.style.color = "";
-return;
-}
-
-if (type === "error") {
-pageMessage.style.color = "var(--danger)";
-} else if (type === "success") {
-pageMessage.style.color = "var(--success)";
-} else {
-pageMessage.style.color = "var(--muted)";
-}
+if (!message) { pageMessage.style.color = ""; return; }
+if (type === "error") pageMessage.style.color = "var(--danger)";
+else if (type === "success") pageMessage.style.color = "var(--success)";
+else pageMessage.style.color = "var(--muted)";
 }
 
 function renderPillars() {
 pillarsGrid.innerHTML = pillars.map((pillar) => {
-const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label || q.pillar === pillar.key);
+const pillarConfigQuestions = configQuestions.filter(
+(q) => q.pillar === pillar.label || q.pillar === pillar.key
+);
 
 const questionsForThisPillar = pillarConfigQuestions.length
 ? pillarConfigQuestions
@@ -1046,29 +1063,30 @@ const questionsForThisPillar = pillarConfigQuestions.length
 key: `${pillar.key}_${index}`,
 prompt: question,
 options: [1, 2, 3, 4, 5].map((score) => ({
-label: String(score),
-value: score,
-score
+label: String(score), value: score, score
 }))
 }));
 
 const questionsHtml = questionsForThisPillar.map((question, qIndex) => {
 const name = question.key || `${pillar.key}_${qIndex}`;
 const optionsToUse = question.options || [1, 2, 3, 4, 5].map((score) => ({
-label: String(score),
-value: score,
-score
+label: String(score), value: score, score
 }));
 
 return `
 <div class="question">
+<span class="question-number">Q${qIndex + 1}</span>
 <label class="question-label">${question.prompt}</label>
+<div class="scale-wrap">
+<div class="scale-endpoints">
+<span>Weak</span>
+<span>Strong</span>
+</div>
 <div class="scale">
 ${optionsToUse.map((option, optionIndex) => {
 const optionValue = option.value ?? option.label;
 const optionScore = option.score ?? option.value ?? option.label;
 const inputId = `${name}_${optionIndex}`;
-
 return `
 <div>
 <input
@@ -1085,14 +1103,19 @@ data-label="${option.label}"
 }).join("")}
 </div>
 </div>
+</div>
 `;
 }).join("");
 
 return `
 <article class="pillar-card">
+<div class="pillar-card-header">
 <h3>${pillar.label}</h3>
 <p>${pillar.description}</p>
+</div>
+<div class="pillar-questions">
 ${questionsHtml}
+</div>
 </article>
 `;
 }).join("");
@@ -1113,11 +1136,9 @@ const stepHints = {
 2: "Score your pillars honestly.",
 3: "Choose your pressure point."
 };
-
 stepMeta.textContent = `Step ${currentStep} of 3 · ${configTotalQuestions} baseline questions`;
 stepHint.textContent = stepHints[currentStep];
 progressFill.style.width = `${(currentStep / 3) * 100}%`;
-
 steps.forEach((step) => {
 step.classList.toggle("active", Number(step.dataset.step) === currentStep);
 });
@@ -1130,125 +1151,86 @@ setMessage("");
 window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function getTagState() {
-return selectedTags;
-}
-
 function validateStep1() {
 const why = whyInput.value.trim();
-if (!why) {
-setMessage("Write your WHY before continuing.", "error");
-return false;
-}
+if (!why) { setMessage("Write your WHY before continuing.", "error"); return false; }
 return true;
 }
 
 function validateStep2() {
 const missing = [];
-
 pillars.forEach((pillar) => {
-const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label || q.pillar === pillar.key);
-
+const pillarConfigQuestions = configQuestions.filter(
+(q) => q.pillar === pillar.label || q.pillar === pillar.key
+);
 const questionsForThisPillar = pillarConfigQuestions.length
 ? pillarConfigQuestions
 : pillar.questions.map((question, index) => ({
-key: `${pillar.key}_${index}`,
-prompt: question
+key: `${pillar.key}_${index}`, prompt: question
 }));
-
 questionsForThisPillar.forEach((question, index) => {
 const questionName = question.key || `${pillar.key}_${index}`;
 const checked = document.querySelector(`input[name="${questionName}"]:checked`);
-
-if (!checked) {
-missing.push(`${pillar.label}: ${question.prompt || `Question ${index + 1}`}`);
-}
+if (!checked) missing.push(`${pillar.label}: ${question.prompt || `Question ${index + 1}`}`);
 });
 });
-
 if (missing.length) {
 setMessage("Answer every baseline question before continuing.", "error");
 return false;
 }
-
 return true;
 }
 
 function validateStep3() {
 const bottleneck = document.querySelector('input[name="bottleneck"]:checked');
 const horizon = document.querySelector('input[name="horizon"]:checked');
-
-if (!bottleneck) {
-setMessage("Choose the pillar hurting you most right now.", "error");
-return false;
-}
-
-if (!horizon) {
-setMessage("Choose your first commitment horizon.", "error");
-return false;
-}
-
+if (!bottleneck) { setMessage("Choose the pillar hurting you most right now.", "error"); return false; }
+if (!horizon) { setMessage("Choose your first commitment horizon.", "error"); return false; }
 return true;
 }
 
 function collectScores() {
 const pillarScores = pillars.map((pillar) => {
-const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label || q.pillar === pillar.key);
-
+const pillarConfigQuestions = configQuestions.filter(
+(q) => q.pillar === pillar.label || q.pillar === pillar.key
+);
 const questionsForThisPillar = pillarConfigQuestions.length
 ? pillarConfigQuestions
 : pillar.questions.map((question, index) => ({
-key: `${pillar.key}_${index}`,
-prompt: question,
+key: `${pillar.key}_${index}`, prompt: question,
 options: [1, 2, 3, 4, 5].map((score) => ({
-label: String(score),
-value: score,
-score
+label: String(score), value: score, score
 }))
 }));
-
 const rawScores = questionsForThisPillar.map((question, index) => {
 const questionName = question.key || `${pillar.key}_${index}`;
 const checked = document.querySelector(`input[name="${questionName}"]:checked`);
 return Number(checked?.dataset.score || checked?.value || 0);
 });
-
 const total = rawScores.reduce((sum, n) => sum + n, 0);
 const max = questionsForThisPillar.reduce((sum, question) => {
-const optionScores = (question.options || []).map((option) => Number(option.score || option.value || 0));
+const optionScores = (question.options || []).map((option) =>
+Number(option.score || option.value || 0)
+);
 const questionMax = optionScores.length ? Math.max(...optionScores) : 5;
 return sum + questionMax;
 }, 0);
 const normalized = max ? Math.round((total / max) * 100) : 0;
-
-return {
-key: pillar.key,
-label: pillar.label,
-rawScores,
-total,
-max,
-normalized
-};
+return { key: pillar.key, label: pillar.label, rawScores, total, max, normalized };
 });
-
 const overall = Math.round(
-pillarScores.reduce((sum, pillar) => sum + pillar.normalized, 0) / pillarScores.length
+pillarScores.reduce((sum, p) => sum + p.normalized, 0) / pillarScores.length
 );
-
 return { pillarScores, overall };
 }
 
 function getStrongestWeakest(pillarScores) {
 const sorted = [...pillarScores].sort((a, b) => b.normalized - a.normalized);
-return {
-strongest: sorted[0],
-weakest: sorted[sorted.length - 1]
-};
+return { strongest: sorted[0], weakest: sorted[sorted.length - 1] };
 }
 
 function getRecommendedAction(weakestLabel, bottleneckLabel, horizon) {
 const key = bottleneckLabel || weakestLabel;
-
 const actions = {
 Body: {
 "14 days": "Set one non-negotiable physical standard for the next 14 days: a fixed wake time, daily movement, and one nutrition rule you will not break.",
@@ -1275,31 +1257,18 @@ Mastery: {
 "90 days": "Treat the next 90 days like an apprenticeship. Focus on consistency, proof of work, and compounding competence."
 }
 };
-
 return actions[key]?.[horizon] || "Choose one non-negotiable standard and hold it long enough for your identity to believe you.";
 }
 
 function buildReport() {
 const why = whyInput.value.trim();
-const tags = getTagState();
+const tags = selectedTags;
 const bottleneck = document.querySelector('input[name="bottleneck"]:checked')?.value || "";
 const horizon = document.querySelector('input[name="horizon"]:checked')?.value || "";
 const { pillarScores, overall } = collectScores();
 const { strongest, weakest } = getStrongestWeakest(pillarScores);
-
 const nextStep = getRecommendedAction(weakest.label, bottleneck, horizon);
-
-return {
-why,
-tags,
-bottleneck,
-horizon,
-overall,
-pillarScores,
-strongest,
-weakest,
-nextStep
-};
+return { why, tags, bottleneck, horizon, overall, pillarScores, strongest, weakest, nextStep };
 }
 
 function renderReport(report) {
@@ -1311,25 +1280,22 @@ document.getElementById("weakestPillarText").textContent =
 document.getElementById("bottleneckText").textContent = report.bottleneck || "Not selected";
 document.getElementById("horizonText").textContent = report.horizon || "Not selected";
 document.getElementById("nextStepText").textContent = report.nextStep;
-
 const reportIntro = document.getElementById("reportIntro");
 reportIntro.textContent =
 `Your WHY is centered on ${report.tags.length ? report.tags.join(", ") : "meaningful change"}. ` +
 `Your current baseline says the biggest pressure point is ${report.bottleneck || report.weakest.label}.`;
-
 const scoreBars = document.getElementById("scoreBars");
-scoreBars.innerHTML = report.pillarScores.map((pillar) => `
+scoreBars.innerHTML = report.pillarScores.map((p) => `
 <div class="bar-row">
 <div class="bar-head">
-<span>${pillar.label}</span>
-<span>${pillar.normalized}/100</span>
+<span>${p.label}</span>
+<span>${p.normalized}/100</span>
 </div>
 <div class="bar-track">
-<div class="bar-fill" style="width:${pillar.normalized}%"></div>
+<div class="bar-fill" style="width:${p.normalized}%"></div>
 </div>
 </div>
 `).join("");
-
 flowCard.classList.add("hidden");
 reportCard.classList.add("show");
 window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1338,51 +1304,31 @@ window.scrollTo({ top: 0, behavior: "smooth" });
 async function checkUser() {
 try {
 const { data, error } = await supabase.auth.getSession();
-
 if (error) throw error;
-
 currentUser = data?.session?.user || null;
-
 if (signedInLabel) {
-if (currentUser?.email) {
-signedInLabel.textContent = `Signed in as ${currentUser.email}`;
-} else {
-signedInLabel.textContent = "Not signed in. Request a fresh magic link.";
-}
+signedInLabel.textContent = currentUser?.email
+? `Signed in as ${currentUser.email}`
+: "Not signed in. Request a fresh magic link.";
 }
 } catch (err) {
 console.error("checkUser error:", err);
 currentUser = null;
-
-if (signedInLabel) {
-signedInLabel.textContent = "Could not verify sign-in state.";
-}
+if (signedInLabel) signedInLabel.textContent = "Could not verify sign-in state.";
 }
 }
 
 async function saveBaseline() {
 if (!currentReport) return;
-
 const payload = {
 user_id: (await supabase.auth.getUser()).data.user?.id || null,
-
 total_score: currentReport.overall ?? null,
-
-body_score:
-currentReport.pillarScores?.find((p) => p.label === "Physical Discipline")?.normalized ?? null,
-
-order_score:
-currentReport.pillarScores?.find((p) => p.label === "Order")?.normalized ?? null,
-
-responsibility_score:
-currentReport.pillarScores?.find((p) => p.label === "Responsibility")?.normalized ?? null,
-
-mastery_score:
-currentReport.pillarScores?.find((p) => p.label === "Mastery")?.normalized ?? null,
-
+body_score: currentReport.pillarScores?.find((p) => p.label === "Physical Discipline")?.normalized ?? null,
+order_score: currentReport.pillarScores?.find((p) => p.label === "Order")?.normalized ?? null,
+responsibility_score: currentReport.pillarScores?.find((p) => p.label === "Responsibility")?.normalized ?? null,
+mastery_score: currentReport.pillarScores?.find((p) => p.label === "Mastery")?.normalized ?? null,
 strongest_pillar: currentReport.strongest?.label || null,
 weakest_pillar: currentReport.weakest?.label || null,
-
 diagnosis_type: currentReport.weakest?.label || null,
 diagnosis_summary: currentReport.diagnosisSummary || null,
 main_bottleneck: currentReport.bottleneck || null,
@@ -1390,49 +1336,37 @@ recommended_challenge: currentReport.bottleneck || null,
 next_move: currentReport.nextStep || null,
 share_text: currentReport.shareText || null
 };
-
 console.log("Baseline payload:", payload);
-
 setMessage("Saving your baseline...", "success");
-
 const { data, error } = await supabase
 .from("baselines")
 .insert([payload])
 .select()
 .single();
-
 if (error) {
 console.error("Supabase save error:", error);
 setMessage(`Save failed: ${error.message || "Unknown error"}`, "error");
 return;
 }
-
 const baselineId = data.id;
-
 const answerRows = [];
-
 pillars.forEach((pillar) => {
-const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label || q.pillar === pillar.key);
-
+const pillarConfigQuestions = configQuestions.filter(
+(q) => q.pillar === pillar.label || q.pillar === pillar.key
+);
 const questionsForThisPillar = pillarConfigQuestions.length
 ? pillarConfigQuestions
 : pillar.questions.map((question, index) => ({
-key: `${pillar.key}_${index}`,
-prompt: question,
-pillar: pillar.label,
+key: `${pillar.key}_${index}`, prompt: question, pillar: pillar.label,
 subpillar: null,
 options: [1, 2, 3, 4, 5].map((score) => ({
-label: String(score),
-value: score,
-score
+label: String(score), value: score, score
 }))
 }));
-
 questionsForThisPillar.forEach((question, index) => {
 const questionName = question.key || `${pillar.key}_${index}`;
 const checked = document.querySelector(`input[name="${questionName}"]:checked`);
 if (!checked) return;
-
 answerRows.push({
 baseline_id: baselineId,
 question_key: questionName,
@@ -1445,35 +1379,27 @@ score_value: Number(checked.dataset.score || checked.value || 0)
 });
 });
 });
-
 if (answerRows.length) {
 const { error: answersError } = await supabase
 .from("baseline_answers")
 .insert(answerRows);
-
 if (answersError) {
 console.error("Supabase baseline_answers save error:", answersError);
 setMessage(`Baseline saved, but answers failed: ${answersError.message || "Unknown error"}`, "error");
 return;
 }
 }
-
 console.log("Baseline saved:", data);
 console.log("Baseline answers saved:", answerRows);
 setMessage("Baseline saved successfully.", "success");
-
-setTimeout(() => {
-window.location.href = "/dashboard.html";
-}, 1200);
-}  
+setTimeout(() => { window.location.href = "/dashboard.html"; }, 1200);
+}
 
 whyTags.addEventListener("click", (e) => {
 const btn = e.target.closest(".chip");
 if (!btn) return;
-
 const tag = btn.dataset.tag;
 const exists = selectedTags.includes(tag);
-
 if (exists) {
 selectedTags = selectedTags.filter((item) => item !== tag);
 btn.classList.remove("active");
@@ -1483,16 +1409,8 @@ btn.classList.add("active");
 }
 });
 
-toStep2.addEventListener("click", () => {
-if (!validateStep1()) return;
-goToStep(2);
-});
-
-toStep3.addEventListener("click", () => {
-if (!validateStep2()) return;
-goToStep(3);
-});
-
+toStep2.addEventListener("click", () => { if (!validateStep1()) return; goToStep(2); });
+toStep3.addEventListener("click", () => { if (!validateStep2()) return; goToStep(3); });
 backTo1.addEventListener("click", () => goToStep(1));
 backTo2.addEventListener("click", () => goToStep(2));
 
@@ -1510,16 +1428,13 @@ currentReport = null;
 goToStep(1);
 });
 
-if (saveBaselineBtn) {
-saveBaselineBtn.addEventListener("click", saveBaseline);
-}
+if (saveBaselineBtn) saveBaselineBtn.addEventListener("click", saveBaseline);
 
 renderPillars();
 renderBottlenecks();
 updateProgress();
 checkUser();
 
-</script>  
+</script>
 </body>
 </html>
-
