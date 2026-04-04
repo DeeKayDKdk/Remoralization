@@ -1,6 +1,6 @@
 window.BASELINE_CONFIG = {
 totalQuestions: 50,
-pillars: [“Physical Discipline”, “Order”, “Responsibility”, “Mastery”],
+pillars: ["Physical Discipline”, "Order", "Responsibility", "Mastery"],
 
 questions: [
 
