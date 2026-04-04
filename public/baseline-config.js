@@ -4,7 +4,6 @@ pillars: [“Physical Discipline”, “Order”, “Responsibility”, “Maste
 
 questions: [
 
-```
 // ─── PHYSICAL DISCIPLINE (12 questions) ───────────────────────────────────
 
 {
