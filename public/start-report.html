@@ -1038,7 +1038,7 @@ pageMessage.style.color = "var(--muted)";
 
 function renderPillars() {
 pillarsGrid.innerHTML = pillars.map((pillar) => {
-const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
+const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label || q.pillar === pillar.key);
 
 const questionsForThisPillar = pillarConfigQuestions.length
 ? pillarConfigQuestions
@@ -1147,7 +1147,7 @@ function validateStep2() {
 const missing = [];
 
 pillars.forEach((pillar) => {
-const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
+const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label || q.pillar === pillar.key);
 
 const questionsForThisPillar = pillarConfigQuestions.length
 ? pillarConfigQuestions
@@ -1193,7 +1193,7 @@ return true;
 
 function collectScores() {
 const pillarScores = pillars.map((pillar) => {
-const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
+const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label || q.pillar === pillar.key);
 
 const questionsForThisPillar = pillarConfigQuestions.length
 ? pillarConfigQuestions
@@ -1412,7 +1412,7 @@ const baselineId = data.id;
 const answerRows = [];
 
 pillars.forEach((pillar) => {
-const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label);
+const pillarConfigQuestions = configQuestions.filter((q) => q.pillar === pillar.label || q.pillar === pillar.key);
 
 const questionsForThisPillar = pillarConfigQuestions.length
 ? pillarConfigQuestions
