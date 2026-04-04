@@ -972,47 +972,20 @@ console.log("BASELINE_CONFIG loaded:", window.BASELINE_CONFIG);
   
 
 const pillars = [
-{
-key: "order",
-label: "Order",
+{ key: "order", label: "Order",
 description: "How structured, disciplined, and self-governing your life currently is.",
-questions: [
-"My day has structure instead of drift.",
-"I keep promises to myself consistently.",
-"My environment and systems reduce chaos."
-]
-},
-{
-key: "responsibility",
-label: "Responsibility",
+questions: [] },
+{ key: "responsibility", label: "Responsibility",
 description: "How well you show up for people, standards, and what is right.",
-questions: [
-"People can rely on me.",
-"My choices reflect my values.",
-"I handle what is mine instead of avoiding it."
-]
-},
-{
-key: "mastery",
-label: "Mastery",
+questions: [] },
+{ key: "mastery", label: "Mastery",
 description: "How deliberately you are building skill and meaningful progress.",
-questions: [
-"I am practicing with intention.",
-"I know what I am trying to improve next.",
-"My current work is building real capability."
-]
-},
-{
-key: "body",
-label: "Physical Discipline",
+questions: [] },
+{ key: "body", label: "Physical Discipline",
 description: "How strong, sharp, and regulated your physical foundation is.",
-questions: [
-"I am moving or training consistently.",
-"My sleep supports my performance.",
-"My nutrition is aligned with my goals."
-]
-}
+questions: [] }
 ];
+
   
 const configQuestions = window.BASELINE_CONFIG?.questions || [];
 const configTotalQuestions = window.BASELINE_CONFIG?.totalQuestions || configQuestions.length;  
