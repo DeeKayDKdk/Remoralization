@@ -4,7 +4,7 @@ pillars: [“Physical Discipline”, “Order”, “Responsibility”, “Maste
 
 questions: [
 
-// ─── PHYSICAL DISCIPLINE (12 questions) ───────────────────────────────────
+// PHYSICAL DISCIPLINE (12 questions) 
 
 {
 key: "body_training_consistency",
