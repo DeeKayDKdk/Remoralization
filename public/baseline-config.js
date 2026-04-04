@@ -1,10 +1,7 @@
 window.BASELINE_CONFIG = {
 totalQuestions: 50,
-pillars: [“Physical Discipline”, “Order”, “Responsibility”, “Mastery”],
+pillars: ["Physical Discipline", "Order", "Responsibility", "Mastery"],
 questions: [
-
-```
-// PHYSICAL DISCIPLINE
 {
 key: "body_training_consistency",
 pillar: "Physical Discipline",
@@ -51,13 +48,13 @@ options: [
 key: "body_waist_awareness",
 pillar: "Physical Discipline",
 subpillar: "Condition",
-prompt: "How aware are you of your current body condition metrics (weight, waist, measurements)?",
+prompt: "How aware are you of your current body condition metrics?",
 answerType: "ranged_choice",
 options: [
 { label: "I track regularly and know my numbers", score: 10 },
 { label: "I check occasionally and have a rough idea", score: 8 },
 { label: "I have a general sense but do not track", score: 6 },
-{ label: "I avoid checking - do not really want to know", score: 4 },
+{ label: "I avoid checking", score: 4 },
 { label: "No awareness at all", score: 2 }
 ]
 },
@@ -69,9 +66,9 @@ prompt: "How would you honestly describe your current physical condition?",
 answerType: "ranged_choice",
 options: [
 { label: "Sharp - lean, strong, and well-maintained", score: 10 },
-{ label: "Decent - some room to improve but not embarrassing", score: 8 },
+{ label: "Decent - some room to improve", score: 8 },
 { label: "Average - clearly not a priority right now", score: 6 },
-{ label: "Below where I want to be - declining", score: 4 },
+{ label: "Below where I want to be", score: 4 },
 { label: "Poor - physically neglected", score: 2 }
 ]
 },
@@ -96,7 +93,7 @@ subpillar: "Capability",
 prompt: "How would you rate your current strength and physical output?",
 answerType: "ranged_choice",
 options: [
-{ label: "Strong - I am physically capable and improving", score: 10 },
+{ label: "Strong - physically capable and improving", score: 10 },
 { label: "Solid - decent strength, maintained", score: 8 },
 { label: "Average - not a focus, just functional", score: 6 },
 { label: "Weak relative to where I should be", score: 4 },
@@ -122,7 +119,7 @@ options: [
 key: "body_alcohol_substances",
 pillar: "Physical Discipline",
 subpillar: "Consistency",
-prompt: "How much does alcohol or recreational substances affect your physical performance or habits?",
+prompt: "How much does alcohol or substances affect your physical performance?",
 answerType: "ranged_choice",
 options: [
 { label: "Minimal or none - not a factor", score: 10 },
@@ -136,7 +133,7 @@ options: [
 key: "body_recovery_practice",
 pillar: "Physical Discipline",
 subpillar: "Capability",
-prompt: "How intentional are you about recovery (sleep, rest days, mobility, stress management)?",
+prompt: "How intentional are you about recovery?",
 answerType: "ranged_choice",
 options: [
 { label: "Very intentional - recovery is part of my system", score: 10 },
@@ -150,7 +147,7 @@ options: [
 key: "body_physical_standards",
 pillar: "Physical Discipline",
 subpillar: "Consistency",
-prompt: "Do you have a clear physical standard - a minimum baseline you hold yourself to?",
+prompt: "Do you have a clear physical standard you hold yourself to?",
 answerType: "ranged_choice",
 options: [
 { label: "Yes - clear and enforced consistently", score: 10 },
@@ -174,8 +171,6 @@ options: [
 { label: "Significantly declining", score: 2 }
 ]
 },
-
-// ORDER
 {
 key: "order_living_space",
 pillar: "Order",
@@ -281,7 +276,7 @@ options: [
 key: "order_digital_environment",
 pillar: "Order",
 subpillar: "System Order",
-prompt: "How organized is your digital environment (email, files, phone apps)?",
+prompt: "How organized is your digital environment?",
 answerType: "ranged_choice",
 options: [
 { label: "Clean and intentional - low clutter", score: 10 },
@@ -326,11 +321,11 @@ subpillar: "Physical Order",
 prompt: "How proud are you of your physical environment when you walk into it?",
 answerType: "ranged_choice",
 options: [
-{ label: "Proud - it reflects who I am and where I am going", score: 10 },
-{ label: "Decent - it is acceptable and functional", score: 8 },
+{ label: "Proud - it reflects who I am", score: 10 },
+{ label: "Decent - acceptable and functional", score: 8 },
 { label: "Neutral - I do not really think about it", score: 6 },
 { label: "Mild shame - I know it is not right", score: 4 },
-{ label: "Embarrassed - it is a problem I have been avoiding", score: 2 }
+{ label: "Embarrassed - a problem I have been avoiding", score: 2 }
 ]
 },
 {
@@ -361,20 +356,18 @@ options: [
 { label: "Almost never - I do not trust myself", score: 2 }
 ]
 },
-
-// RESPONSIBILITY
 {
 key: "resp_work_performance",
 pillar: "Responsibility",
 subpillar: "Duties",
-prompt: "How would you honestly rate your work performance or professional output right now?",
+prompt: "How would you honestly rate your work performance right now?",
 answerType: "ranged_choice",
 options: [
 { label: "Excellent - executing at a high level", score: 10 },
 { label: "Good - solid and consistent", score: 8 },
 { label: "Average - doing what is required, no more", score: 6 },
 { label: "Below standard - I know I am underperforming", score: 4 },
-{ label: "Poor - or currently unemployed without a plan", score: 2 }
+{ label: "Poor - or unemployed without a plan", score: 2 }
 ]
 },
 {
@@ -399,7 +392,7 @@ prompt: "Are you consistently saving or building financial security right now?",
 answerType: "ranged_choice",
 options: [
 { label: "Yes - saving consistently with a clear target", score: 10 },
-{ label: "Sometimes - saving when I remember or have extra", score: 7 },
+{ label: "Sometimes - saving when I remember", score: 7 },
 { label: "Not currently saving but breaking even", score: 5 },
 { label: "Spending more than I earn", score: 3 },
 { label: "In serious financial trouble", score: 1 }
@@ -414,7 +407,7 @@ answerType: "ranged_choice",
 options: [
 { label: "Debt-free or fully on top of all payments", score: 10 },
 { label: "Managing debt with a clear plan", score: 8 },
-{ label: "Meeting minimum obligations but not reducing debt", score: 6 },
+{ label: "Meeting minimums but not reducing debt", score: 6 },
 { label: "Struggling to keep up with payments", score: 4 },
 { label: "Behind on payments or in default", score: 2 }
 ]
@@ -484,7 +477,7 @@ answerType: "fixed_choice",
 options: [
 { label: "0 - nothing on the avoidance list", value: "0", score: 10 },
 { label: "1-2 minor items", value: "1-2", score: 8 },
-{ label: "3-5 - some real things I am not facing", value: "3-5", score: 6 },
+{ label: "3-5 real things I am not facing", value: "3-5", score: 6 },
 { label: "6-10 - a pattern of avoidance", value: "6-10", score: 4 },
 { label: "10+ - avoidance is defining me right now", value: "10+", score: 2 }
 ]
@@ -521,13 +514,13 @@ options: [
 key: "resp_conflict_resolution",
 pillar: "Responsibility",
 subpillar: "People",
-prompt: "How do you handle conflict, hard conversations, and interpersonal tension?",
+prompt: "How do you handle conflict and hard conversations?",
 answerType: "ranged_choice",
 options: [
 { label: "I address it directly and in a timely way", score: 10 },
 { label: "I usually face it though it is uncomfortable", score: 8 },
 { label: "I delay but eventually address it", score: 6 },
-{ label: "I avoid it - let things fester", score: 4 },
+{ label: "I avoid it and let things fester", score: 4 },
 { label: "I consistently avoid hard conversations", score: 2 }
 ]
 },
@@ -545,8 +538,6 @@ options: [
 { label: "In serious trouble or without direction", score: 2 }
 ]
 },
-
-// MASTERY
 {
 key: "mastery_pursuit_clarity",
 pillar: "Mastery",
@@ -579,7 +570,7 @@ options: [
 key: "mastery_weekly_hours",
 pillar: "Mastery",
 subpillar: "Practice",
-prompt: "How many hours per week do you invest in deliberate practice in your main pursuit?",
+prompt: "How many hours per week do you invest in deliberate practice?",
 answerType: "fixed_choice",
 options: [
 { label: "10+ hours", value: "10+", score: 10 },
@@ -594,10 +585,10 @@ options: [
 key: "mastery_visible_progress",
 pillar: "Mastery",
 subpillar: "Practice",
-prompt: "Can you point to visible, measurable progress in your pursuit over the last 90 days?",
+prompt: "Can you point to visible progress in your pursuit over the last 90 days?",
 answerType: "ranged_choice",
 options: [
-{ label: "Yes - clear, undeniable improvement I can show", score: 10 },
+{ label: "Yes - clear undeniable improvement I can show", score: 10 },
 { label: "Yes - meaningful progress though not always visible", score: 8 },
 { label: "Some progress but inconsistent", score: 6 },
 { label: "Minimal - I have been going through motions", score: 4 },
@@ -636,7 +627,7 @@ options: [
 key: "mastery_distraction_resistance",
 pillar: "Mastery",
 subpillar: "Pursuit",
-prompt: "How well do you protect your practice time from distraction and interruption?",
+prompt: "How well do you protect your practice time from distraction?",
 answerType: "ranged_choice",
 options: [
 { label: "Very well - sessions are focused and protected", score: 10 },
@@ -650,7 +641,7 @@ options: [
 key: "mastery_feedback_loop",
 pillar: "Mastery",
 subpillar: "Practice",
-prompt: "Do you have feedback, coaching, or measurement to track your actual improvement?",
+prompt: "Do you have feedback or measurement to track your actual improvement?",
 answerType: "ranged_choice",
 options: [
 { label: "Yes - I have clear measurement and real feedback", score: 10 },
@@ -716,7 +707,5 @@ options: [
 { label: "Severe environmental barriers to practice", score: 2 }
 ]
 }
-```
-
 ]
 };
