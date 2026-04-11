@@ -1,312 +1,156 @@
 const $ = (s, c = document) => c.querySelector(s);
 const app = $("#app");
 
-function sectionLabel(text) {
-return `<div class="eyebrow">${text}</div>`;
-}
-
-function pillarCard(title, desc, metrics) {
-return `
-<article class="card pillar-card">
-<h3>${title}</h3>
-<p class="card-copy">${desc}</p>
-<ul class="metric-list">
-${metrics.map(item => `<li>${item}</li>`).join("")}
-</ul>
-</article>
-`;
-}
-
-function stepCard(number, title, desc) {
-return `
-<article class="card step-card">
-<div class="step-number">${number}</div>
-<h3>${title}</h3>
-<p class="card-copy">${desc}</p>
-</article>
-`;
-}
-
-function scoreRow(label, score, tone = "") {
-return `
-<div class="score-row">
-<span>${label}</span>
-<strong class="${tone}">${score}</strong>
-</div>
-`;
-}
-
-function proofCard(title, body) {
-return `
-<article class="card proof-journey-card">
-<div class="panel-label">${title}</div>
-<p class="card-copy">${body}</p>
-</article>
-`;
-}
-
 function homePage() {
 return `
 <header class="topbar">
-<div class="brand">REMORALIZATION</div>
-<nav class="top-actions">
-<a class="btn btn-ghost" href="/how.html">How It Works</a>
-<a class="btn btn-ghost" href="/why.html">Why It Works</a>
-<a class="btn btn-primary" href="/join.html">Join Free</a>
-</nav>
+  <div class="brand">REMORALIZATION</div>
+  <nav class="top-actions">
+    <a class="btn btn-ghost" href="/baseline.html">Take the Assessment</a>
+    <a class="btn btn-primary" href="#notify">Get the App</a>
+  </nav>
 </header>
 
 <main>
-<section class="hero container">
-<div class="hero-copy">
-${sectionLabel("Structured accountability for men")}
-<h1>A structured accountability system for men who are done drifting.</h1>
-<p class="subtitle">
-Remoralization helps men build visible progress in
-<strong>Physical Discipline</strong>, <strong>Order</strong>,
-<strong>Responsibility</strong>, and <strong>Mastery</strong>
-through biweekly scorecards, monthly review, and real human accountability.
-</p>
 
-<p class="hero-tagline">Integrity is not a feeling. It is proof.</p>
+  <section class="container" style="padding: 80px 0 64px; text-align: center; max-width: 780px;">
+    <div class="eyebrow">Built for men who are done drifting</div>
+    <h1 style="font-size: clamp(36px, 6vw, 64px); line-height: 1.05; margin-bottom: 24px;">
+      You already know what's slipping.
+    </h1>
+    <p class="subtitle" style="font-size: clamp(17px, 2.5vw, 22px); max-width: 620px; margin: 0 auto 32px; color: #9aa7bd; line-height: 1.7;">
+      Most men drift through their days with a quiet sense that something is off — the body, the environment, the follow-through, the work that matters. Remoralization is a system that makes you face it, measure it, and fix it.
+    </p>
+    <div class="actions center">
+      <a class="btn btn-primary" href="/baseline.html" style="font-size: 17px; padding: 16px 36px;">Take the Baseline Assessment →</a>
+    </div>
+    <p style="margin-top: 16px; font-size: 14px; color: #4a5568;">Free. 5 minutes. No flattery.</p>
+  </section>
 
-<div class="actions">
-<a class="btn btn-primary" href="/join.html">Join Free</a>
-<a class="btn btn-ghost" href="/how.html">See How It Works</a>
-</div>
+  <section class="container" style="padding: 0 0 72px;">
+    <div class="card" style="max-width: 780px; margin: 0 auto; padding: 40px; border-color: rgba(255,204,51,0.2);">
+      <div class="eyebrow" style="margin-bottom: 20px;">The honest diagnosis</div>
+      <p style="font-size: clamp(18px, 2.5vw, 22px); color: #e7ecf5; line-height: 1.7; margin: 0 0 20px;">
+        Most self-improvement content tells you what you want to hear. Remoralization tells you what you need to face.
+      </p>
+      <p style="font-size: 16px; color: #9aa7bd; line-height: 1.8; margin: 0;">
+        There are four areas where men quietly lose ground — their body, their environment, their obligations, and their craft. Not all at once. Slowly. A skipped workout here, a cluttered room there, a promise half-kept, a pursuit abandoned. Remoralization scores each one, tracks the trend, and holds you accountable to closing the gap between who you are and who you intend to be.
+      </p>
+    </div>
+  </section>
 
-<div class="hero-points">
-<span>Biweekly scorecards</span>
-<span>Monthly review</span>
-<span>Visible progress</span>
-<span>Real human accountability</span>
-</div>
-</div>
+  <section class="container" style="padding: 0 0 80px;">
+    <div style="max-width: 780px; margin: 0 auto;">
+      <div class="eyebrow" style="margin-bottom: 8px;">The 4 pillars</div>
+      <h2 style="margin-bottom: 32px;">Where discipline becomes visible.</h2>
+      <div class="grid grid-2" style="gap: 16px;">
+        <div class="card" style="border-left: 3px solid #60a5fa; padding: 28px;">
+          <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: #60a5fa; margin-bottom: 10px; text-transform: uppercase;">Body</div>
+          <p style="color: #e7ecf5; font-size: 16px; font-weight: 700; margin: 0 0 8px;">Are you building the body or letting it go?</p>
+          <p style="color: #9aa7bd; font-size: 14px; line-height: 1.6; margin: 0;">Training, condition, nutrition, sleep. The body is the first signal of a man's discipline — and the first thing that slips when life gets soft.</p>
+        </div>
+        <div class="card" style="border-left: 3px solid #fbbf24; padding: 28px;">
+          <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: #fbbf24; margin-bottom: 10px; text-transform: uppercase;">Order</div>
+          <p style="color: #e7ecf5; font-size: 16px; font-weight: 700; margin: 0 0 8px;">Is your environment working for you or against you?</p>
+          <p style="color: #9aa7bd; font-size: 14px; line-height: 1.6; margin: 0;">Space, schedule, systems, and digital life. A man's environment is a map of his mind. Chaos outside breeds chaos inside.</p>
+        </div>
+        <div class="card" style="border-left: 3px solid #4ade80; padding: 28px;">
+          <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: #4ade80; margin-bottom: 10px; text-transform: uppercase;">Responsibility</div>
+          <p style="color: #e7ecf5; font-size: 16px; font-weight: 700; margin: 0 0 8px;">Are you carrying what you said you would?</p>
+          <p style="color: #9aa7bd; font-size: 14px; line-height: 1.6; margin: 0;">Duties, people, follow-through. The people in your life are either more secure because of you — or they've learned not to count on you. There's no middle ground.</p>
+        </div>
+        <div class="card" style="border-left: 3px solid #f87171; padding: 28px;">
+          <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: #f87171; margin-bottom: 10px; text-transform: uppercase;">Mastery</div>
+          <p style="color: #e7ecf5; font-size: 16px; font-weight: 700; margin: 0 0 8px;">Are you going deep or just staying busy?</p>
+          <p style="color: #9aa7bd; font-size: 14px; line-height: 1.6; margin: 0;">One pursuit. Deliberate practice. Real output. Most men dabble in ten things and master nothing. Remoralization locks you into one pursuit and holds you to it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div class="hero-panel card">
-<div class="panel-label">Sample biweekly score</div>
-<div class="score-block">
-${scoreRow("Physical Discipline", "19 / 25", "tone-good")}
-${scoreRow("Order", "17 / 25", "tone-mid")}
-${scoreRow("Responsibility", "21 / 25", "tone-good")}
-${scoreRow("Mastery", "18 / 25", "tone-mid")}
-</div>
+  <section class="container" style="padding: 0 0 80px;">
+    <div style="max-width: 780px; margin: 0 auto;">
+      <div class="eyebrow" style="margin-bottom: 8px;">How it works</div>
+      <h2 style="margin-bottom: 32px;">Simple. Honest. Unforgiving.</h2>
+      <div class="grid grid-3" style="gap: 16px;">
+        <div class="card step-card" style="padding-top: 56px;">
+          <div class="step-number">01</div>
+          <h3 style="font-size: 17px;">Take the Baseline</h3>
+          <p class="card-copy">50 honest questions across the 4 pillars. You get a score, an archetype, and a clear picture of where you actually stand.</p>
+        </div>
+        <div class="card step-card" style="padding-top: 56px;">
+          <div class="step-number">02</div>
+          <h3 style="font-size: 17px;">Track Daily</h3>
+          <p class="card-copy">Log tasks, check in on each pillar, upload proof, and run your mastery timer. The app scores everything automatically.</p>
+        </div>
+        <div class="card step-card" style="padding-top: 56px;">
+          <div class="step-number">03</div>
+          <h3 style="font-size: 17px;">Review and Repeat</h3>
+          <p class="card-copy">Every two weeks, sit down with your scores. What improved. What slipped. What you're committing to next. Then go again.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div class="score-total">
-<span>Total</span>
-<strong>75 / 100</strong>
-</div>
+  <section class="container" style="padding: 0 0 80px;">
+    <div class="card" style="max-width: 780px; margin: 0 auto; text-align: center; padding: 56px 40px; border-color: rgba(255,204,51,0.25);">
+      <div class="eyebrow" style="margin-bottom: 16px;">Start here</div>
+      <h2 style="margin-bottom: 16px; font-size: clamp(28px, 4vw, 40px);">Find out where you actually stand.</h2>
+      <p style="color: #9aa7bd; font-size: 17px; max-width: 520px; margin: 0 auto 32px; line-height: 1.7;">
+        The baseline assessment takes 5 minutes. It scores you across all 4 pillars and gives you your archetype — an honest portrait of who you are right now and where you need to go.
+      </p>
+      <a class="btn btn-primary" href="/baseline.html" style="font-size: 17px; padding: 16px 40px; display: inline-flex;">Take the Assessment →</a>
+      <p style="margin-top: 16px; font-size: 13px; color: #4a5568;">Free. No account required. Be honest — it only works if you are.</p>
+    </div>
+  </section>
 
-<div class="mini-divider"></div>
+  <section class="container" style="padding: 0 0 80px;" id="notify">
+    <div class="card" style="max-width: 780px; margin: 0 auto; text-align: center; padding: 48px 40px;">
+      <div style="display: inline-block; background: rgba(255,204,51,0.12); border: 1px solid rgba(255,204,51,0.3); border-radius: 999px; padding: 6px 16px; font-size: 12px; font-weight: 800; color: #ffd86a; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px;">App Coming Soon</div>
+      <h2 style="margin-bottom: 16px;">The full system lives in the app.</h2>
+      <p style="color: #9aa7bd; font-size: 16px; max-width: 520px; margin: 0 auto 32px; line-height: 1.7;">
+        Daily task tracking, pillar check-ins, GPS run tracker, mastery pursuit contract, proof bank, and biweekly reviews. Built for iOS. Launching soon.
+      </p>
+      <form onsubmit="handleNotify(event)" style="display: flex; gap: 10px; max-width: 420px; margin: 0 auto; flex-wrap: wrap;">
+        <input type="email" id="notify-email" placeholder="Your email" required style="flex: 1; min-width: 200px; background: #0a0f1d; border: 1px solid #2c3552; border-radius: 12px; padding: 14px 16px; color: #e7ecf5; font-size: 15px; outline: none;" />
+        <button type="submit" class="btn btn-primary" style="white-space: nowrap; padding: 14px 24px;">Notify Me</button>
+      </form>
+      <div id="notify-success" style="display:none; margin-top: 16px; color: #4ade80; font-size: 15px; font-weight: 700;">You're on the list. We'll notify you when it drops.</div>
+    </div>
+  </section>
 
-<div class="panel-meta">
-<div>
-<div class="meta-label">Biggest win</div>
-<p>Kept physical routine, cleaned up living space, and hit key work sessions.</p>
-</div>
-<div>
-<div class="meta-label">Next focus</div>
-<p>Tighten order, complete 3 responsibility commitments, and advance one main pursuit.</p>
-</div>
-</div>
-</div>
-</section>
-
-<section class="container section section-tight">
-<div class="join-strip card">
-<div class="join-strip-copy">
-${sectionLabel("When you join")}
-<h2>Your first step is simple</h2>
-<p>
-You complete a baseline assessment, define your body goal and main pursuit,
-get scored across the 4 pillars, and begin your first 2-week cycle.
-</p>
-</div>
-<div class="join-strip-points">
-<div class="join-point"><strong>1.</strong> Baseline assessment</div>
-<div class="join-point"><strong>2.</strong> First score preview</div>
-<div class="join-point"><strong>3.</strong> Start your first cycle</div>
-</div>
-</div>
-</section>
-
-<section class="container section">
-<div class="section-heading narrow">
-${sectionLabel("Who this is for")}
-<h2>For men whose standards are higher than their current reality</h2>
-<p>
-If your routines are unstable, your environment is not fully in order,
-and your actions do not yet match your standards, this system is for you.
-This is not more passive content. It is structure, measurement, and accountability.
-</p>
-</div>
-</section>
-
-<section class="container section">
-<div class="section-heading">
-${sectionLabel("How it works")}
-<h2>A simple accountability loop</h2>
-<p>
-The system should feel concrete. A man joins, defines his focus,
-reports every two weeks, reviews monthly, and builds visible proof over time.
-</p>
-</div>
-
-<div class="grid grid-4">
-${stepCard("01", "Baseline Assessment", "Define your current state, body goal, primary pursuit, and next commitments.")}
-${stepCard("02", "Biweekly Scorecard", "Report progress every two weeks across the 4 pillars with clear evidence and honest scoring.")}
-${stepCard("03", "Monthly Review", "Review the trend, identify misses, tighten standards, and reset the next phase.")}
-${stepCard("04", "Visible Progress", "Track score improvement, promises kept, better body composition, stronger routines, and follow-through.")}
-</div>
-</section>
-
-<section class="container section">
-<div class="section-heading">
-${sectionLabel("The 4 pillars")}
-<h2>The core of the system</h2>
-<p>
-These are the measurable fields where integrity becomes visible.
-</p>
-</div>
-
-<div class="grid grid-2">
-${pillarCard(
-"Physical Discipline",
-"Train the body and build visible proof of discipline.",
-["workouts completed", "bodyweight / waist trend", "nutrition compliance", "sleep consistency"]
-)}
-${pillarCard(
-"Order",
-"Bring structure to your environment, schedule, and life systems.",
-["room / workspace reset", "weekly planning", "admin handled", "loose ends reduced"]
-)}
-${pillarCard(
-"Responsibility",
-"Carry real obligations to others and to real life.",
-["commitments kept", "punctuality", "family / work duties", "burdens handled beyond self"]
-)}
-${pillarCard(
-"Mastery",
-"Advance in a meaningful pursuit through focused effort and measurable progress.",
-["hours practiced", "sessions completed", "milestones reached", "output produced"]
-)}
-</div>
-</section>
-
-<section class="container section split-section">
-<div class="split-copy">
-${sectionLabel("What gets measured")}
-<h2>Not vague self-improvement. A real score.</h2>
-<p>
-Most men do not fail from lack of information. They fail from lack of structure,
-follow-through, and real accountability. Remoralization turns discipline into something visible:
-scored, reviewed, and reinforced over time.
-</p>
-
-<ul class="big-list">
-<li><strong>Physical Discipline:</strong> body, training, food, sleep</li>
-<li><strong>Order:</strong> environment, schedule, admin, life control</li>
-<li><strong>Responsibility:</strong> obligations, dependability, duties carried</li>
-<li><strong>Mastery:</strong> focused practice, milestones, real output</li>
-</ul>
-</div>
-
-<div class="card proof-card">
-<div class="panel-label">What changes in 30–90 days</div>
-<ul class="proof-list">
-<li>better body composition or physical consistency</li>
-<li>cleaner environment and stronger routines</li>
-<li>more promises kept</li>
-<li>less chaos and avoidance</li>
-<li>real momentum in a chosen pursuit</li>
-<li>higher self-respect from visible proof</li>
-</ul>
-</div>
-</section>
-
-<section class="container section">
-<div class="section-heading">
-${sectionLabel("Proof")}
-<h2>What visible progress can look like</h2>
-<p>
-The more concrete the mechanism feels, the more believable the system becomes.
-Even one clear before-and-after journey makes the idea real.
-</p>
-</div>
-
-<div class="grid grid-3">
-${proofCard("Week 1", "Scattered routine, poor follow-through, room not in order, no clear pursuit rhythm.")}
-${proofCard("Week 6", "Physical score up, living space cleaner, more commitments kept, stronger daily structure.")}
-${proofCard("Week 12", "Leaner or fitter, less drift, better self-respect, and real momentum in one meaningful pursuit.")}
-</div>
-</section>
-
-<section class="container section">
-<div class="section-heading narrow">
-${sectionLabel("Free and paid")}
-<h2>Start with the front door, then step into the full system</h2>
-<p>
-Free should let a man see where he stands. Paid should deliver the recurring accountability mechanism.
-</p>
-</div>
-
-<div class="grid grid-2">
-<article class="card pricing-card">
-<div class="pricing-label">Free</div>
-<h3>Front door</h3>
-<ul class="metric-list">
-<li>baseline assessment</li>
-<li>first score preview</li>
-<li>initial diagnosis</li>
-<li>clear next step into the system</li>
-</ul>
-</article>
-
-<article class="card pricing-card pricing-card-featured">
-<div class="pricing-label">Paid membership</div>
-<h3>The accountability system</h3>
-<ul class="metric-list">
-<li>biweekly scorecards</li>
-<li>monthly review</li>
-<li>tracked progress over time</li>
-<li>real human follow-through</li>
-</ul>
-</article>
-</div>
-</section>
-
-<section class="container section final-cta">
-<div class="card final-cta-card">
-${sectionLabel("Join")}
-<h2>Stop drifting. Start measuring.</h2>
-<p>
-Build discipline, restore order, carry responsibility, and advance in mastery —
-with a structure that makes your progress real.
-</p>
-<div class="actions center">
-<a class="btn btn-primary" href="/join.html">Join Free</a>
-<a class="btn btn-ghost" href="/how.html">See How It Works</a>
-</div>
-</div>
-</section>
 </main>
 
-<footer class="footer">
-Remoralization is a structured accountability system for measurable progress in body, order, responsibility, and mastery.
+<footer class="footer" style="padding-bottom: 40px;">
+  Remoralization — a structured accountability system for men.<br>
+  <a href="/baseline.html" style="color: #ffd86a;">Take the Baseline Assessment</a>
 </footer>
 `;
 }
 
-(function boot() {
-try {
-app.innerHTML = homePage();
-} catch (e) {
-console.error(e);
-app.innerHTML = `
-<div style="max-width:720px;margin:40px auto;color:#ffb4b4;padding:0 16px;">
-<h2>Load error</h2>
-<pre>${String(e)}</pre>
-</div>
-`;
+async function handleNotify(e) {
+  e.preventDefault();
+  const email = document.getElementById('notify-email').value;
+  try {
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+    const SUPABASE_URL = window.SUPABASE_URL || '';
+    const SUPABASE_ANON = window.SUPABASE_ANON || '';
+    if (SUPABASE_URL && SUPABASE_ANON) {
+      const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+      await sb.from('notify_list').insert({ email });
+    }
+  } catch(err) {
+    console.log('Supabase not configured:', email);
+  }
+  document.getElementById('notify-success').style.display = 'block';
+  document.getElementById('notify-email').value = '';
 }
+
+(function boot() {
+  try {
+    app.innerHTML = homePage();
+  } catch (e) {
+    console.error(e);
+    app.innerHTML = `<div style="max-width:720px;margin:40px auto;color:#ffb4b4;padding:0 16px;"><h2>Load error</h2><pre>${String(e)}</pre></div>`;
+  }
 })();
