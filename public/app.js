@@ -1,377 +1,156 @@
-/* ===== tiny view router ===== */
-const $ = (sel, ctx=document) => ctx.querySelector(sel);
-const $$ = (sel, ctx=document) => [...ctx.querySelectorAll(sel)];
+const $ = (s, c = document) => c.querySelector(s);
 const app = $("#app");
 
-const state = {
-view: location.hash.replace("#","") || "form",
-form: JSON.parse(localStorage.getItem("orm-report") || "{}")
-};
+function homePage() {
+return `
+<header class="topbar">
+  <div class="brand">REMORALIZATION</div>
+  <nav class="top-actions">
+    <a class="btn btn-ghost" href="/baseline.html">Take the Assessment</a>
+    <a class="btn btn-primary" href="#notify">Get the App</a>
+  </nav>
+</header>
 
-window.addEventListener("hashchange", () => {
-state.view = location.hash.replace("#","") || "form";
-render();
-});
+<main>
 
-document.addEventListener("DOMContentLoaded", () => {
-try {
-// Only update if #year exists
-const yearEl = document.getElementById("year");
-if (yearEl) {
-yearEl.textContent = new Date().getFullYear();
-}
+  <section class="container" style="padding: 80px 0 64px; text-align: center; max-width: 780px;">
+    <div class="eyebrow">Built for men who are done drifting</div>
+    <h1 style="font-size: clamp(36px, 6vw, 64px); line-height: 1.05; margin-bottom: 24px;">
+      You already know what's slipping.
+    </h1>
+    <p class="subtitle" style="font-size: clamp(17px, 2.5vw, 22px); max-width: 620px; margin: 0 auto 32px; color: #9aa7bd; line-height: 1.7;">
+      Most men drift through their days with a quiet sense that something is off — the body, the environment, the follow-through, the work that matters. Remoralization is a system that makes you face it, measure it, and fix it.
+    </p>
+    <div class="actions center">
+      <a class="btn btn-primary" href="/baseline.html" style="font-size: 17px; padding: 16px 36px;">Take the Baseline Assessment →</a>
+    </div>
+    <p style="margin-top: 16px; font-size: 14px; color: #4a5568;">Free. 5 minutes. No flattery.</p>
+  </section>
 
-// Run your app
-render();
-} catch (err) {
-console.error("Startup error:", err);
-document.body.innerHTML = `
-<main style="max-width:720px;margin:40px auto;padding:24px;color:#b00020;">
-<h1>App failed to load</h1>
-<pre>${String(err)}</pre>
+  <section class="container" style="padding: 0 0 72px;">
+    <div class="card" style="max-width: 780px; margin: 0 auto; padding: 40px; border-color: rgba(255,204,51,0.2);">
+      <div class="eyebrow" style="margin-bottom: 20px;">The honest diagnosis</div>
+      <p style="font-size: clamp(18px, 2.5vw, 22px); color: #e7ecf5; line-height: 1.7; margin: 0 0 20px;">
+        Most self-improvement content tells you what you want to hear. Remoralization tells you what you need to face.
+      </p>
+      <p style="font-size: 16px; color: #9aa7bd; line-height: 1.8; margin: 0;">
+        There are four areas where men quietly lose ground — their body, their environment, their obligations, and their craft. Not all at once. Slowly. A skipped workout here, a cluttered room there, a promise half-kept, a pursuit abandoned. Remoralization scores each one, tracks the trend, and holds you accountable to closing the gap between who you are and who you intend to be.
+      </p>
+    </div>
+  </section>
+
+  <section class="container" style="padding: 0 0 80px;">
+    <div style="max-width: 780px; margin: 0 auto;">
+      <div class="eyebrow" style="margin-bottom: 8px;">The 4 pillars</div>
+      <h2 style="margin-bottom: 32px;">Where discipline becomes visible.</h2>
+      <div class="grid grid-2" style="gap: 16px;">
+        <div class="card" style="border-left: 3px solid #60a5fa; padding: 28px;">
+          <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: #60a5fa; margin-bottom: 10px; text-transform: uppercase;">Body</div>
+          <p style="color: #e7ecf5; font-size: 16px; font-weight: 700; margin: 0 0 8px;">Are you building the body or letting it go?</p>
+          <p style="color: #9aa7bd; font-size: 14px; line-height: 1.6; margin: 0;">Training, condition, nutrition, sleep. The body is the first signal of a man's discipline — and the first thing that slips when life gets soft.</p>
+        </div>
+        <div class="card" style="border-left: 3px solid #fbbf24; padding: 28px;">
+          <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: #fbbf24; margin-bottom: 10px; text-transform: uppercase;">Order</div>
+          <p style="color: #e7ecf5; font-size: 16px; font-weight: 700; margin: 0 0 8px;">Is your environment working for you or against you?</p>
+          <p style="color: #9aa7bd; font-size: 14px; line-height: 1.6; margin: 0;">Space, schedule, systems, and digital life. A man's environment is a map of his mind. Chaos outside breeds chaos inside.</p>
+        </div>
+        <div class="card" style="border-left: 3px solid #4ade80; padding: 28px;">
+          <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: #4ade80; margin-bottom: 10px; text-transform: uppercase;">Responsibility</div>
+          <p style="color: #e7ecf5; font-size: 16px; font-weight: 700; margin: 0 0 8px;">Are you carrying what you said you would?</p>
+          <p style="color: #9aa7bd; font-size: 14px; line-height: 1.6; margin: 0;">Duties, people, follow-through. The people in your life are either more secure because of you — or they've learned not to count on you. There's no middle ground.</p>
+        </div>
+        <div class="card" style="border-left: 3px solid #f87171; padding: 28px;">
+          <div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; color: #f87171; margin-bottom: 10px; text-transform: uppercase;">Mastery</div>
+          <p style="color: #e7ecf5; font-size: 16px; font-weight: 700; margin: 0 0 8px;">Are you going deep or just staying busy?</p>
+          <p style="color: #9aa7bd; font-size: 14px; line-height: 1.6; margin: 0;">One pursuit. Deliberate practice. Real output. Most men dabble in ten things and master nothing. Remoralization locks you into one pursuit and holds you to it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" style="padding: 0 0 80px;">
+    <div style="max-width: 780px; margin: 0 auto;">
+      <div class="eyebrow" style="margin-bottom: 8px;">How it works</div>
+      <h2 style="margin-bottom: 32px;">Simple. Honest. Unforgiving.</h2>
+      <div class="grid grid-3" style="gap: 16px;">
+        <div class="card step-card" style="padding-top: 56px;">
+          <div class="step-number">01</div>
+          <h3 style="font-size: 17px;">Take the Baseline</h3>
+          <p class="card-copy">50 honest questions across the 4 pillars. You get a score, an archetype, and a clear picture of where you actually stand.</p>
+        </div>
+        <div class="card step-card" style="padding-top: 56px;">
+          <div class="step-number">02</div>
+          <h3 style="font-size: 17px;">Track Daily</h3>
+          <p class="card-copy">Log tasks, check in on each pillar, upload proof, and run your mastery timer. The app scores everything automatically.</p>
+        </div>
+        <div class="card step-card" style="padding-top: 56px;">
+          <div class="step-number">03</div>
+          <h3 style="font-size: 17px;">Review and Repeat</h3>
+          <p class="card-copy">Every two weeks, sit down with your scores. What improved. What slipped. What you're committing to next. Then go again.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" style="padding: 0 0 80px;">
+    <div class="card" style="max-width: 780px; margin: 0 auto; text-align: center; padding: 56px 40px; border-color: rgba(255,204,51,0.25);">
+      <div class="eyebrow" style="margin-bottom: 16px;">Start here</div>
+      <h2 style="margin-bottom: 16px; font-size: clamp(28px, 4vw, 40px);">Find out where you actually stand.</h2>
+      <p style="color: #9aa7bd; font-size: 17px; max-width: 520px; margin: 0 auto 32px; line-height: 1.7;">
+        The baseline assessment takes 5 minutes. It scores you across all 4 pillars and gives you your archetype — an honest portrait of who you are right now and where you need to go.
+      </p>
+      <a class="btn btn-primary" href="/baseline.html" style="font-size: 17px; padding: 16px 40px; display: inline-flex;">Take the Assessment →</a>
+      <p style="margin-top: 16px; font-size: 13px; color: #4a5568;">Free. No account required. Be honest — it only works if you are.</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding: 0 0 80px;" id="notify">
+    <div class="card" style="max-width: 780px; margin: 0 auto; text-align: center; padding: 48px 40px;">
+      <div style="display: inline-block; background: rgba(255,204,51,0.12); border: 1px solid rgba(255,204,51,0.3); border-radius: 999px; padding: 6px 16px; font-size: 12px; font-weight: 800; color: #ffd86a; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px;">App Coming Soon</div>
+      <h2 style="margin-bottom: 16px;">The full system lives in the app.</h2>
+      <p style="color: #9aa7bd; font-size: 16px; max-width: 520px; margin: 0 auto 32px; line-height: 1.7;">
+        Daily task tracking, pillar check-ins, GPS run tracker, mastery pursuit contract, proof bank, and biweekly reviews. Built for iOS. Launching soon.
+      </p>
+      <form onsubmit="handleNotify(event)" style="display: flex; gap: 10px; max-width: 420px; margin: 0 auto; flex-wrap: wrap;">
+        <input type="email" id="notify-email" placeholder="Your email" required style="flex: 1; min-width: 200px; background: #0a0f1d; border: 1px solid #2c3552; border-radius: 12px; padding: 14px 16px; color: #e7ecf5; font-size: 15px; outline: none;" />
+        <button type="submit" class="btn btn-primary" style="white-space: nowrap; padding: 14px 24px;">Notify Me</button>
+      </form>
+      <div id="notify-success" style="display:none; margin-top: 16px; color: #4ade80; font-size: 15px; font-weight: 700;">You're on the list. We'll notify you when it drops.</div>
+    </div>
+  </section>
+
 </main>
-`;
-}
-});
 
-/* ===== utilities ===== */
-function toast(msg){
-const t = $("#toast");
-t.textContent = msg;
-t.classList.add("show");
-setTimeout(()=> t.classList.remove("show"), 2400);
-}
-
-function saveForm(){
-localStorage.setItem("orm-report", JSON.stringify(state.form));
-}
-
-function inputBind(id, opts={}){
-const {placeholder="", type="text"} = opts;
-const v = state.form[id] ?? "";
-return `
-<input class="input" id="${id}" name="${id}" value="${escapeHtml(v)}"
-type="${type}" placeholder="${placeholder}" />
+<footer class="footer" style="padding-bottom: 40px;">
+  Remoralization — a structured accountability system for men.<br>
+  <a href="/baseline.html" style="color: #ffd86a;">Take the Baseline Assessment</a>
+</footer>
 `;
 }
 
-function textareaBind(id, placeholder=""){
-const v = state.form[id] ?? "";
-return `<textarea id="${id}" class="" placeholder="${placeholder}">${escapeHtml(v)}</textarea>`;
+async function handleNotify(e) {
+  e.preventDefault();
+  const email = document.getElementById('notify-email').value;
+  try {
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
+    const SUPABASE_URL = window.SUPABASE_URL || '';
+    const SUPABASE_ANON = window.SUPABASE_ANON || '';
+    if (SUPABASE_URL && SUPABASE_ANON) {
+      const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+      await sb.from('notify_list').insert({ email });
+    }
+  } catch(err) {
+    console.log('Supabase not configured:', email);
+  }
+  document.getElementById('notify-success').style.display = 'block';
+  document.getElementById('notify-email').value = '';
 }
 
-function escapeHtml(str){
-return String(str || "").replace(/[&<>'"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[s]));
-}
-
-function deltaBodyFat(last, current){
-const a = parseFloat(last), b = parseFloat(current);
-if(Number.isFinite(a) && Number.isFinite(b)){
-const d = +(b - a).toFixed(1);
-const sign = d > 0 ? "+" : "";
-const cls = d < 0 ? "negative" : d > 0 ? "positive" : "";
-return `<span class="delta ${cls}">${sign}${d}%</span> since last period`;
-}
-return `<span class="badge">Enter last + current to see Δ</span>`;
-}
-
-/* ===== views ===== */
-function render(){
-const v = state.view;
-if(v === "how"){ renderHow(); return; }
-if(v === "why"){ renderWhy(); return; }
-if(v === "checkout"){ renderCheckout(); return; }
-renderForm();
-wireUpInputs();
-}
-
-function renderHero(){
-return `
-<section class="main-hero">
-<h1 class="h1">A call to adventure.</h1>
-<p class="subtitle">
-Build discipline, uphold values, and report your progress every two weeks — with a real human holding you accountable.
-</p>
-<div class="actions">
-<a class="btn btn-primary" href="#checkout">Join for $10/month</a>
-<a class="btn btn-ghost" href="#how">See How It Works</a>
-</div>
-</section>`;
-}
-
-function renderForm(){
-app.innerHTML = `
-${renderHero()}
-<div class="section-title">
-<h2>Submit Your Bi-Weekly Report</h2>
-<div class="badge">Human review within 48 hours</div>
-</div>
-
-<section class="container">
-<div class="row" style="margin-bottom:10px">
-<div style="flex:1; min-width:220px">${inputBind("name",{placeholder:"Your Name (optional)"})}</div>
-<div style="flex:1; min-width:220px">${inputBind("period",{placeholder:"Period covered (e.g., Aug 1–15)"})}</div>
-</div>
-
-<div class="grid">
-<article class="card">
-<h3>Physical Discipline</h3>
-<p class="hint">What did you do to maintain or improve your body during this period?</p>
-<div class="row">
-<div style="flex:1; min-width:160px">${inputBind("lastBf",{placeholder:"Last Body Fat %", type:"number"})}</div>
-<div style="flex:1; min-width:160px">${inputBind("currentBf",{placeholder:"Current Body Fat %", type:"number"})}</div>
-<div style="flex:1; min-width:160px">${inputBind("avgSleep",{placeholder:"Average Sleep (hrs/night)", type:"number"})}</div>
-</div>
-<div class="notice" id="deltaSlot">${deltaBodyFat(state.form.lastBf, state.form.currentBf)}</div>
-${textareaBind("physical","Workouts, weight change, diet discipline...")}
-</article>
-
-<article class="card">
-<h3>Responsibility to Others</h3>
-<p class="hint">How did you take care of, support, or serve others during this period?</p>
-${textareaBind("others","Helping family, mentoring, volunteering, acts of kindness...")}
-</article>
-
-<article class="card">
-<h3>Belief System & Morality</h3>
-<p class="hint">How did you act according to your values?</p>
-<ul class="hint" style="margin-top:-6px">
-<li>Define a simple creed (3–5 lines) and review weekly</li>
-<li>Name one situation where you chose principle over comfort</li>
-<li>Practice a daily reflection (journal/prayer/meditation)</li>
-</ul>
-${textareaBind("morality","Honesty, restraint, faith, keeping principles under pressure...")}
-</article>
-
-<article class="card">
-<h3>Skill & Mastery</h3>
-<p class="hint">
-Choose one skill. Stick with it. Try to become the best in the world at it. Choose wisely — ideally something others will pay for.
-</p>
-<ul class="hint" style="margin-top:-6px">
-<li>Pick 1 main pursuit; commit to a bi-weekly hour target</li>
-<li>Ship 1 measurable output (demo, draft, PR, set, piece)</li>
-<li>Seek deliberate practice: feedback + iteration</li>
-</ul>
-${textareaBind("mastery","Hours studied, practice sessions, key achievements...")}
-</article>
-
-<article class="card">
-<h3>Self-Reliance</h3>
-<p class="hint">How did you increase your independence?</p>
-<ul class="hint" style="margin-top:-6px">
-<li>Positive cash flow; save/invest each period</li>
-<li>Replace one outsourced habit with self-sufficiency</li>
-<li>Learn a practical skill (repairs, budgeting, cooking)</li>
-</ul>
-${textareaBind("selfReliance","Savings, cooking instead of takeout, new skills...")}
-</article>
-
-<article class="card">
-<h3>Integrity & Consistency</h3>
-<p class="hint">Did you keep your promises and follow through?</p>
-<ul class="hint" style="margin-top:-6px">
-<li>Make fewer promises; track every commitment</li>
-<li>Maintain a streak log (no-zero days)</li>
-<li>Own misses; write a one-line corrective next step</li>
-</ul>
-${textareaBind("integrity","Yes/No with short reflection...")}
-</article>
-</div>
-
-<div class="card" style="margin-top:16px">
-<h3>Bi-Weekly Reflection</h3>
-${textareaBind("reflection","Your biggest win this period? Main goal for the next one?")}
-</div>
-
-<div class="card" style="margin-top:16px">
-<h3>General Reflection (Open Space)</h3>
-${textareaBind("general","Anything else you want to share...")}
-</div>
-
-<div class="flex-end" style="margin-top:16px">
-<button id="submitBtn" class="btn btn-primary">Submit Report</button>
-</div>
-
-<p class="notice">Tip: your inputs auto-save to this device. Clearing browser storage will erase drafts.</p>
-</section>
-`;
-}
-
-function renderHow(){
-app.innerHTML = `
-<section class="main-hero">
-<h1 class="h1">How It Works</h1>
-<p class="subtitle">Every two weeks you report against six pillars. A real human reads, replies, and holds you to your own standards.</p>
-<div class="actions">
-<a class="btn" href="#">Back to Form</a>
-<a class="btn btn-primary" href="#checkout">Join for $10/month</a>
-</div>
-</section>
-
-<section class="container grid">
-${howCard("Physical Discipline",[
-"Train 4+ sessions per week (strength + conditioning)",
-"Target body fat: under 25% (progress measured bi-weekly)",
-"Prioritize sleep (7–9 hrs) and whole-food nutrition"
-])}
-${howCard("Responsibility to Others",[
-"One deliberate act of service every 2 weeks",
-"Proactive check-ins with family/mentee",
-"Resolve one lingering conflict or deliver a promise"
-])}
-${howCard("Belief System & Morality",[
-"Define a simple creed (3–5 lines) and review weekly",
-"Choose principle over comfort at least once",
-"Daily reflection: journal / prayer / meditation"
-])}
-${howCard("Skill & Mastery",[
-"Pick 1 main pursuit; commit to a bi-weekly hour target",
-"Ship 1 measurable output (demo, draft, PR, set, piece)",
-"Seek deliberate practice: feedback + iteration"
-])}
-${howCard("Self-Reliance",[
-"Positive cash flow; save/invest each period",
-"Replace one outsourced habit with self-sufficiency",
-"Learn a practical skill (repairs, budgeting, cooking)"
-])}
-${howCard("Integrity & Consistency",[
-"Track every commitment; make fewer promises",
-"Maintain a streak log (no-zero days)",
-"Own misses; write a one-line corrective step"
-])}
-</section>
-
-<div class="section-title">
-<h2>Your Cadence</h2>
-</div>
-<section class="container">
-<table class="table">
-<thead><tr><th>Step</th><th>What happens</th></tr></thead>
-<tbody>
-<tr><td>1. Sign up</td><td>Create your account and choose your standards.</td></tr>
-<tr><td>2. Report</td><td>Submit a bi-weekly report against the six pillars.</td></tr>
-<tr><td>3. Human reply</td><td>Receive a personal response within 48 hours.</td></tr>
-<tr><td>4. Track</td><td>Maintain streaks and measure progress over time.</td></tr>
-</tbody>
-</table>
-<div class="actions" style="margin-top:16px">
-<a class="btn" href="#">Start Your First Report</a>
-</div>
-</section>
-`;
-}
-/* ========= WHY PAGE ========= */
-
-const WHY_ITEMS = [
-{ p: "57% of Americans feel lonely",
-s: "🌍 <b>Responsibility to Others</b> — service, check-ins, and accountability rebuild connection." },
-{ p: "58% of young adults report little or no purpose",
-s: "📖 <b>Belief & Morality</b> — anchor life in chosen principles; align actions with values." },
-{ p: "Purpose improves mental health (less stress & depression)",
-s: "🎯 <b>Skill & Mastery</b> — pick one pursuit, commit to practice, track progress." },
-{ p: "Only 44% are “very satisfied” with life (Gallup)",
-s: "🕰️ <b>Integrity & Consistency</b> — track commitments & streaks; small wins compound." },
-{ p: "90% of Gen Z & millennials say purpose is essential",
-s: "📖 + 🎯 <b>Belief & Morality</b> + <b>Skill & Mastery</b> — define values; pursue mastery; align career & life." },
-{ p: "85% of Gen Z (AU) report burnout",
-s: "💪 <b>Physical Discipline</b> — train, eat clean, sleep; build energy & resilience." },
-{ p: "Strong relationships predict happiness & longevity (Harvard study)",
-s: "🌍 <b>Responsibility to Others</b> — accountability & service forge deep bonds." },
-{ p: "Life transitions often erase routine (retirees, young adults)",
-s: "🕰️ <b>Integrity & Consistency</b> — bi-weekly cadence + feedback restore rhythm." },
-{ p: "Existential depression rising (lack of direction)",
-s: "📖 + 🎯 <b>Belief & Morality</b> + <b>Skill & Mastery</b> — values + skill-building replace emptiness with growth." },
-{ p: "Americans read for fun 40% less than 20 years ago",
-s: "🔧 <b>Self-Reliance</b> — replace passive consumption with practical skills & independence." }
-];
-
-function renderWhy(){
-app.innerHTML = `
-<section class="main-hero">
-<h1 class="h3">See Why It Works</h1>
-<p class="subtitle">Modern life leaves people lonely, burnt out, and without purpose. The <b>6 Pillars</b> directly target the biggest problems.</p>
-<div class="actions">
-<a class="btn" href="#"><b>Back</b></a>
-<a class="btn btn-primary" href="#checkout"><b>Join for $10/month</b></a>
-</div>
-</section>
-
-<section class="container">
-<h2 class="section-title">Problems → Pillar Solutions</h2>
-<table class="table">
-<thead><tr><th>Problem (Data)</th><th>Pillar Solution</th></tr></thead>
-<tbody>
-${WHY_ITEMS.map(x => `
-<tr>
-<td><b>${x.p}</b></td>
-<td>${x.s}</td>
-</tr>
-`).join("")}
-</tbody>
-</table>
-</section>
-`;
-}
-
-function howCard(title, bullets){
-return `
-<article class="card">
-<h3>${title}</h3>
-<ul class="hint" style="margin:6px 0 0 18px">
-${bullets.map(b => `<li>${b}</li>`).join("")}
-</ul>
-</article>
-`;
-}
-function renderCheckout(){
-app.innerHTML = `
-<section class="main-hero">
-<h1 class="brand-title">Join Operation Remoralization ($10/month)</h1>
-<p>Your subscription is processed securely by Stripe.</p>
-
-<p style="margin-top:16px;">
-<a class="btn btn-primary" href="https://buy.stripe.com/28EaEXtEYcY3hk58fmb0400">
-Join for $10/month
-</a>
-</p>
-
-<p style="margin-top:24px;"><a class="btn" href="#">Back</a></p>
-</section>
-`;
-}
-/* ===== wire up inputs and submission ===== */
-function wireUpInputs(){
-// bind all inputs + textareas to state
-$$("input, textarea", app).forEach(el => {
-el.addEventListener("input", e => {
-const {id, value} = e.target;
-state.form[id] = value;
-saveForm();
-
-if(id === "lastBf" || id === "currentBf"){
-$("#deltaSlot").innerHTML = deltaBodyFat(state.form.lastBf, state.form.currentBf);
-}
-});
-});
-
-const submit = $("#submitBtn");
-if(submit){
-submit.addEventListener("click", () => {
-// naive required check: at least one pillar filled
-const anyText = ["physical","others","morality","mastery","selfReliance","integrity","reflection","general"]
-.some(k => (state.form[k]||"").trim().length > 0);
-if(!anyText){
-toast("Write something in at least one section before submitting.");
-return;
-}
-
-// store a simple “submission” history locally
-const history = JSON.parse(localStorage.getItem("orm-history") || "[]");
-history.push({...state.form, submittedAt: new Date().toISOString()});
-localStorage.setItem("orm-history", JSON.stringify(history));
-
-toast("Report submitted! You’ll receive a human response within 48 hours.");
-});
-}
-}
+(function boot() {
+  try {
+    app.innerHTML = homePage();
+  } catch (e) {
+    console.error(e);
+    app.innerHTML = `<div style="max-width:720px;margin:40px auto;color:#ffb4b4;padding:0 16px;"><h2>Load error</h2><pre>${String(e)}</pre></div>`;
+  }
+})();
