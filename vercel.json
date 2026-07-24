@@ -8,6 +8,7 @@
 { "source": "/why", "destination": "/why.html" },
 
 { "source": "/join/platinum", "destination": "/join/platinum.html" },
-{ "source": "/join/free", "destination": "/join/free.html" }
+{ "source": "/join/free", "destination": "/join/free.html" },
+{ "source": "/baseline", "destination": "/baseline.html" }
 ]
 }

@@ -1,232 +1,534 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Baseline Assessment — Remoralization</title>
-<link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Where do you actually stand? — Remoralization</title>
+<meta name="description" content="Twelve questions. Four scores. Two minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  .quiz-shell { max-width: 680px; margin: 0 auto; padding: 40px 16px 80px; }
-  .progress-bar-track { width: 100%; height: 6px; background: rgba(255,255,255,0.07); border-radius: 999px; margin-bottom: 10px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #ffcc33, #e6a800); border-radius: 999px; transition: width 0.4s ease; }
-  .progress-meta { display: flex; justify-content: space-between; font-size: 13px; color: #9aa7bd; margin-bottom: 32px; font-weight: 600; }
-  .pillar-badge { display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; }
-  .badge-body { background: rgba(29,78,216,0.18); color: #60a5fa; border: 1px solid rgba(96,165,250,0.3); }
-  .badge-order { background: rgba(180,83,9,0.18); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
-  .badge-responsibility { background: rgba(21,128,61,0.18); color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
-  .badge-mastery { background: rgba(185,28,28,0.18); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
-  .question-prompt { font-size: clamp(20px, 4vw, 26px); font-weight: 800; color: #f0f4ff; line-height: 1.3; margin-bottom: 28px; }
-  .options-list { display: flex; flex-direction: column; gap: 12px; }
-  .option-btn { background: rgba(20,28,48,0.9); border: 1.5px solid #2c3552; border-radius: 16px; padding: 16px 20px; color: #e7ecf5; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease; width: 100%; }
-  .option-btn:hover { border-color: #ffcc33; background: rgba(255,204,51,0.07); transform: translateY(-1px); }
-  .option-btn.selected { border-color: #ffcc33; background: rgba(255,204,51,0.12); color: #fff3c1; }
-  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; gap: 12px; }
-  .btn-back { background: rgba(255,255,255,0.04); border: 1px solid #2c3552; border-radius: 12px; padding: 12px 20px; color: #9aa7bd; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
-  .btn-back:hover { background: rgba(255,255,255,0.08); }
-  .btn-next { flex: 1; background: linear-gradient(180deg, #ffcc33, #e6a800); border: none; border-radius: 12px; padding: 14px 28px; color: #101418; font-size: 15px; font-weight: 800; cursor: pointer; transition: opacity 0.15s, transform 0.1s; }
-  .btn-next:disabled { opacity: 0.3; cursor: not-allowed; }
-  .btn-next:not(:disabled):hover { transform: translateY(-1px); }
-  .intro-screen { text-align: center; padding: 48px 0 0; }
-  .intro-icon { font-size: 48px; margin-bottom: 20px; }
-  .intro-screen h1 { font-size: clamp(28px, 5vw, 42px); margin-bottom: 14px; }
-  .intro-screen p { color: #9aa7bd; font-size: 17px; max-width: 500px; margin: 0 auto 28px; line-height: 1.6; }
-  .intro-pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 28px 0 36px; text-align: left; }
-  .intro-pillar { background: rgba(20,28,48,0.9); border: 1px solid #2c3552; border-radius: 14px; padding: 14px 16px; }
-  .intro-pillar-name { font-weight: 800; font-size: 14px; margin-bottom: 4px; }
-  .intro-pillar-desc { font-size: 13px; color: #9aa7bd; }
-  .result-screen { text-align: center; padding: 32px 0 0; }
-  .tarot-card { position: relative; background: linear-gradient(160deg, #0d1526 0%, #080e1a 100%); border: 2px solid #fbbf24; border-radius: 24px; padding: 40px 28px 32px; margin: 0 auto 32px; max-width: 420px; box-shadow: 0 0 60px rgba(251,191,36,0.15), inset 0 1px 0 rgba(255,255,255,0.06); overflow: hidden; }
-  .tarot-corner { position: absolute; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; color: rgba(251,191,36,0.4); text-transform: uppercase; }
-  .tarot-corner.tl { top: 14px; left: 18px; }
-  .tarot-corner.tr { top: 14px; right: 18px; }
-  .tarot-corner.bl { bottom: 14px; left: 18px; }
-  .tarot-corner.br { bottom: 14px; right: 18px; transform: rotate(180deg); }
-  .tarot-border-inner { position: absolute; inset: 8px; border: 1px solid rgba(251,191,36,0.2); border-radius: 18px; pointer-events: none; }
-  .tarot-archetype-label { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: #fbbf24; text-transform: uppercase; margin-bottom: 8px; }
-  .tarot-glyph { font-size: 72px; line-height: 1; margin: 12px 0 16px; }
-  .tarot-name { font-size: clamp(28px, 6vw, 38px); font-weight: 900; color: #fff3c1; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 6px; }
-  .tarot-stage { font-size: 14px; font-weight: 800; color: #fbbf24; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px; }
-  .tarot-divider { width: 60px; height: 1px; background: rgba(251,191,36,0.4); margin: 0 auto 18px; }
-  .tarot-tagline { font-size: 15px; font-style: italic; color: #d4b96a; margin-bottom: 14px; line-height: 1.5; }
-  .tarot-desc { font-size: 14px; color: #9aa7bd; line-height: 1.7; margin-bottom: 20px; }
-  .tarot-pillar-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
-  .tarot-score-pill { padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 800; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #e7ecf5; }
-  .tarot-url { font-size: 12px; color: rgba(251,191,36,0.5); letter-spacing: 0.1em; font-weight: 700; text-transform: uppercase; margin-top: 16px; }
-  .result-scores { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0 auto 28px; max-width: 420px; }
-  .score-pill { background: rgba(20,28,48,0.9); border: 1px solid #2c3552; border-radius: 14px; padding: 14px 16px; text-align: left; }
-  .score-pill-label { font-size: 12px; color: #9aa7bd; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-  .score-pill-value { font-size: 26px; font-weight: 900; line-height: 1; }
-  .score-pill-bar { margin-top: 8px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; }
-  .score-pill-bar-fill { height: 100%; border-radius: 999px; }
-  .share-actions { display: flex; flex-direction: column; gap: 12px; max-width: 420px; margin: 0 auto 24px; }
-  .btn-share { background: linear-gradient(180deg, #ffcc33, #e6a800); border: none; border-radius: 14px; padding: 16px 28px; color: #101418; font-size: 16px; font-weight: 900; cursor: pointer; letter-spacing: 0.02em; }
-  .btn-share:hover { opacity: 0.9; }
-  .btn-download { background: rgba(255,255,255,0.04); border: 1.5px solid #2c3552; border-radius: 14px; padding: 14px 28px; color: #e7ecf5; font-size: 15px; font-weight: 700; cursor: pointer; }
-  .btn-download:hover { background: rgba(255,255,255,0.08); }
-  .result-cta { background: rgba(20,28,48,0.9); border: 1px solid rgba(251,191,36,0.25); border-radius: 18px; padding: 24px; max-width: 420px; margin: 0 auto; text-align: center; }
-  .result-cta h3 { font-size: 18px; margin-bottom: 8px; color: #fff3c1; }
-  .result-cta p { color: #9aa7bd; font-size: 14px; margin-bottom: 16px; }
+  :root {
+    --bg: #0a0a0c;
+    --bg-elevated: #111116;
+    --border: #1c1c22;
+    --text: #e8e4dd;
+    --text-dim: #3a3a48;
+    --text-muted: #2a2a38;
+    --gold: #c8a84b;
+    --body: #4a7adc;
+    --order: #c8a84b;
+    --responsibility: #4a9e6a;
+    --mastery: #c45a5a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  .shell { max-width: 620px; margin: 0 auto; padding: 32px 22px 64px; }
+
+  .wordmark {
+    font-size: 11px; font-weight: 900; letter-spacing: 0.3em;
+    color: var(--gold); text-transform: uppercase;
+    text-align: center; margin-bottom: 40px;
+  }
+
+  /* ---------- INTRO ---------- */
+  .intro { text-align: center; padding-top: 24px; }
+  .intro h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 9vw, 52px);
+    font-weight: 600; line-height: 1.1; letter-spacing: -0.01em;
+    margin-bottom: 18px;
+  }
+  .intro h1 em { font-style: italic; color: var(--gold); font-weight: 500; }
+  .intro .sub {
+    font-size: 16px; color: var(--text-dim);
+    max-width: 400px; margin: 0 auto 12px; line-height: 1.6;
+  }
+  .intro .meta {
+    font-size: 12px; font-weight: 800; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 34px;
+  }
+  .intro-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    text-align: left; margin-bottom: 34px;
+  }
+  .intro-cell {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 18px; position: relative; overflow: hidden;
+  }
+  .intro-cell::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--accent);
+  }
+  .intro-cell.body { --accent: var(--body); }
+  .intro-cell.order { --accent: var(--order); }
+  .intro-cell.responsibility { --accent: var(--responsibility); }
+  .intro-cell.mastery { --accent: var(--mastery); }
+  .intro-cell-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px; font-weight: 600; margin-bottom: 3px;
+  }
+  .intro-cell-desc { font-size: 12px; color: var(--text-dim); line-height: 1.45; }
+  .fine { font-size: 12px; color: var(--text-muted); margin-top: 16px; }
+
+  /* ---------- BUTTONS ---------- */
+  .btn {
+    display: inline-block; width: 100%;
+    padding: 17px 32px; background: var(--gold); color: var(--bg);
+    font-family: inherit; font-weight: 800; font-size: 15px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    border: none; border-radius: 12px; cursor: pointer; text-decoration: none;
+    text-align: center; transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,168,75,0.25); }
+  .btn:disabled { opacity: 0.35; cursor: default; transform: none; box-shadow: none; }
+  .btn-ghost {
+    background: none; border: 1px solid var(--border); color: var(--text-dim);
+    font-size: 13px; padding: 14px 24px;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); box-shadow: none; }
+
+  /* ---------- QUIZ ---------- */
+  .track { width: 100%; height: 3px; background: var(--border); border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
+  .fill { height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.35s ease; }
+  .qmeta {
+    display: flex; justify-content: space-between;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 34px;
+  }
+  .qmeta .pillar { color: var(--accent); }
+  .qprompt {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(25px, 6vw, 34px);
+    font-weight: 600; line-height: 1.2; letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+  .opts { display: grid; gap: 10px; }
+  .opt {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 13px; padding: 16px 18px;
+    color: var(--text-dim); font-family: inherit; font-size: 15px;
+    font-weight: 500; text-align: left; cursor: pointer; width: 100%;
+    line-height: 1.45; transition: border-color 0.12s ease, color 0.12s ease;
+  }
+  .opt:hover { border-color: var(--text-dim); color: var(--text); }
+  .opt.sel { border-color: var(--gold); color: var(--text); background: rgba(200,168,75,0.07); }
+  .nav { display: flex; gap: 10px; margin-top: 26px; align-items: center; }
+  .nav .back {
+    background: none; border: none; color: var(--text-muted);
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    cursor: pointer; padding: 14px 4px; letter-spacing: 0.04em;
+  }
+  .nav .back:hover { color: var(--text-dim); }
+  .nav .btn { flex: 1; }
+
+  /* ---------- RESULT ---------- */
+  .result h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 7vw, 42px);
+    font-weight: 600; line-height: 1.15; margin-bottom: 10px;
+  }
+  .result .lede { font-size: 15px; color: var(--text-dim); margin-bottom: 30px; line-height: 1.6; }
+  .scores { display: grid; gap: 10px; margin-bottom: 32px; }
+  .score {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px 20px;
+    display: flex; align-items: center; gap: 16px;
+    position: relative; overflow: hidden;
+  }
+  .score::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--accent);
+  }
+  .score.body { --accent: var(--body); }
+  .score.order { --accent: var(--order); }
+  .score.responsibility { --accent: var(--responsibility); }
+  .score.mastery { --accent: var(--mastery); }
+  .score-main { flex: 1; }
+  .score-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 600; margin-bottom: 8px;
+  }
+  .score-bar { height: 4px; background: var(--border); border-radius: 999px; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 999px; background: var(--accent); width: 0; transition: width 0.7s ease; }
+  .score-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px; font-weight: 600; color: var(--accent);
+    line-height: 1; min-width: 52px; text-align: right;
+  }
+  .verdict {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 16px; padding: 26px; margin-bottom: 26px;
+    position: relative; overflow: hidden;
+  }
+  .verdict::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--accent);
+  }
+  .verdict-eyebrow {
+    font-size: 10px; font-weight: 900; letter-spacing: 0.18em;
+    color: var(--accent); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .verdict-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 600; line-height: 1.3;
+    margin-bottom: 12px; letter-spacing: -0.01em;
+  }
+  .verdict p { font-size: 15px; color: var(--text-dim); line-height: 1.65; }
+
+  /* ---------- EMAIL GATE ---------- */
+  .gate {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 16px; padding: 26px; margin-bottom: 22px;
+  }
+  .gate h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 25px; font-weight: 600; margin-bottom: 10px; letter-spacing: -0.01em;
+  }
+  .gate p { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 18px; }
+  .gate input {
+    width: 100%; padding: 16px 18px; margin-bottom: 10px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 12px; color: var(--text);
+    font-family: inherit; font-size: 16px;
+    transition: border-color 0.15s ease;
+  }
+  .gate input:focus { outline: none; border-color: var(--gold); }
+  .gate input::placeholder { color: var(--text-muted); }
+  .gate-msg { font-size: 13px; color: var(--gold); min-height: 18px; margin-top: 10px; line-height: 1.5; }
+  .gate-fine { font-size: 11px; color: var(--text-muted); margin-top: 10px; }
+  .after { display: grid; gap: 10px; }
+  .center { text-align: center; }
+  a.plain { color: var(--text-muted); font-size: 12px; text-decoration: none; font-weight: 700; letter-spacing: 0.04em; }
+  a.plain:hover { color: var(--gold); }
 </style>
 </head>
 <body>
-<nav class="topbar">
-  <span class="brand">REMORALIZATION</span>
-  <div class="top-actions">
-    <a href="index.html" class="btn btn-ghost" style="font-size:13px;">← Home</a>
-    <a href="join.html" class="btn btn-primary" style="font-size:13px;">Join</a>
-  </div>
-</nav>
-<main>
-<div class="quiz-shell">
-  <div id="intro-screen" class="intro-screen">
-    <div class="intro-icon">🏛</div>
-    <h1>Baseline Assessment</h1>
-    <p>50 honest questions across 4 pillars. No BS. No flattery. Find out where you actually stand — and get your archetype.</p>
-    <div class="intro-pillars">
-      <div class="intro-pillar"><div class="intro-pillar-name" style="color:#60a5fa;">Body</div><div class="intro-pillar-desc">Training, condition, and physical discipline</div></div>
-      <div class="intro-pillar"><div class="intro-pillar-name" style="color:#fbbf24;">Order</div><div class="intro-pillar-desc">Environment, systems, and daily structure</div></div>
-      <div class="intro-pillar"><div class="intro-pillar-name" style="color:#4ade80;">Responsibility</div><div class="intro-pillar-desc">Duties, people, and follow-through</div></div>
-      <div class="intro-pillar"><div class="intro-pillar-name" style="color:#f87171;">Mastery</div><div class="intro-pillar-desc">Pursuit, deliberate practice, and depth</div></div>
+<div class="shell">
+  <div class="wordmark">Remoralization</div>
+
+  <!-- ---------- INTRO ---------- -->
+  <section id="intro" class="intro">
+    <h1>Where do you <em>actually</em> stand?</h1>
+    <p class="sub">Twelve questions across the four pillars. You get four numbers. They are not flattering by design.</p>
+    <p class="meta">Two minutes &middot; No account</p>
+
+    <div class="intro-grid">
+      <div class="intro-cell body">
+        <div class="intro-cell-name">Body</div>
+        <div class="intro-cell-desc">Training, condition, standards</div>
+      </div>
+      <div class="intro-cell order">
+        <div class="intro-cell-name">Order</div>
+        <div class="intro-cell-desc">Environment, attention, self-promises</div>
+      </div>
+      <div class="intro-cell responsibility">
+        <div class="intro-cell-name">Responsibility</div>
+        <div class="intro-cell-desc">Duties, people, what you avoid</div>
+      </div>
+      <div class="intro-cell mastery">
+        <div class="intro-cell-name">Mastery</div>
+        <div class="intro-cell-desc">Pursuit, practice, output</div>
+      </div>
     </div>
-    <div class="actions center">
-      <button class="btn btn-primary" style="font-size:16px; padding:14px 40px;" onclick="startQuiz()">Begin Assessment →</button>
+
+    <button class="btn" onclick="start()">Begin</button>
+    <p class="fine">Answer honestly. It only works if you do.</p>
+  </section>
+
+  <!-- ---------- QUIZ ---------- -->
+  <section id="quiz" style="display:none;">
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="qmeta">
+      <span id="qcount"></span>
+      <span class="pillar" id="qpillar"></span>
     </div>
-    <p style="margin-top:16px; font-size:13px; color:#4a5568;">Takes about 5 minutes. Be honest — it only works if you are.</p>
-  </div>
-  <div id="quiz-screen" style="display:none;">
-    <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
-    <div class="progress-meta"><span id="progress-text">Question 1 of 50</span><span id="pillar-text"></span></div>
-    <div id="pillar-badge-el" class="pillar-badge"></div>
-    <div class="question-prompt" id="question-prompt"></div>
-    <div class="options-list" id="options-list"></div>
-    <div class="nav-row">
-      <button class="btn-back" id="btn-back" onclick="goBack()">← Back</button>
-      <button class="btn-next" id="btn-next" onclick="goNext()" disabled>Continue →</button>
+    <div class="qprompt" id="qprompt"></div>
+    <div class="opts" id="opts"></div>
+    <div class="nav">
+      <button class="back" id="back" onclick="back()">&larr; Back</button>
+      <button class="btn" id="next" onclick="next()" disabled>Continue</button>
     </div>
-  </div>
-  <div id="result-screen" class="result-screen" style="display:none;">
-    <div class="tarot-card" id="tarot-card">
-      <div class="tarot-border-inner"></div>
-      <div class="tarot-corner tl">Remoralization</div>
-      <div class="tarot-corner tr">Remoralization</div>
-      <div class="tarot-corner bl">Remoralization</div>
-      <div class="tarot-corner br">Remoralization</div>
-      <div class="tarot-archetype-label">Your Archetype</div>
-      <div class="tarot-glyph" id="result-glyph"></div>
-      <div class="tarot-name" id="result-name"></div>
-      <div class="tarot-stage" id="result-stage"></div>
-      <div class="tarot-divider"></div>
-      <div class="tarot-tagline" id="result-tagline"></div>
-      <div class="tarot-desc" id="result-desc"></div>
-      <div class="tarot-pillar-row" id="result-pillars"></div>
-      <div class="tarot-url">remoralization.app</div>
+  </section>
+
+  <!-- ---------- RESULT ---------- -->
+  <section id="result" class="result" style="display:none;">
+    <h2>Your four numbers.</h2>
+    <p class="lede">Out of 100. Higher is better. The lowest one is the conversation.</p>
+
+    <div class="scores" id="scores"></div>
+
+    <div class="verdict" id="verdict">
+      <div class="verdict-eyebrow" id="v-eyebrow"></div>
+      <div class="verdict-line" id="v-line"></div>
+      <p id="v-body"></p>
     </div>
-    <div class="result-scores" id="result-scores"></div>
-    <div class="share-actions">
-      <button class="btn-share" onclick="shareResult()">Share Your Archetype</button>
-      <button class="btn-download" onclick="copyResult()">Copy Result Text</button>
+
+    <div class="gate" id="gate">
+      <h3>Want the read on this?</h3>
+      <p>Send me your address and I'll write back with what I'd start with, based on these four numbers. Written by me, not automated.</p>
+      <input type="email" id="email" placeholder="your@email.com" autocomplete="email" inputmode="email">
+      <button class="btn" id="send" onclick="submitEmail()">Send it to me</button>
+      <p class="gate-msg" id="gmsg"></p>
+      <p class="gate-fine">Your scores go with it. Nothing else, and no list.</p>
     </div>
-    <div class="result-cta">
-      <h3>Track your pillars daily.</h3>
-      <p>The assessment shows where you are. The app moves you forward — tasks, check-ins, proof, and a mastery pursuit contract.</p>
-      <a href="join.html" class="btn btn-primary" style="display:inline-flex; font-size:15px; padding:14px 32px;">Download Remoralization →</a>
+
+    <div class="after">
+      <a href="/index.html" class="btn btn-ghost">See how the four months work</a>
+      <a href="https://apps.apple.com/app/remoralization/id6765558006" class="btn btn-ghost">Or start free in the app</a>
     </div>
-  </div>
+
+    <p class="center" style="margin-top:24px;">
+      <a href="#" class="plain" onclick="location.reload();return false;">Start over</a>
+    </p>
+  </section>
 </div>
-</main>
-<script src="baseline-config.js"></script>
-<script>
-const QUESTIONS = window.BASELINE_CONFIG.questions.map((q,i) => ({...q, index:i}));
-const PILLAR_MAP = {'Physical Discipline':'Body','Order':'Order','Responsibility':'Responsibility','Mastery':'Mastery'};
-const PILLAR_COLORS = {Body:'#60a5fa',Order:'#fbbf24',Responsibility:'#4ade80',Mastery:'#f87171'};
-const ARCHETYPES = {
-  'Body+Order':{name:'The Centurion',glyph:'⚔️',high:{stage:'Commanding',tagline:'"Disciplined body. Ordered life. Nothing left to chance."',desc:"You've built yourself and your world with the same precision. Where others drift, you operate. This didn't happen by accident — it happened because you chose it, repeatedly, when it was hard."},low:{stage:'Rising',tagline:'"The discipline is coming. The order is being built."',desc:"You've chosen the harder path — most men never do. The structure isn't perfect yet and the body isn't where you want it. But you're in the forge. That's exactly where a Centurion is made."}},
-  'Body+Responsibility':{name:'The Protector',glyph:'🛡',high:{stage:'Commanding',tagline:'"Strong enough to carry others. Reliable enough to be counted on."',desc:"The people in your life feel safer because you exist. You show up physically and personally — no excuses, no half-measures. That combination is rarer than you think."},low:{stage:'Rising',tagline:'"Strength and duty are being forged at the same time."',desc:"You feel the pull of both — the body you want to build and the people you want to show up for. That tension isn't a problem. It's the exact pressure that makes a man worth trusting."}},
-  'Body+Mastery':{name:'The Monk',glyph:'🏺',high:{stage:'Commanding',tagline:'"The body is the vessel. The pursuit is the purpose."',desc:"You train the flesh and feed the mind. Your days are built around becoming — not comfort, not distraction. Few men choose this life. Fewer sustain it."},low:{stage:'Rising',tagline:'"The path is chosen. The work has begun."',desc:"Physical discipline and deep pursuit — you've taken on both. You're not where you want to be yet, and you know it. Good. That awareness is the thing that keeps men like you moving."}},
-  'Order+Responsibility':{name:'The Patriarch',glyph:'🏛',high:{stage:'Commanding',tagline:'"His house is in order. His people are held."',desc:"You've built a life that functions — clean systems, kept promises, people who trust you completely. Most men manage one or the other. You've built both. That's the foundation of legacy."},low:{stage:'Rising',tagline:'"Order and duty are calling. He is answering."',desc:"The systems aren't perfect yet. Some promises have been harder to keep than others. But you're honest about it — and you're working on it. That's what separates a man building legacy from one making excuses."}},
-  'Order+Mastery':{name:'The Architect',glyph:'📐',high:{stage:'Commanding',tagline:'"Systems built. Knowledge pursued. Nothing wasted."',desc:"You design your environment to serve your growth. Schedule, workspace, habits — all of it in service of the craft. This is how great work actually gets done. Not inspiration. Architecture."},low:{stage:'Rising',tagline:'"The blueprint is drawn. The building has begun."',desc:"You see the vision clearly. The gap right now is execution — the daily discipline to follow the plan when it's unglamorous. That gap closes with repetition. Stay in the structure."}},
-  'Responsibility+Mastery':{name:'The Sage',glyph:'📜',high:{stage:'Commanding',tagline:'"He serves. He studies. He does not stop."',desc:"You carry your obligations and your pursuit with equal seriousness. You've figured out what most men miss — that depth and duty aren't opposites. Each one makes the other stronger."},low:{stage:'Rising',tagline:'"Wisdom is built from kept promises and quiet work."',desc:"The craft is calling and so are the people who depend on you. You're learning to honor both without dropping either. Most men pick one. You're refusing to. That refusal is what makes a Sage."}}
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+const SUPABASE_URL = 'https://qsvelfkcaaqxgaewwwog.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const PILLARS = {
+  body: 'Body',
+  order: 'Order',
+  responsibility: 'Responsibility',
+  mastery: 'Mastery'
 };
-let current=0, answers={};
-function startQuiz(){document.getElementById('intro-screen').style.display='none';document.getElementById('quiz-screen').style.display='block';renderQuestion();}
-function renderQuestion(){
-  const q=QUESTIONS[current],total=QUESTIONS.length,pct=(current/total)*100;
-  document.getElementById('progress-fill').style.width=pct+'%';
-  document.getElementById('progress-text').textContent='Question '+(current+1)+' of '+total;
-  const pillarDisplay=PILLAR_MAP[q.pillar]||q.pillar;
-  document.getElementById('pillar-text').textContent=pillarDisplay;
-  const badge=document.getElementById('pillar-badge-el');
-  badge.textContent=pillarDisplay;
-  badge.className='pillar-badge badge-'+pillarDisplay.toLowerCase().replace(/\s/g,'');
-  document.getElementById('question-prompt').textContent=q.prompt;
-  const list=document.getElementById('options-list');
-  list.innerHTML='';
-  q.options.forEach((opt,i)=>{
-    const btn=document.createElement('button');
-    btn.className='option-btn'+(answers[current]===i?' selected':'');
-    btn.textContent=opt.label;
-    btn.onclick=()=>selectOption(i);
-    list.appendChild(btn);
+
+// Three per pillar. Drawn from the 50-question set — the ones that cut deepest.
+const Q = [
+  { p:'body', prompt:'How consistently do you complete your planned training each week?', o:[
+    ['Every session. No excuses.',10],
+    ['Most of them. Minor misses.',8],
+    ['About half. Hit or miss.',6],
+    ['More misses than hits.',4],
+    ['Rarely or never.',2]]},
+  { p:'order', prompt:'What state is your main living space in right now?', o:[
+    ['Clean and ordered. Ready for anyone, any time.',10],
+    ['Clean, with minor disorder.',8],
+    ['Mixed. Some areas fine, some not.',6],
+    ['Messy. I would be embarrassed if someone came by.',4],
+    ['Cluttered and neglected.',2]]},
+  { p:'responsibility', prompt:'How many important things are you currently avoiding?', o:[
+    ['None.',10],
+    ['One or two small ones.',8],
+    ['Three to five real things.',6],
+    ['Six to ten. It is a pattern.',4],
+    ['More than ten. Avoidance is defining me.',2]]},
+  { p:'mastery', prompt:'Do you have one clear pursuit you are actively building?', o:[
+    ['Yes. One thing, deliberately.',10],
+    ['Yes, though I could be more focused.',8],
+    ['I have ideas but have not chosen.',6],
+    ['I dabble in several. Master none.',4],
+    ['No real pursuit.',2]]},
+
+  { p:'body', prompt:'Your physical trajectory over the last three months.', o:[
+    ['Improving. Visibly.',10],
+    ['Holding steady.',8],
+    ['Flat. No real change.',6],
+    ['Slowly declining.',4],
+    ['Declining fast.',2]]},
+  { p:'order', prompt:'How consistently do you keep promises you make to yourself?', o:[
+    ['My word to myself means something.',10],
+    ['Usually. More often than not.',8],
+    ['About half. I let myself off the hook.',6],
+    ['Rarely. I break them often.',4],
+    ['Almost never. I do not trust myself.',2]]},
+  { p:'responsibility', prompt:'When you tell someone you will do something, how often do you do it?', o:[
+    ['Almost always. My word means something.',10],
+    ['Usually.',8],
+    ['About half. Life gets in the way.',6],
+    ['Rarely. I say yes and do not follow through.',4],
+    ['I avoid committing to anything.',2]]},
+  { p:'mastery', prompt:'Hours per week in deliberate practice on that pursuit.', o:[
+    ['Ten or more.',10],
+    ['Five to nine.',8],
+    ['Three to four.',6],
+    ['One to two.',4],
+    ['Under an hour.',2]]},
+
+  { p:'body', prompt:'Do you hold yourself to a clear physical standard?', o:[
+    ['Yes. Clear, and enforced.',10],
+    ['I have one and mostly hold it.',8],
+    ['Vague. It moves with my mood.',6],
+    ['Not really. I react instead.',4],
+    ['No standard at all.',2]]},
+  { p:'order', prompt:'Average daily screen time on your phone.', o:[
+    ['Under an hour.',10],
+    ['One to two hours.',8],
+    ['Two to three hours.',6],
+    ['Three to five hours.',4],
+    ['Over five hours.',2]]},
+  { p:'responsibility', prompt:'How many open loops are you carrying right now?', o:[
+    ['Almost none. Clean slate.',10],
+    ['Two to four. Manageable.',8],
+    ['Five to eight. Noticeable weight.',6],
+    ['Nine to fifteen. It costs me energy.',4],
+    ['Over fifteen. I feel buried.',2]]},
+  { p:'mastery', prompt:'Can you point to real progress in your pursuit over the last ninety days?', o:[
+    ['Yes. Undeniable, and I can show it.',10],
+    ['Yes, though not always visible.',8],
+    ['Some, but inconsistent.',6],
+    ['Minimal. Going through motions.',4],
+    ['None.',2]]}
+];
+
+// Lowest pillar determines the verdict. Voice matches the app's judges.
+const VERDICTS = {
+  body: {
+    judge: 'Heracles',
+    line: 'The body is the lowest.',
+    text: 'It is the most measurable of the four and the one that shows first. It rises slowly and falls faster than you expect. Whatever else is true, this number is a readout of how you are actually living.'
+  },
+  order: {
+    judge: 'Themis',
+    line: 'Order is the lowest.',
+    text: 'Your environment confesses everything. Disorder outside is not a metaphor for disorder inside. It is the same disorder in a form you can photograph, which also makes it the fastest one to move.'
+  },
+  responsibility: {
+    judge: 'Aeneas',
+    line: 'Responsibility is the lowest.',
+    text: 'This is the one people least want to look at, because it involves other people who have already noticed. What you carry is who you are. What you set down without permission is who you are becoming.'
+  },
+  mastery: {
+    judge: 'Daedalus',
+    line: 'Mastery is the lowest.',
+    text: 'Talent is a rumour. Mastery is a record. This number does not measure what you are capable of. It measures what you have actually built, which is the only measure that has ever counted.'
+  }
+};
+
+let i = 0;
+const ans = {};
+let scores = null;
+
+window.start = () => {
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  render();
+};
+
+function render() {
+  const q = Q[i];
+  document.getElementById('fill').style.width = (i / Q.length * 100) + '%';
+  document.getElementById('qcount').textContent = (i + 1) + ' of ' + Q.length;
+  const pill = document.getElementById('qpillar');
+  pill.textContent = PILLARS[q.p];
+  pill.style.setProperty('--accent', 'var(--' + q.p + ')');
+  pill.style.color = 'var(--' + q.p + ')';
+  document.getElementById('qprompt').textContent = q.prompt;
+
+  const box = document.getElementById('opts');
+  box.innerHTML = '';
+  q.o.forEach(([label], idx) => {
+    const b = document.createElement('button');
+    b.className = 'opt' + (ans[i] === idx ? ' sel' : '');
+    b.textContent = label;
+    b.onclick = () => pick(idx);
+    box.appendChild(b);
   });
-  document.getElementById('btn-next').disabled=answers[current]===undefined;
-  document.getElementById('btn-back').style.display=current===0?'none':'inline-flex';
+
+  document.getElementById('next').disabled = ans[i] === undefined;
+  document.getElementById('back').style.visibility = i === 0 ? 'hidden' : 'visible';
+  document.getElementById('next').textContent = i === Q.length - 1 ? 'See my numbers' : 'Continue';
 }
-function selectOption(i){
-  answers[current]=i;
-  document.querySelectorAll('.option-btn').forEach((b,idx)=>b.classList.toggle('selected',idx===i));
-  document.getElementById('btn-next').disabled=false;
+
+function pick(idx) {
+  ans[i] = idx;
+  document.querySelectorAll('.opt').forEach((b, n) => b.classList.toggle('sel', n === idx));
+  document.getElementById('next').disabled = false;
 }
-function goNext(){
-  if(answers[current]===undefined)return;
-  if(current<QUESTIONS.length-1){current++;renderQuestion();window.scrollTo({top:0,behavior:'smooth'});}
-  else{showResults();}
-}
-function goBack(){if(current>0){current--;renderQuestion();window.scrollTo({top:0,behavior:'smooth'});}}
-function calcScores(){
-  const s={Body:0,Order:0,Responsibility:0,Mastery:0},c={Body:0,Order:0,Responsibility:0,Mastery:0};
-  QUESTIONS.forEach((q,i)=>{
-    const p=PILLAR_MAP[q.pillar]||q.pillar,a=answers[i];
-    if(a!==undefined){s[p]+=q.options[a].score;c[p]++;}
+
+window.next = () => {
+  if (ans[i] === undefined) return;
+  if (i < Q.length - 1) { i++; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+  else finish();
+};
+
+window.back = () => { if (i > 0) { i--; render(); window.scrollTo({top:0,behavior:'smooth'}); } };
+
+function finish() {
+  const sum = {body:0, order:0, responsibility:0, mastery:0};
+  const cnt = {body:0, order:0, responsibility:0, mastery:0};
+  Q.forEach((q, n) => {
+    if (ans[n] === undefined) return;
+    sum[q.p] += q.o[ans[n]][1];
+    cnt[q.p]++;
   });
-  const n={};
-  Object.keys(s).forEach(p=>{const max=c[p]*10;n[p]=max>0?Math.round((s[p]/max)*100):0;});
-  return n;
-}
-function getArchetype(scores){
-  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
-  const top1=sorted[0][0],top2=sorted[1][0],dominantScore=sorted[0][1];
-  const key=[top1,top2].sort().join('+');
-  const archetype=ARCHETYPES[key];
-  const variant=dominantScore>=60?archetype.high:archetype.low;
-  return{archetype,variant,top1,top2,dominantScore};
-}
-function showResults(){
-  document.getElementById('quiz-screen').style.display='none';
-  document.getElementById('result-screen').style.display='block';
+  scores = {};
+  Object.keys(sum).forEach(p => {
+    scores[p] = cnt[p] ? Math.round(sum[p] / (cnt[p] * 10) * 100) : 0;
+  });
+
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
   window.scrollTo({top:0,behavior:'smooth'});
-  const scores=calcScores();
-  const{archetype,variant,top1,top2}=getArchetype(scores);
-  document.getElementById('result-glyph').textContent=archetype.glyph;
-  document.getElementById('result-name').textContent=archetype.name;
-  document.getElementById('result-stage').textContent=variant.stage;
-  document.getElementById('result-tagline').textContent=variant.tagline;
-  document.getElementById('result-desc').textContent=variant.desc;
-  document.getElementById('result-pillars').innerHTML='<span class="tarot-score-pill" style="color:'+PILLAR_COLORS[top1]+'">'+top1+' '+scores[top1]+'</span><span class="tarot-score-pill" style="color:'+PILLAR_COLORS[top2]+'">'+top2+' '+scores[top2]+'</span>';
-  document.getElementById('result-scores').innerHTML=Object.entries(scores).map(([p,s])=>'<div class="score-pill"><div class="score-pill-label">'+p+'</div><div class="score-pill-value" style="color:'+PILLAR_COLORS[p]+'">'+s+'</div><div class="score-pill-bar"><div class="score-pill-bar-fill" style="width:'+s+'%;background:'+PILLAR_COLORS[p]+'"></div></div></div>').join('');
-  window._resultData={archetype,variant,scores,top1,top2};
+
+  const box = document.getElementById('scores');
+  box.innerHTML = Object.entries(scores).map(([p, s]) => `
+    <div class="score ${p}">
+      <div class="score-main">
+        <div class="score-name">${PILLARS[p]}</div>
+        <div class="score-bar"><div class="score-bar-fill" data-w="${s}"></div></div>
+      </div>
+      <div class="score-num">${s}</div>
+    </div>`).join('');
+
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.score-bar-fill').forEach(el => {
+      el.style.width = el.dataset.w + '%';
+    });
+  });
+
+  const lowest = Object.entries(scores).sort((a, b) => a[1] - b[1])[0][0];
+  const v = VERDICTS[lowest];
+  const card = document.getElementById('verdict');
+  card.style.setProperty('--accent', 'var(--' + lowest + ')');
+  document.getElementById('v-eyebrow').textContent = v.judge + ' has business with you';
+  document.getElementById('v-line').textContent = v.line;
+  document.getElementById('v-body').textContent = v.text;
 }
-function shareResult(){
-  const{archetype,variant,scores,top1,top2}=window._resultData;
-  const text='I just took the Remoralization Baseline Assessment.\n\nArchetype: '+archetype.name+' — '+variant.stage+'\n'+variant.tagline+'\n\nTop pillars: '+top1+' ('+scores[top1]+') & '+top2+' ('+scores[top2]+')\n\nDiscover yours → remoralization.app';
-  if(navigator.share){navigator.share({title:archetype.name+' — '+variant.stage,text});}
-  else{navigator.clipboard.writeText(text).then(()=>alert('Copied to clipboard! Paste anywhere to share.'));}
-}
-function copyResult(){
-  const{archetype,variant,scores}=window._resultData;
-  const text='Remoralization Baseline\n\nArchetype: '+archetype.name+' — '+variant.stage+'\n'+variant.tagline+'\n\nBody: '+scores.Body+'/100\nOrder: '+scores.Order+'/100\nResponsibility: '+scores.Responsibility+'/100\nMastery: '+scores.Mastery+'/100\n\nremoralization.app';
-  navigator.clipboard.writeText(text).then(()=>alert('Copied!'));
-}
+
+window.submitEmail = async () => {
+  const input = document.getElementById('email');
+  const btn = document.getElementById('send');
+  const msg = document.getElementById('gmsg');
+  const email = input.value.trim().toLowerCase();
+
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    msg.textContent = 'That address does not look right.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending';
+  msg.textContent = '';
+
+  try {
+    const { error } = await supabase.from('leads').insert({
+      email,
+      source: 'baseline-12',
+      scores
+    });
+    if (error && error.code !== '23505') throw error;
+
+    document.getElementById('gate').innerHTML =
+      '<h3>Sent.</h3><p style="margin:0;">I will write back. In the meantime, the four months are laid out below.</p>';
+  } catch (err) {
+    console.error(err);
+    btn.disabled = false;
+    btn.textContent = 'Send it to me';
+    msg.textContent = 'That did not go through. Email dylankundert@gmail.com instead.';
+  }
+};
 </script>
 </body>
 </html>
-

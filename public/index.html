@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Remoralization — Four pillars. Honest accountability.</title>
-  <meta name="description" content="The accountability app for people who want to stop drifting. Body, Order, Responsibility, Mastery — four pillars holding up the life you said you'd build.">
+  <meta name="description" content="Four months, four pillars, and one person who checks. One-to-one accountability for people who are done drifting.">
   <meta property="og:title" content="Remoralization">
-  <meta property="og:description" content="Four pillars. Honest accountability. Built for people who want to stop drifting.">
+  <meta property="og:description" content="You already know what to do. What you've never had is someone who checks.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,344 +30,499 @@
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+      overflow-x: hidden; padding-bottom: 76px;
     }
-    .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-    .hero {
-      min-height: 92vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 80px 24px 60px;
-      position: relative;
-      text-align: center;
-    }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 22px; }
+
+    /* ---------- HERO ---------- */
+    .hero { padding: 44px 22px 52px; position: relative; text-align: center; }
     .hero::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(ellipse at center top, rgba(200,168,75,0.08), transparent 60%);
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center top, rgba(200,168,75,0.09), transparent 62%);
       pointer-events: none;
     }
+    .hero > .container { position: relative; }
     .wordmark {
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 0.32em;
-      color: var(--gold);
-      margin-bottom: 48px;
-      text-transform: uppercase;
+      font-size: 12px; font-weight: 900; letter-spacing: 0.3em;
+      color: var(--gold); margin-bottom: 28px; text-transform: uppercase;
     }
     .hero h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(40px, 8vw, 72px);
-      font-weight: 600;
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-      margin-bottom: 24px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      font-size: clamp(34px, 9vw, 58px);
+      font-weight: 600; line-height: 1.08; letter-spacing: -0.01em;
+      margin: 0 auto 16px; max-width: 560px;
     }
-    .hero h1 em {
-      font-style: italic;
-      color: var(--gold);
-      font-weight: 500;
-    }
+    .hero h1 em { font-style: italic; color: var(--gold); font-weight: 500; }
     .hero .subtitle {
-      font-size: clamp(15px, 2.5vw, 18px);
-      color: var(--text-dim);
-      font-weight: 500;
-      max-width: 480px;
-      margin: 0 auto 48px;
-      line-height: 1.6;
+      font-size: 16px; color: var(--text-dim); font-weight: 500;
+      max-width: 430px; margin: 0 auto 8px; line-height: 1.55;
     }
-    .cta-row {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      align-items: center;
+    .hero .what {
+      font-size: 12px; font-weight: 800; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 30px;
     }
-    .cta-primary {
-      display: inline-block;
-      padding: 18px 36px;
-      background: var(--gold);
-      color: var(--bg);
-      font-weight: 800;
-      font-size: 15px;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      border-radius: 12px;
+
+    /* ---------- REACH OUT FORM ---------- */
+    .reach { max-width: 420px; margin: 0 auto; text-align: left; }
+    .reach-label {
+      font-size: 13px; color: var(--text-dim); margin-bottom: 12px;
+      line-height: 1.5; text-align: center;
+    }
+    .reach input, .reach textarea {
+      width: 100%; padding: 15px 17px; margin-bottom: 10px;
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text);
+      font-family: inherit; font-size: 16px; line-height: 1.5;
+      transition: border-color 0.15s ease; resize: vertical;
+    }
+    .reach input:focus, .reach textarea:focus { outline: none; border-color: var(--gold); }
+    .reach input::placeholder, .reach textarea::placeholder { color: var(--text-muted); }
+    .reach button {
+      width: 100%; padding: 17px 24px;
+      background: var(--gold); color: var(--bg);
+      font-family: inherit; font-weight: 800; font-size: 15px;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      border: none; border-radius: 12px; cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
-      text-transform: uppercase;
     }
-    .cta-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(200,168,75,0.25);
+    .reach button:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,168,75,0.25); }
+    .reach button:disabled { opacity: 0.5; cursor: default; transform: none; box-shadow: none; }
+    .reach-msg { font-size: 13px; margin-top: 12px; min-height: 18px; color: var(--gold); line-height: 1.5; text-align: center; }
+    .reach-fine { font-size: 11px; color: var(--text-muted); margin-top: 10px; text-align: center; line-height: 1.5; }
+    .hero-alt {
+      margin: 26px auto 0; padding-top: 22px;
+      border-top: 1px solid var(--border); max-width: 420px;
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 0;
     }
-    .cta-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .hero-alt a {
+      color: var(--text-dim); font-size: 13px; font-weight: 700;
+      text-decoration: none; transition: color 0.15s ease;
     }
-    .section {
-      padding: 100px 24px;
-      border-top: 1px solid var(--border);
-    }
+    .hero-alt a:hover { color: var(--gold); }
+    .hero-alt .sep { color: var(--text-muted); margin: 0 10px; }
+
+    /* ---------- SECTIONS ---------- */
+    .section { padding: 68px 22px; border-top: 1px solid var(--border); }
     .eyebrow {
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.18em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 16px;
+      font-size: 11px; font-weight: 900; letter-spacing: 0.18em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
     }
     .section h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(32px, 5vw, 44px);
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.15;
-      margin-bottom: 24px;
+      font-size: clamp(30px, 6vw, 42px);
+      font-weight: 600; letter-spacing: -0.01em; line-height: 1.14; margin-bottom: 22px;
     }
     .section .lede {
-      font-size: 17px;
-      line-height: 1.65;
-      color: var(--text-dim);
-      max-width: 560px;
-      margin-bottom: 48px;
+      font-size: 16px; line-height: 1.65; color: var(--text-dim);
+      max-width: 540px; margin-bottom: 36px;
     }
-    .pillars {
-      display: grid;
-      gap: 16px;
+    .prose p { font-size: 16px; line-height: 1.72; color: var(--text-dim); max-width: 540px; margin-bottom: 18px; }
+    .prose p em { color: var(--text); font-style: italic; }
+    .prose p.emphasis { color: var(--text); font-size: 19px; font-weight: 500; line-height: 1.5; margin-top: 26px; }
+
+    /* ---------- CARDS ---------- */
+    .pillars, .arc { display: grid; gap: 14px; }
+    .card {
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px; position: relative; overflow: hidden;
     }
-    .pillar {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      position: relative;
-      overflow: hidden;
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 4px; height: 100%; background: var(--accent);
     }
-    .pillar::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 4px; height: 100%;
-      background: var(--accent);
+    .card.body { --accent: var(--body); }
+    .card.order { --accent: var(--order); }
+    .card.responsibility { --accent: var(--responsibility); }
+    .card.mastery { --accent: var(--mastery); }
+    .card-eyebrow {
+      font-size: 10px; font-weight: 900; letter-spacing: 0.18em;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 8px;
     }
-    .pillar.body { --accent: var(--body); }
-    .pillar.order { --accent: var(--order); }
-    .pillar.responsibility { --accent: var(--responsibility); }
-    .pillar.mastery { --accent: var(--mastery); }
-    .pillar-eyebrow {
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 8px;
+    .card-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 26px;
+      font-weight: 600; margin-bottom: 10px; letter-spacing: -0.01em;
     }
-    .pillar-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      letter-spacing: -0.01em;
+    .card-desc { font-size: 15px; color: var(--text-dim); line-height: 1.6; margin-bottom: 10px; }
+    .card-tag {
+      font-size: 11px; color: var(--text-muted); font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
     }
-    .pillar-desc {
-      font-size: 15px;
-      color: var(--text-dim);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-    .pillar-archetype {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .feature-list {
-      list-style: none;
-      display: grid;
-      gap: 18px;
-    }
+
+    /* ---------- LISTS ---------- */
+    .feature-list { list-style: none; display: grid; gap: 18px; }
     .feature-list li {
-      font-size: 15px;
-      color: var(--text);
-      line-height: 1.6;
-      padding-left: 24px;
-      position: relative;
+      font-size: 15px; color: var(--text); line-height: 1.6;
+      padding-left: 22px; position: relative;
     }
     .feature-list li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--gold);
-      font-weight: 700;
+      content: '—'; position: absolute; left: 0; color: var(--gold); font-weight: 700;
     }
-    .closing {
-      text-align: center;
-      padding: 100px 24px 80px;
-      border-top: 1px solid var(--border);
+    .feature-list li strong { display: block; font-weight: 700; margin-bottom: 3px; }
+    .feature-list li span { color: var(--text-dim); }
+
+    /* ---------- CHECK-IN ---------- */
+    .panel {
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: 16px; padding: 26px; margin-top: 32px;
     }
+    .panel-head {
+      font-size: 11px; font-weight: 900; letter-spacing: 0.16em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 16px;
+    }
+    .panel ol { list-style: none; counter-reset: c; display: grid; gap: 12px; }
+    .panel ol li {
+      counter-increment: c; font-size: 15px; color: var(--text);
+      padding-left: 30px; position: relative; line-height: 1.5;
+    }
+    .panel ol li::before {
+      content: counter(c); position: absolute; left: 0; top: 1px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--border); color: var(--text-dim);
+      font-size: 11px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .panel-foot { font-size: 14px; color: var(--text-dim); margin-top: 18px; line-height: 1.6; }
+    .panel p { font-size: 15px; color: var(--text-dim); line-height: 1.65; margin-bottom: 14px; }
+    .panel p:last-child { margin-bottom: 0; }
+
+    /* ---------- PRICE ---------- */
+    .price-figure {
+      font-family: 'Cormorant Garamond', serif; font-size: 42px;
+      font-weight: 600; color: var(--gold); line-height: 1; margin-bottom: 6px;
+    }
+    .price-term {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 18px;
+    }
+    .panel strong { color: var(--text); }
+
+    /* ---------- FIT ---------- */
+    .fit { display: grid; gap: 14px; }
+    .fit-card {
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+    }
+    .fit-card h3 {
+      font-family: 'Cormorant Garamond', serif; font-size: 23px;
+      font-weight: 600; margin-bottom: 14px; letter-spacing: -0.01em;
+    }
+    .fit-card ul { list-style: none; display: grid; gap: 11px; }
+    .fit-card li {
+      font-size: 15px; color: var(--text-dim); line-height: 1.55;
+      padding-left: 18px; position: relative;
+    }
+    .fit-card li::before { position: absolute; left: 0; font-weight: 700; content: '·'; }
+    .fit-card.yes li::before { color: var(--gold); }
+    .fit-card.no li::before { color: var(--text-muted); }
+
+    /* ---------- BUTTONS ---------- */
+    .cta-primary {
+      display: inline-block; padding: 17px 32px;
+      background: var(--gold); color: var(--bg);
+      font-weight: 800; font-size: 15px; letter-spacing: 0.04em;
+      text-decoration: none; border-radius: 12px; text-transform: uppercase;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .cta-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(200,168,75,0.25); }
+    .cta-ghost {
+      display: inline-block; padding: 15px 28px;
+      background: none; border: 1px solid var(--border); color: var(--text-dim);
+      font-weight: 700; font-size: 14px; letter-spacing: 0.03em;
+      text-decoration: none; border-radius: 12px;
+      transition: border-color 0.15s ease, color 0.15s ease;
+    }
+    .cta-ghost:hover { border-color: var(--gold); color: var(--gold); }
+    .cta-meta {
+      display: block; font-size: 11px; color: var(--text-muted);
+      font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-top: 12px;
+    }
+
+    /* ---------- CLOSING / CONTACT ---------- */
+    .closing { text-align: center; padding: 72px 22px 64px; border-top: 1px solid var(--border); }
     .closing-quote {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(24px, 4vw, 32px);
-      font-style: italic;
-      color: var(--text);
-      line-height: 1.4;
-      max-width: 560px;
-      margin: 0 auto 32px;
-      letter-spacing: -0.01em;
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(23px, 5vw, 31px);
+      font-style: italic; color: var(--text); line-height: 1.4;
+      max-width: 540px; margin: 0 auto 26px; letter-spacing: -0.01em;
     }
     .closing-attribution {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 48px;
+      font-size: 11px; font-weight: 800; letter-spacing: 0.18em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 36px;
     }
-    footer {
+    .closing h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 6vw, 38px); font-weight: 600;
+      margin-bottom: 12px; letter-spacing: -0.01em;
+    }
+    .closing .lede { font-size: 16px; color: var(--text-dim); max-width: 440px; margin: 0 auto 30px; }
+
+    /* ---------- STICKY ---------- */
+    .sticky {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: rgba(10,10,12,0.94);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
       border-top: 1px solid var(--border);
-      padding: 48px 24px 32px;
-      text-align: center;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      display: flex; gap: 10px; align-items: center; z-index: 50;
+      transform: translateY(110%); transition: transform 0.25s ease;
     }
-    .footer-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin-bottom: 16px;
+    .sticky.visible { transform: translateY(0); }
+    .sticky a {
+      flex: 1; text-align: center; padding: 14px 12px; border-radius: 11px;
+      font-size: 13px; font-weight: 800; letter-spacing: 0.03em;
+      text-decoration: none; text-transform: uppercase;
     }
+    .sticky .s-reach { background: var(--gold); color: var(--bg); }
+    .sticky .s-app { border: 1px solid var(--border); color: var(--text-dim); }
+
+    /* ---------- FOOTER ---------- */
+    footer { border-top: 1px solid var(--border); padding: 40px 22px 28px; text-align: center; }
+    .footer-meta { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 14px; }
     .privacy-toggle {
-      background: none;
-      border: none;
-      color: var(--text-dim);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      font-family: inherit;
-      padding: 8px 12px;
-      transition: color 0.15s ease;
+      background: none; border: none; color: var(--text-dim);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer; font-family: inherit;
+      padding: 8px 12px; transition: color 0.15s ease;
     }
     .privacy-toggle:hover { color: var(--gold); }
     .privacy-content {
-      max-width: 640px;
-      margin: 32px auto 0;
-      text-align: left;
-      display: none;
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
+      max-width: 640px; margin: 28px auto 0; text-align: left;
+      display: none; padding-top: 22px; border-top: 1px solid var(--border);
     }
     .privacy-content.open { display: block; }
-    .privacy-content h3 {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--text);
-      margin: 24px 0 8px;
-      letter-spacing: -0.01em;
-    }
-    .privacy-content p, .privacy-content li {
-      font-size: 13px;
-      color: var(--text-dim);
-      line-height: 1.7;
-    }
-    .privacy-content ul {
-      padding-left: 18px;
-      margin-bottom: 12px;
-    }
+    .privacy-content h3 { font-size: 14px; font-weight: 800; color: var(--text); margin: 22px 0 8px; }
+    .privacy-content p, .privacy-content li { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+    .privacy-content ul { padding-left: 18px; margin-bottom: 12px; }
     .privacy-content .privacy-date {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+      font-size: 11px; color: var(--text-muted); font-weight: 600;
+      letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 8px;
     }
     .privacy-content a { color: var(--gold); text-decoration: none; }
-    .privacy-content a:hover { text-decoration: underline; }
+
     @media (min-width: 720px) {
-      .pillars { grid-template-columns: 1fr 1fr; }
+      body { padding-bottom: 0; }
+      .sticky { display: none; }
+      .hero { padding: 80px 22px 76px; }
+      .pillars, .arc, .fit { grid-template-columns: 1fr 1fr; }
+      .section { padding: 92px 22px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="container">
       <div class="wordmark">Remoralization</div>
-      <h1>Stop drifting. Build the <em>life</em> you said you'd build.</h1>
-      <p class="subtitle">Four pillars. Honest accountability. No dopamine, no streaks, no soft answers.</p>
-      <div class="cta-row">
-        <a href="https://apps.apple.com/app/remoralization/id6765558006" class="cta-primary">Download on the App Store</a>
-        <span class="cta-meta">Available on iOS &middot; Android coming soon</span>
+      <h1>You already know what to do.</h1>
+      <p class="subtitle">What you've never had is someone who checks.</p>
+      <p class="what">Four pillars &middot; Four months &middot; One-to-one</p>
+
+      <div class="reach">
+        <p class="reach-label">Tell me what's out of order. I read every one of these myself.</p>
+        <form id="reachForm" novalidate>
+          <input type="text" id="rName" placeholder="Your name" autocomplete="name">
+          <input type="email" id="rEmail" placeholder="your@email.com" autocomplete="email" inputmode="email" required>
+          <textarea id="rNote" rows="3" placeholder="What's going on? A sentence is enough."></textarea>
+          <button type="submit" id="rBtn">Send</button>
+        </form>
+        <p class="reach-msg" id="rMsg"></p>
+        <p class="reach-fine">Goes straight to me. No list, no sequence.</p>
+      </div>
+
+      <div class="hero-alt">
+        <a href="#work">How it works</a>
+        <span class="sep">&middot;</span>
+        <a href="/baseline">Two-minute baseline</a>
+        <span class="sep">&middot;</span>
+        <a href="#app">Free app</a>
       </div>
     </div>
   </section>
+
+  <!-- ============ RECOGNITION ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">Before we start</div>
+      <h2>This has happened before.</h2>
+      <div class="prose">
+        <p>The notebook lasted eleven days. The app lasted three weeks, and it's still installed.</p>
+        <p>January lasted until the second week of February. You didn't decide to stop. You just stopped opening it, and then it had been a while, and then it was March.</p>
+        <p>You don't lack discipline. You use it every day at work, where other people are counting on you and would notice.</p>
+        <p>That's the whole difference. At work, someone notices.</p>
+        <p>Alone, nothing notices. You can write <em>I need to sort my space out</em> six months running and no one will ever put those six months side by side and ask what the sixth one cost.</p>
+        <p class="emphasis">You didn't need more resolve. You needed a witness.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PILLARS ============ -->
   <section class="section">
     <div class="container">
       <div class="eyebrow">The Framework</div>
       <h2>Four pillars hold up a life.</h2>
-      <p class="lede">Body. Order. Responsibility. Mastery. Most people drift in at least one without realizing it. Remoralization measures all four, every week, and refuses to let you ignore the one you've been avoiding.</p>
+      <p class="lede">Most people are drifting in at least one without admitting which. The system measures all four and refuses to let you ignore the one you've been avoiding.</p>
       <div class="pillars">
-        <div class="pillar body">
-          <div class="pillar-eyebrow">I &middot; Body</div>
-          <div class="pillar-name">Condition &amp; Capability</div>
-          <div class="pillar-desc">The honest mirror. The run that proves you're still strong. A soft body produces a soft mind.</div>
-          <div class="pillar-archetype">Heracles</div>
+        <div class="card body">
+          <div class="card-eyebrow">I &middot; Body</div>
+          <div class="card-name">Condition &amp; Capability</div>
+          <div class="card-desc">The body is trained, not gifted. It rises slowly and falls faster than you expect. That is the point.</div>
+          <div class="card-tag">Heracles</div>
         </div>
-        <div class="pillar order">
-          <div class="pillar-eyebrow">II &middot; Order</div>
-          <div class="pillar-name">Environment &amp; Systems</div>
-          <div class="pillar-desc">Your space, your presentation, your systems. The world reads you correctly because you've made it order.</div>
-          <div class="pillar-archetype">Themis</div>
+        <div class="card order">
+          <div class="card-eyebrow">II &middot; Order</div>
+          <div class="card-name">Environment &amp; Systems</div>
+          <div class="card-desc">Your environment confesses everything. Disorder outside isn't a metaphor for disorder inside. It's the same disorder, in a form you can photograph.</div>
+          <div class="card-tag">Themis</div>
         </div>
-        <div class="pillar responsibility">
-          <div class="pillar-eyebrow">III &middot; Responsibility</div>
-          <div class="pillar-name">Duties &amp; Follow-Through</div>
-          <div class="pillar-desc">The duties you can't delegate. The people who depend on you showing up. Strength is being someone others can rely on.</div>
-          <div class="pillar-archetype">Aeneas</div>
+        <div class="card responsibility">
+          <div class="card-eyebrow">III &middot; Responsibility</div>
+          <div class="card-name">Duties &amp; Follow-Through</div>
+          <div class="card-desc">To have people who depend on you is not a burden. It is a privilege. What you carry is who you are.</div>
+          <div class="card-tag">Aeneas</div>
         </div>
-        <div class="pillar mastery">
-          <div class="pillar-eyebrow">IV &middot; Mastery</div>
-          <div class="pillar-name">Pursuit &amp; Deep Work</div>
-          <div class="pillar-desc">The thing you're building that no one else can build for you. Mastery isn't talent — it's working when no one's watching.</div>
-          <div class="pillar-archetype">Daedalus</div>
+        <div class="card mastery">
+          <div class="card-eyebrow">IV &middot; Mastery</div>
+          <div class="card-name">Pursuit &amp; Deep Work</div>
+          <div class="card-desc">Talent is a rumour. Mastery is a record. Skill isn't discovered, it's accumulated, across a span most people won't endure.</div>
+          <div class="card-tag">Daedalus</div>
+        </div>
+      </div>
+      <p style="margin-top:26px;">
+        <a href="/baseline" class="cta-ghost">Score yourself &mdash; two minutes</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ THE ARC ============ -->
+  <section class="section" id="work">
+    <div class="container">
+      <div class="eyebrow">The Work</div>
+      <h2>Four months. One pillar at a time.</h2>
+      <p class="lede">You can't rebuild four domains at once. Anyone telling you otherwise is selling enthusiasm. Each month belongs to one pillar. The other three keep being tracked, and when one starts contradicting the others, we deal with it.</p>
+      <div class="arc">
+        <div class="card body">
+          <div class="card-eyebrow">Month One</div>
+          <div class="card-name">Body</div>
+          <div class="card-desc">The most measurable and the least deniable. Condition and capability. Inside three weeks you'll know whether you're doing the work, and so will I.</div>
+        </div>
+        <div class="card order">
+          <div class="card-eyebrow">Month Two</div>
+          <div class="card-name">Order</div>
+          <div class="card-desc">Your space, your presentation, your attention. Screen time and calendar as a measure of self-governance. The month people are most surprised by.</div>
+        </div>
+        <div class="card responsibility">
+          <div class="card-eyebrow">Month Three</div>
+          <div class="card-name">Responsibility</div>
+          <div class="card-desc">Your duties and your people, named and looked at directly. The hardest month. It comes third because by then we know each other.</div>
+        </div>
+        <div class="card mastery">
+          <div class="card-eyebrow">Month Four</div>
+          <div class="card-name">Mastery</div>
+          <div class="card-desc">One pursuit. A vision specific enough to disqualify most of what you currently do. Sessions, stages, and a contract you sign.</div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- ============ CADENCE ============ -->
   <section class="section">
     <div class="container">
-      <div class="eyebrow">How it works</div>
-      <h2>A monthly cycle of commit, work, reflect.</h2>
+      <div class="eyebrow">The Cadence</div>
+      <h2>Eight calls. Sixteen check-ins.</h2>
       <ul class="feature-list">
-        <li>Set a 3-year vision — not a goal, a clear picture of who you're becoming.</li>
-        <li>Face your body honestly. Heracles measures condition and capability; the mirror does not lie.</li>
-        <li>Order your environment. Themis judges what your space and systems say about you.</li>
-        <li>Carry your duties. Aeneas tracks the people and obligations that depend on you showing up.</li>
-        <li>Pursue your craft. Daedalus, the master craftsman, judges your deep work against a monthly goal.</li>
-        <li>Weekly check-ins keep all four pillars honest. The Oracle sees across them.</li>
-        <li>At month-end, a review you cannot skip. Hit, partial, or missed — and your guides tell you what they saw.</li>
+        <li><strong>A call every fortnight.</strong><span>Forty-five minutes, twice a month, on that month's pillar. Eight across the four months.</span></li>
+        <li><strong>A written check-in every week.</strong><span>Three lines by email, same day every week. It takes under a minute.</span></li>
+        <li><strong>A reply every time.</strong><span>Short, on purpose. The value isn't weekly coaching. It's that a person read it, will remember it next week, and will ask.</span></li>
+        <li><strong>The app underneath it all.</strong><span>Your scores and your own words from three months ago, sitting next to what you actually did.</span></li>
       </ul>
+
+      <div class="panel">
+        <div class="panel-head">The weekly check-in</div>
+        <ol>
+          <li>What did you commit to?</li>
+          <li>Did you do it?</li>
+          <li>If not, one line on why.</li>
+        </ol>
+        <p class="panel-foot">Same three questions, same day, every week for sixteen weeks. It's deliberately short. The point isn't the writing. The point is that it goes to someone.</p>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">What it costs</div>
+        <p>We settle that when we talk. It's paid for the four months rather than by the month &mdash; you're not renting access to me. You're committing to an arc with an end, and paying at the start is the first thing you're held to.</p>
+        <p><strong>I'm running this with a small number of people for the first time</strong>, at a rate that reflects it. In exchange I'll ask you at the end to tell me plainly what worked and what didn't.</p>
+      </div>
     </div>
   </section>
-  <section class="closing">
+
+  <!-- ============ FIT ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">Fit</div>
+      <h2>This isn't for everyone.</h2>
+      <div class="fit">
+        <div class="fit-card yes">
+          <h3>It's for you if</h3>
+          <ul>
+            <li>You're functioning. The problem isn't crisis, it's drift.</li>
+            <li>You've tried to fix this alone more than once.</li>
+            <li>You want the truth about the gap between what you say and what you do, from someone with the record in front of him.</li>
+            <li>You'd rather be asked a hard question than handed a technique.</li>
+          </ul>
+        </div>
+        <div class="fit-card no">
+          <h3>It isn't if</h3>
+          <ul>
+            <li>You're in crisis and need clinical support. This isn't therapy and I'm not qualified to provide it.</li>
+            <li>You want encouragement. There's a great deal of that available, and most of it is free.</li>
+            <li>You want to be asked how you feel about your goals rather than shown what you did about them.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APP ============ -->
+  <section class="section" id="app">
+    <div class="container">
+      <div class="eyebrow">The other door</div>
+      <h2>Or start alone.</h2>
+      <p class="lede">The app is free. Same four pillars, same four judges, and the same monthly Mirror that sets your words beside your conduct and asks about the difference.</p>
+      <div class="panel">
+        <p>It will track you honestly. It will notice when a pillar has gone untouched for twenty-eight days. It will quote what you wrote in April back to you in July.</p>
+        <p>What it can't do is expect anything of you. Software has no expectations. That turns out to be the part that matters.</p>
+        <div style="margin-top: 22px;">
+          <a href="https://apps.apple.com/app/remoralization/id6765558006" class="cta-primary">Download on the App Store</a>
+          <span class="cta-meta">iOS &middot; Android coming soon</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CLOSING / CONTACT ============ -->
+  <section class="closing" id="reach">
     <div class="container">
       <p class="closing-quote">"Thirty days are spent. Tell me what you built."</p>
-      <div class="closing-attribution">— Daedalus</div>
-      <a href="https://apps.apple.com/app/remoralization/id6765558006" class="cta-primary">Download on the App Store</a>
+      <div class="closing-attribution">&mdash; Daedalus</div>
+
+      <h2>Say something.</h2>
+      <p class="lede">You don't need to be sure. A sentence about what's out of order is enough to start.</p>
+
+      <div class="reach">
+        <form id="reachForm2" novalidate>
+          <input type="text" id="r2Name" placeholder="Your name" autocomplete="name">
+          <input type="email" id="r2Email" placeholder="your@email.com" autocomplete="email" inputmode="email" required>
+          <textarea id="r2Note" rows="3" placeholder="What's going on?"></textarea>
+          <button type="submit" id="r2Btn">Send</button>
+        </form>
+        <p class="reach-msg" id="r2Msg"></p>
+        <p class="reach-fine">Or email <a href="mailto:dylankundert@gmail.com" style="color:var(--text-dim);">dylankundert@gmail.com</a> directly.</p>
+      </div>
     </div>
   </section>
+
+  <!-- ============ FOOTER ============ -->
   <footer>
     <div class="footer-meta">&copy; 2026 Remoralization &middot; <a href="mailto:dylankundert@gmail.com" style="color: var(--text-dim); text-decoration: none;">dylankundert@gmail.com</a></div>
     <button class="privacy-toggle" onclick="document.getElementById('privacy').classList.toggle('open'); this.textContent = document.getElementById('privacy').classList.contains('open') ? 'Hide privacy policy' : 'Privacy policy';">Privacy policy</button>
@@ -396,5 +551,69 @@
       <p>You can delete your account and all associated data by contacting us at <a href="mailto:dylankundert@gmail.com">dylankundert@gmail.com</a>.</p>
     </div>
   </footer>
+
+  <!-- ============ STICKY ============ -->
+  <div class="sticky" id="stickyBar">
+    <a href="#reach" class="s-reach">Reach out</a>
+    <a href="/baseline" class="s-app">2-min baseline</a>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL = 'https://qsvelfkcaaqxgaewwwog.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_USsQxIcLcsFdpJsKRPwN5Q_Sk66z89O';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    function wire(formId, nameId, emailId, noteId, btnId, msgId) {
+      const form = document.getElementById(formId);
+      if (!form) return;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name  = document.getElementById(nameId).value.trim();
+        const email = document.getElementById(emailId).value.trim().toLowerCase();
+        const note  = document.getElementById(noteId).value.trim();
+        const btn   = document.getElementById(btnId);
+        const msg   = document.getElementById(msgId);
+
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          msg.textContent = 'That address does not look right.';
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Sending';
+        msg.textContent = '';
+
+        try {
+          const { error } = await supabase
+            .from('enquiries')
+            .insert({ name: name || null, email, note: note || null, source: 'site' });
+
+          if (error) throw error;
+
+          form.style.display = 'none';
+          msg.textContent = 'Sent. I will write back, usually within a day.';
+        } catch (err) {
+          console.error(err);
+          btn.disabled = false;
+          btn.textContent = 'Send';
+          msg.textContent = 'That did not go through. Email dylankundert@gmail.com instead.';
+        }
+      });
+    }
+
+    wire('reachForm',  'rName',  'rEmail',  'rNote',  'rBtn',  'rMsg');
+    wire('reachForm2', 'r2Name', 'r2Email', 'r2Note', 'r2Btn', 'r2Msg');
+
+    const bar  = document.getElementById('stickyBar');
+    const hero = document.querySelector('.hero');
+    new IntersectionObserver(
+      ([e]) => bar.classList.toggle('visible', !e.isIntersecting),
+      { threshold: 0 }
+    ).observe(hero);
+  </script>
+
 </body>
 </html>
