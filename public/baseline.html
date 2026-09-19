@@ -182,6 +182,28 @@
   }
   .verdict p { font-size: 15px; color: var(--text-dim); line-height: 1.65; }
 
+  /* ---------- OFFER ---------- */
+  .offer {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 16px; padding: 26px; margin-bottom: 26px;
+    position: relative; overflow: hidden;
+  }
+  .offer::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--gold);
+  }
+  .offer-eyebrow {
+    font-size: 10px; font-weight: 900; letter-spacing: 0.18em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .offer-head {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 600; line-height: 1.2;
+    margin-bottom: 10px; letter-spacing: -0.01em;
+  }
+  .offer-body { font-size: 15px; color: var(--text-dim); line-height: 1.65; margin-bottom: 20px; }
+  .offer-fine { font-size: 11px; color: var(--text-muted); margin-top: 10px; }
+
   /* ---------- EMAIL GATE ---------- */
   .gate {
     background: var(--bg-elevated); border: 1px solid var(--border);
@@ -270,6 +292,14 @@
       <p id="v-body"></p>
     </div>
 
+    <div class="offer" id="offer">
+      <div class="offer-eyebrow">The program</div>
+      <div class="offer-head">The four months start there.</div>
+      <p class="offer-body" id="offer-body"></p>
+      <a href="https://calendly.com/dylankundert/30min?utm_source=baseline" class="btn" target="_blank" rel="noopener">Book a call &rarr;</a>
+      <p class="offer-fine">Thirty minutes. No charge.</p>
+    </div>
+
     <div class="gate" id="gate">
       <h3>Want the read on this?</h3>
       <p>Send me your address and I'll write back with what I'd start with, based on these four numbers. Written by me, not automated.</p>
@@ -280,7 +310,7 @@
     </div>
 
     <div class="after">
-      <a href="/index.html" class="btn btn-ghost">See how the four months work</a>
+      <a href="/#work" class="btn btn-ghost">See how the four months work</a>
       <a href="https://apps.apple.com/app/remoralization/id6765558006" class="btn btn-ghost">Or start free in the app</a>
     </div>
 
@@ -495,6 +525,9 @@ function finish() {
   document.getElementById('v-eyebrow').textContent = v.judge + ' has business with you';
   document.getElementById('v-line').textContent = v.line;
   document.getElementById('v-body').textContent = v.text;
+
+  document.getElementById('offer-body').textContent =
+    'One pillar a month, beginning with ' + PILLARS[lowest] + '. Eight calls, sixteen check-ins, and someone who remembers what you said last time. $900.';
 }
 
 window.submitEmail = async () => {
