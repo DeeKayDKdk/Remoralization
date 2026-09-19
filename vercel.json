@@ -3,12 +3,6 @@
 { "source": "/checkout", "destination": "/checkout.html" },
 { "source": "/success", "destination": "/success.html" },
 { "source": "/cancel", "destination": "/cancel.html" },
-{ "source": "/login", "destination": "/login.html" },
-
-{ "source": "/why", "destination": "/why.html" },
-
-{ "source": "/join/platinum", "destination": "/join/platinum.html" },
-{ "source": "/join/free", "destination": "/join/free.html" },
 { "source": "/baseline", "destination": "/baseline.html" }
 ]
 }
