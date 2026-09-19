@@ -527,28 +527,47 @@
     <div class="footer-meta">&copy; 2026 Remoralization &middot; <a href="mailto:dylankundert@gmail.com" style="color: var(--text-dim); text-decoration: none;">dylankundert@gmail.com</a></div>
     <button class="privacy-toggle" onclick="document.getElementById('privacy').classList.toggle('open'); this.textContent = document.getElementById('privacy').classList.contains('open') ? 'Hide privacy policy' : 'Privacy policy';">Privacy policy</button>
     <div class="privacy-content" id="privacy">
-      <p class="privacy-date">Last updated April 27, 2026</p>
+      <p class="privacy-date">Last updated June 17, 2026</p>
       <h3>Overview</h3>
-      <p>Remoralization is committed to protecting your privacy. This policy explains what data we collect and how we use it.</p>
+      <p>Remoralization ("we," "us," or "our") is committed to protecting your privacy. This policy explains what data we collect when you use the Remoralization iOS app, how we use it, and the choices you have.</p>
       <h3>Data We Collect</h3>
+      <p>We collect only what is necessary to provide the app's features:</p>
       <ul>
-        <li>Account information: email address used to create your account</li>
-        <li>Health data: body measurements, waist measurements, and run data you manually enter</li>
-        <li>Photos: condition check-in photos and house spot photos you take within the app</li>
-        <li>Usage data: your ratings, goals, reflections, and progress entries</li>
+        <li><strong>Account information:</strong> Your email address, used to create and identify your account.</li>
+        <li><strong>Health and fitness data:</strong> Body measurements, waist measurements, and run metrics (distance, duration, pace) that you log in the app or that are read from Apple HealthKit with your explicit permission. HealthKit data is used solely within the app and is never shared with third parties or used for advertising.</li>
+        <li><strong>Location data:</strong> GPS coordinates collected during run tracking sessions to map your route and calculate distance. Location is accessed only while a run is actively in progress. We do not store a persistent history of your location beyond the run data you choose to save.</li>
+        <li><strong>Photos:</strong> Images you take within the app for condition check-ins and house spot documentation. Photos are stored securely and are not analyzed, shared, or used for any purpose other than displaying them back to you.</li>
+        <li><strong>Voice recordings:</strong> Audio recorded within the app for transcription of reflections or notes. Audio is sent to a transcription service (OpenAI Whisper) and is not retained after transcription is complete.</li>
+        <li><strong>Usage data:</strong> Your ratings, goals, reflections, progress entries, and archetype interactions — the core content you create inside the app.</li>
+        <li><strong>Analytics:</strong> Aggregate, anonymized usage events collected via PostHog to help us understand how features are used and improve the app. No personally identifiable information is included in analytics events.</li>
       </ul>
       <h3>How We Use Your Data</h3>
       <ul>
-        <li>To provide the app's features and track your progress across the four pillars</li>
-        <li>To generate personalized feedback from the archetype system</li>
-        <li>Your data is never sold to third parties</li>
+        <li>To provide and display the app's features across the four pillars (Body, Order, Responsibility, Mastery)</li>
+        <li>To generate personalized archetype feedback using Anthropic's Claude API — your pillar data is sent to this API; no personally identifiable information is included</li>
+        <li>To track your progress over time and show you trends and streaks</li>
+        <li>To improve the app through anonymized usage analytics</li>
       </ul>
+      <p>Your data is never sold to third parties or used for advertising.</p>
       <h3>Data Storage</h3>
-      <p>Your data is stored securely using Supabase. Photos are stored in Supabase Storage.</p>
-      <h3>AI Features</h3>
-      <p>The app uses Anthropic's Claude API to generate archetype responses. Your pillar data is sent to this API to generate responses. No personally identifiable information is included.</p>
+      <p>Your account data, health entries, photos, and usage content are stored securely using Supabase (PostgreSQL database and object storage). Data is encrypted in transit and at rest.</p>
+      <h3>Third-Party Services</h3>
+      <ul>
+        <li><strong>Anthropic Claude API:</strong> Used to generate archetype responses. Pillar data (no personal identifiers) is sent per request.</li>
+        <li><strong>OpenAI Whisper:</strong> Used for voice transcription. Audio is processed and not retained.</li>
+        <li><strong>PostHog:</strong> Used for anonymized analytics. No personally identifiable information is sent.</li>
+        <li><strong>Supabase:</strong> Hosts your account data and files.</li>
+        <li><strong>Apple HealthKit:</strong> Health and fitness data is read from HealthKit only with your explicit permission and is governed by Apple's HealthKit data policies.</li>
+      </ul>
       <h3>Your Rights</h3>
-      <p>You can delete your account and all associated data by contacting us at <a href="mailto:dylankundert@gmail.com">dylankundert@gmail.com</a>.</p>
+      <p>You may request deletion of your account and all associated data at any time by contacting us at <a href="mailto:dylan@remoralization.com">dylan@remoralization.com</a>. We will delete your data within 30 days of your request.</p>
+      <p>You can revoke HealthKit and location permissions at any time in iOS Settings.</p>
+      <h3>Children's Privacy</h3>
+      <p>Remoralization is not directed at children under 13. We do not knowingly collect data from children under 13.</p>
+      <h3>Changes to This Policy</h3>
+      <p>We may update this policy as the app evolves. Significant changes will be noted in the app. The date at the top of this page reflects when the policy was last revised.</p>
+      <h3>Contact</h3>
+      <p>Questions about this policy? Email us at <a href="mailto:dylan@remoralization.com">dylan@remoralization.com</a>.</p>
     </div>
   </footer>
 
