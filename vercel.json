@@ -1,5 +1,6 @@
 {
-"rewrites": [
-{ "source": "/baseline", "destination": "/baseline.html" }
-]
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/baseline", "destination": "/baseline.html" }
+  ]
 }
