@@ -1,8 +1,5 @@
 {
 "rewrites": [
-{ "source": "/checkout", "destination": "/checkout.html" },
-{ "source": "/success", "destination": "/success.html" },
-{ "source": "/cancel", "destination": "/cancel.html" },
 { "source": "/baseline", "destination": "/baseline.html" }
 ]
 }
